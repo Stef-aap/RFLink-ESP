@@ -14,7 +14,7 @@ This version of RFLink has the following features
 - Device must be registered before they will be recognized ( (almost) no more false postives)
 - Dynamically determine long/short puls, by measuring Min,Max,Mean
 - Runs on ESP32 and even on a ESP8266 
-- Fully open source, see GitHub: https://github.com/Stef-aap/Domoticz-RFLink-ESP
+- Fully open source
 - Codesize is strongly reduced
 
 Some ideas for the future
