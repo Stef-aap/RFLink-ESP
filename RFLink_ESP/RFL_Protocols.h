@@ -1,8 +1,10 @@
+// Version 0.2
+//    - incoming Commands are translated to uppercase
 
 // Version 0.1
 
 #ifndef RFL_Protocols_h
-#define RFL_Protocols_h   0.1
+#define RFL_Protocols_h   0.2
 
 #include <vector>
 
@@ -104,7 +106,8 @@ class _RFL_Protocols {
       int x1 ;
       int x2 ;
       int OnOff ;
-
+      CommandLine.toUpperCase () ;
+      
       x1 = CommandLine.indexOf ( ";" ) + 1 ;
       x2 = CommandLine.indexOf ( ";", x1 ) ;
       String Device = CommandLine.substring ( x1, x2 ) ;
@@ -117,8 +120,8 @@ class _RFL_Protocols {
       x1 = x2 +1 ;
       x2  = CommandLine.indexOf ( ";", x1 ) ;
       String Switch_String = CommandLine.substring ( x1, x2 ) ;
-      int Switch = Switch_String.toInt () ;
-      Switch = (int) HexString_2_Long ( Switch_String ) ;
+      //int Switch = Switch_String.toInt () ;
+      int Switch = (int) HexString_2_Long ( Switch_String ) ;
 
       // *********************************************
       // geen probleem als de ; op het einde ontbreekt

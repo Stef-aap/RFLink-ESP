@@ -1,3 +1,11 @@
+// Version 0.2
+//    - LoopsPerMilli automatic chaged with the device
+//    - added protection for only include once
+
+// Version 0.1
+
+#ifndef RawSignal_h
+#define RawSignal_h   0.2
 
 // ***********************************************************************************
 // Some time critical parameters are declared global
@@ -27,8 +35,11 @@ boolean FetchSignal () {
   //const unsigned long LoopsPerMilli = 345;   // <<< OORSPRONKELIJKE WAARDE VOOR ARDUINO MEGA
   // 2500 was optimaal, maar we hebben de loop sneller gemaakt 3540 naar 3320 usec
   // dus verhogen we met 3540/3320 =>  2670
-//  const unsigned long LoopsPerMilli = 2700;
-  const unsigned long LoopsPerMilli = 800;
+  #ifdef ESP32
+    const unsigned long LoopsPerMilli = 2700;
+  #else
+    const unsigned long LoopsPerMilli = 800;
+  #endif
   // ************************************************************
   // ************************************************************
 
@@ -167,6 +178,5 @@ boolean FetchSignal () {
   return false;
 }
 
-
-
+#endif
 
