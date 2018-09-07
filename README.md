@@ -16,6 +16,7 @@ This version of RFLink has the following features
 - Runs on ESP32 and even on a ESP8266 
 - Fully open source
 - Codesize is strongly reduced
+- Can communicate over USB/RS232 or MQTT
 
 Some ideas for the future
 - Implementing rolling code SomFy / Own
