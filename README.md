@@ -1,5 +1,5 @@
-# Domoticz-RFLink-ESP
-Domoticz tested with a RFLink, modified for ESP8266 and ESP32
+# RFLink-ESP
+Home Assistant / Domoticz tested with a RFLink, modified for ESP8266 and ESP32
 
 This is a fork of RFLink, and because we couldn't get it working reliable, we ended up in a complete rewrite of RFLink.
 Problem is that the latest version of RFLink is R48. We couldn't only find sources of version R29 and R35. Both sources didn't work correctly, R29 was the best. We tried to contact "the stuntteam" which owns the orginal sources but no response.
