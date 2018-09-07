@@ -1,6 +1,10 @@
+// Version 0.2
+//    - Home_Command made case insensitive
+
+// Version 0.1
 
 #ifndef RFL_Protocol_KAKU_h
-#define RFL_Protocol_KAKU_h
+#define RFL_Protocol_KAKU_h  0.2
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -14,12 +18,14 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
     _RFL_Protocol_KAKU () {
       //Name = "KAKU" ;
       Name = "NewKaku" ;
-    }
+      NAME = Name ;
+      NAME.toUpperCase () ;
+   }
  
     // ***********************************************************************
     // KAKU bestaat altijd uit start bit + 32 bits + evt 4 dim bits.
     // ***********************************************************************
-    bool Decode (  ) {
+    bool RF_Decode (  ) {
       #define PulseCount       132   // regular KAKU packet length
       #define PulseCount_DIM   148   // KAKU packet length including DIM bits
       #define MidTime          750   // usec, approx between 1T and 4T
@@ -80,20 +86,26 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
       int           Switch = BitStream & 0x0F ;
       unsigned long Id     = BitStream >> 5 ;
 
+      /*
       sprintf ( pbuffer, "%s;ID=%05X;", Name.c_str(), Id ) ; 
       if ( Unknown_Device ( pbuffer ) ) return false ;
+      
       Serial.print   ( PreFix ) ;
       Serial.print   ( pbuffer ) ;
       sprintf ( pbuffer2, "SWITCH=%0X;CMD=%s;", Switch, On_Off.c_str() ) ; 
       Serial.println ( pbuffer2 ) ;
       PKSequenceNumber += 1 ;
       return true;
+      */
+      return Send_Message ( Name, Id, Switch, On_Off ) ;
+      
     }
 
     // ***********************************************************************************
     // ***********************************************************************************
     bool Home_Command ( String Device, unsigned long ID, int Switch, String On ) {
-      if ( Device !=  Name ) return false ;
+      //if ( Device !=  Name.toUpperCase () ) return false ;
+      if ( Device.compareTo ( NAME ) ) return false ;
 
       unsigned long Data  = ( ID << 5 ) | Switch ;
       if ( On == "ON" ) Data = Data | 0x10 ;

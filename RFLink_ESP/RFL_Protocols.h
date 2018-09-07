@@ -158,7 +158,7 @@ class _RFL_Protocols {
       // *****************************************************************
       if ( Learning_Mode == 0 ) {
         for ( auto RFL_Protocol:_RFL_Protocol_List ){
-          if ( RFL_Protocol->Decode () ) {
+          if ( RFL_Protocol->RF_Decode () ) {
             // ****************************************************
             // do some housekeeping
             // ****************************************************
@@ -173,7 +173,7 @@ class _RFL_Protocols {
       // *****************************************************************
       else if ( Learning_Mode == 1 ) {
         for ( auto RFL_Protocol:_RFL_Protocol_List ){
-          if ( RFL_Protocol->Decode () ) {
+          if ( RFL_Protocol->RF_Decode () ) {
             // ****************************************************
             // do some housekeeping
             // ****************************************************
@@ -190,7 +190,7 @@ class _RFL_Protocols {
         int Found = 0 ;
         int S_Len = RawSignal.Number - 3 ;
         for ( auto RFL_Protocol:_RFL_Protocol_List ){
-          if ( RFL_Protocol->Decode () ) {
+          if ( RFL_Protocol->RF_Decode () ) {
             if ( RFL_Protocol->Name != "Start" ) {
             }
             if ( ( RFL_Protocol->Name != "Start" ) && ( RFL_Protocol->Name != "Finish" ) ) {
@@ -229,7 +229,7 @@ class _RFL_Protocols {
       else {
        
         for ( auto RFL_Protocol:_RFL_Protocol_List ){
-          if ( RFL_Protocol->Decode () ) {
+          if ( RFL_Protocol->RF_Decode () ) {
             RawSignal.Number  = 0 ;
             return true ;
           }

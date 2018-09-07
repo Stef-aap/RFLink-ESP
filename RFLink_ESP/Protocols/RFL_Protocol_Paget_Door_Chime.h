@@ -17,7 +17,7 @@ class _RFL_Protocol_Paget_Door_Chime : public _RFL_Protocol_BaseClass {
  
     // ***********************************************************************
     // ***********************************************************************
-    bool Decode (  ) {
+    bool RF_Decode (  ) {
       #define PulseCount 64 
 
       // ****************************************************
@@ -73,9 +73,12 @@ class _RFL_Protocol_Paget_Door_Chime : public _RFL_Protocol_BaseClass {
       else if ( Chime != 3    ) return false ;
 
       BitStream  = ( BitStream >> 16 ) & 0xFFFFFFFF ; 
+      /*
       sprintf ( pbuffer, "20;%02X;Door_Chime;ID=%04X;SWITCH=1;CMD=ON;CHIME=%02X;", PKSequenceNumber++, BitStream, Chime ) ; 
       Serial.println  (  pbuffer ) ;
       return true;
+      */
+      return Send_Message ( "Door_Chime", BitStream, 1, "ON", "CHIME=0" + String(Chime)  ) ;     
     }
 };
 #endif

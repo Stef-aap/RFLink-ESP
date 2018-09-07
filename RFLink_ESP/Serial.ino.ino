@@ -41,11 +41,47 @@ X                 // In Learning_Mode=1 add the last seen Device\n\
 
 // ***********************************************************************************
 // ***********************************************************************************
-void Handle_Serial () {
-    // *********************************************
+void Collect_Serial () {
+  // *********************************************
   // If a complete line is received
   // *********************************************
   if ( Serial_Command ) {
+    Process_Serial () ;    
+  }
+  // *********************************************
+  // Collect serial bytes until "\n" is detected
+  // *********************************************
+  //else if ( Serial.available () ) {
+  else while ( Serial.available () && !Serial_Command ) {
+    SerialInByte = Serial.read ();                
+
+    // *********************************************
+    // If "\n", line is complete
+    // *********************************************
+    if ( SerialInByte == '\n' ) {                                              // new line character
+      InputBuffer_Serial [ SerialInByteCounter++ ] = 0 ;
+      Serial_Command = true ;   
+    }
+    // *********************************************
+    // otherwise collect as long as there's space in the buffer
+    // *********************************************
+    else if ( isprint ( SerialInByte ) ) {
+      if ( SerialInByteCounter < ( INPUT_COMMAND_SIZE - 1 ) ) {
+        InputBuffer_Serial [ SerialInByteCounter++ ] = SerialInByte ;
+      }
+      // *********************************************
+      // otherwise clear the buffer and start all over again
+      // *********************************************
+      else {
+        SerialInByteCounter = 0 ;  
+      }
+    }
+  }
+}
+  
+// ***********************************************************************************
+// ***********************************************************************************
+void Process_Serial () {
 
     // *********************************************
     // *********************************************
@@ -190,7 +226,14 @@ void Handle_Serial () {
       else {
         //10;EV1527;0005df;2;ON
         if ( RFL_Protocols.Home_Command ( InputBuffer_Serial ) ){
-          Serial.printf ( "20;%02X;OK;\r\n", PKSequenceNumber++ ) ;  
+          if ( Home_Automation == "MQTT" ) {
+            Received_MQTT_Topic.replace ( "from_HA", "from_RFLink" ) ;
+            MQTT_Client.publish ( Received_MQTT_Topic.c_str(), Received_MQTT_Payload.c_str() );
+          }
+          //else if ( Home_Automation == "RS232" ) {
+          else {
+            Serial.printf ( "20;%02X;OK;\r\n", PKSequenceNumber++ ) ;  
+          }
         }
       }
     
@@ -256,38 +299,6 @@ void Handle_Serial () {
     // *********************************************
     Serial_Command      = false ;  
     SerialInByteCounter = 0 ;  
-  } 
-
-  // *********************************************
-  // Collect serial bytes until "\n" is detected
-  // *********************************************
-  //else if ( Serial.available () ) {
-  else while ( Serial.available () && !Serial_Command ) {
-    SerialInByte = Serial.read ();                
-
-    // *********************************************
-    // If "\n", line is complete
-    // *********************************************
-    if ( SerialInByte == '\n' ) {                                              // new line character
-      InputBuffer_Serial [ SerialInByteCounter++ ] = 0 ;
-      Serial_Command = true ;   
-    }
-    // *********************************************
-    // otherwise collect as long as there's space in the buffer
-    // *********************************************
-    else if ( isprint ( SerialInByte ) ) {
-      if ( SerialInByteCounter < ( INPUT_COMMAND_SIZE - 1 ) ) {
-        InputBuffer_Serial [ SerialInByteCounter++ ] = SerialInByte ;
-      }
-      // *********************************************
-      // otherwise clear the buffer and start all over again
-      // *********************************************
-      else {
-        SerialInByteCounter = 0 ;  
-      }
-    }
-  }
-
   
 }
 

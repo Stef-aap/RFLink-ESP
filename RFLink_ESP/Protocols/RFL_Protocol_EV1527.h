@@ -17,7 +17,7 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
  
     // ***********************************************************************
     // ***********************************************************************
-    bool Decode (  ) {
+    bool RF_Decode (  ) {
       #define PulseCount 48 
 
       // ****************************************************
@@ -90,6 +90,7 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
       }
 
       unsigned long Id     = BitStream >> 4 ;
+      unsigned long Switch = BitStream & 0xF ;
       // ****************************************************
       // PT2262
       // ****************************************************
@@ -97,7 +98,8 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
 //        Last_Floating = true ;
 //Serial.printf ( "\nCount=%i\n", Count ) ;
 //        if ( Count == 2 ) {
-          Device        = "PT2262" ;       
+          Device        = "PT2262" ; 
+          Switch        = 1 ;
           String On_Off = "OFF" ;
           if ( ( BitStream & 0x03 ) != 0 ) On_Off = "ON" ; 
           //sprintf ( pbuffer, "20;%02X;%s;ID=%05X;SWITCH=01;CMD=%s;", PKSequenceNumber++, Device.c_str(), Id, On_Off.c_str() ) ; 
@@ -112,18 +114,23 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
       // ****************************************************
       else {
 //        Last_Floating = false ;
-        unsigned long Switch = BitStream & 0xF ;
+//        unsigned long Switch = BitStream & 0xF ;
         //sprintf ( pbuffer, "20;%02X;%s;ID=%05X;SWITCH=%02X;CMD=ON;", PKSequenceNumber++, Device.c_str(), Id, Switch ) ; 
         sprintf ( pbuffer, "%s;ID=%05X;", Device.c_str(), Id ) ; 
         sprintf ( pbuffer2, "SWITCH=%02X;CMD=ON;", Switch ) ; 
       }
  
+      /*
       if ( Unknown_Device ( pbuffer ) ) return false ;
       Serial.print   ( PreFix ) ;
       Serial.print   ( pbuffer ) ;
       Serial.println ( pbuffer2 ) ;
       PKSequenceNumber += 1 ;
       return true;
+      */
+      return Send_Message ( Device, Id, Switch, "ON" ) ;
+      
+      
     }
     
     
