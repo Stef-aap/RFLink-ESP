@@ -1,10 +1,23 @@
-# RFLink-ESP
+# RFLink-ESP V3.0
+
+This is a fork of RFLink.
+The previous versions (2.1 ... 2.4) have been proven to be stable, running 24/7 for over 2 years without any problem.
+Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver libraries, which is easier to maintain and opens the possibility to easy add new features.
+I believe that one or more of the forks has a better RF detection.
+V3.0 of RFLink-ESP has the following new or improed features
+   - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
+   - command added:    19;PRINT;    //lists the known devices
+
+Source is still under construction
+
+
+# RFLink-ESP V2.1
 Home Assistant / Domoticz tested with a RFLink, modified for ESP8266 and ESP32
 
 This is a fork of RFLink, and because we couldn't get it working reliable, we ended up in a complete rewrite of RFLink.
 Problem is that the latest version of RFLink is R48. We couldn't only find sources of version R29 and R35. Both sources didn't work correctly, R29 was the best. We tried to contact "the stuntteam" which owns the orginal sources but no response.
 
-This version of RFLink has the following features
+This version of RFLink-ESP has the following features
 - just a few protocols are translated and tested
 - Protocols are more generic, so you need less protocols
 - Protocols are written as classes and all derived from a common class
