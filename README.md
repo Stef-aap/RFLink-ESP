@@ -4,7 +4,7 @@ This is a fork of RFLink.
 The previous versions (2.1 ... 2.4) have been proven to be stable, running 24/7 for over 2 years without any problem.
 Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver libraries, which is easier to maintain and opens the possibility to easy add new features.
 I believe that one or more of the forks has a better RF detection.
-V3.0 of RFLink-ESP has the following new or improed features
+V3.0 of RFLink-ESP has the following new or improved features
    - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
    - command added:    19;PRINT;    //lists the known devices
 
