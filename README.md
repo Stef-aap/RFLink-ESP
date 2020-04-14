@@ -5,16 +5,15 @@ The previous versions (2.1 ... 2.4) have been proven to be stable, running 24/7 
 Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver libraries, which is easier to maintain and opens the possibility to easy add new features.
 I believe that one or more of the forks has a better RF detection.
 V3.0 of RFLink-ESP has the following new or improved features
-   - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
-   - simultanuous support of serial and telnet debug and control
-   - OTA suport
-   - Webserver for settings and download of files
-   - received and transmitted messages are stored in a file
-   - flag Home_Automation removed
-
-   - command added:  19;PRINT;    //lists the known devices
-   - Learning_Mode=9 is made asynchronuous, so you can do other things including stopping LM-9
-   - command added:  13; and 14;   // shows/sets 2 commands for Learning_Mode 8/9
+- complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
+- simultanuous support of serial and telnet debug and control
+- OTA suport
+- Webserver for settings and download of files
+- received and transmitted messages are stored in a file
+- flag Home_Automation removed
+- command added:  19;PRINT;    //lists the known devices
+- Learning_Mode=9 is made asynchronuous, so you can do other things including stopping LM-9
+- command added:  13; and 14;   // shows/sets 2 commands for Learning_Mode 8/9
 
 # Schmurtz
 forked V2.1 and made it more compatible with other Bridge-libraries. https://github.com/schmurtzm/RFLink-ESP
