@@ -16,8 +16,8 @@ V3.0 of RFLink-ESP has the following new or improved features
    - Learning_Mode=9 is made asynchronuous, so you can do other things including stopping LM-9
    - command added:  13; and 14;   // shows/sets 2 commands for Learning_Mode 8/9
 
-# Schmurtz forked V2.1 and made it more compatible with other Bridge-libraries.
-https://github.com/schmurtzm/RFLink-ESP
+# Schmurtz
+forked V2.1 and made it more compatible with other Bridge-libraries. https://github.com/schmurtzm/RFLink-ESP
 
 # RFLink-ESP V2.1
 Home Assistant / Domoticz tested with a RFLink, modified for ESP8266 and ESP32
