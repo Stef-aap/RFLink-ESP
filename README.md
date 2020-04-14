@@ -6,10 +6,18 @@ Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver librari
 I believe that one or more of the forks has a better RF detection.
 V3.0 of RFLink-ESP has the following new or improved features
    - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
-   - command added:    19;PRINT;    //lists the known devices
+   - simultanuous support of serial and telnet debug and control
+   - OTA suport
+   - Webserver for settings and download of files
+   - received and transmitted messages are stored in a file
+   - flag Home_Automation removed
 
-Source is still under construction
+   - command added:  19;PRINT;    //lists the known devices
+   - Learning_Mode=9 is made asynchronuous, so you can do other things including stopping LM-9
+   - command added:  13; and 14;   // shows/sets 2 commands for Learning_Mode 8/9
 
+# Schmurtz forked V2.1 and made it more compatible with other Bridge-libraries.
+https://github.com/schmurtzm/RFLink-ESP
 
 # RFLink-ESP V2.1
 Home Assistant / Domoticz tested with a RFLink, modified for ESP8266 and ESP32
