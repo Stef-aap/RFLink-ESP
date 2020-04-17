@@ -15,7 +15,9 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
     // ***********************************************************************
     // Creator, 
     // ***********************************************************************
-    _RFL_Protocol_KAKU () {
+    _RFL_Protocol_KAKU ( int Receive_Pin, int Transmit_Pin ) {
+      this->_Receive_Pin  = Receive_Pin  ;
+      this->_Transmit_Pin = Transmit_Pin ;
       //Name = "KAKU" ;
       Name = "NewKaku" ;
       NAME = Name ;
@@ -87,13 +89,13 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
       unsigned long Id     = BitStream >> 5 ;
 
       /*
-      sprintf ( pbuffer, "%s;ID=%05X;", Name.c_str(), Id ) ; 
-      if ( Unknown_Device ( pbuffer ) ) return false ;
+      sprintf ( _RFLink_pbuffer, "%s;ID=%05X;", Name.c_str(), Id ) ; 
+      if ( Unknown_Device ( _RFLink_pbuffer ) ) return false ;
       
       Serial.print   ( PreFix ) ;
-      Serial.print   ( pbuffer ) ;
-      sprintf ( pbuffer2, "SWITCH=%0X;CMD=%s;", Switch, On_Off.c_str() ) ; 
-      Serial.println ( pbuffer2 ) ;
+      Serial.print   ( _RFLink_pbuffer ) ;
+      sprintf ( _RFLink_pbuffer2, "SWITCH=%0X;CMD=%s;", Switch, On_Off.c_str() ) ; 
+      Serial.println ( _RFLink_pbuffer2 ) ;
       PKSequenceNumber += 1 ;
       return true;
       */
@@ -126,9 +128,9 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
         // *************************
         // Start Bit = T, 10*T
         // *************************
-        digitalWrite ( TRANSMIT_PIN, HIGH ) ;
+        digitalWrite ( this->_Transmit_Pin, HIGH ) ;
         delayMicroseconds (      uSec ) ;
-        digitalWrite ( TRANSMIT_PIN, LOW ) ;
+        digitalWrite ( this->_Transmit_Pin, LOW ) ;
         delayMicroseconds ( 10 * uSec ) ;
         
         // *************************
@@ -137,24 +139,24 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
         #define NT 4     // 3,4,5 all work correctly
         for ( int i=0; i<NData; i++ ) {
           Zero = ( Data & Mask ) == 0 ;
-          if ( Zero ) {                             // T, T, T, 4*T
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds (      uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds (      uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds (      uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds ( NT * uSec          ) ;
-          } else {                                  // T, 4*T, T, T
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds (      uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds ( NT * uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds (      uSec          ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds (      uSec          ) ;
+          if ( Zero ) {                                       // T, T, T, 4*T
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds (      uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds (      uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds (      uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds ( NT * uSec                  ) ;
+          } else {                                            // T, 4*T, T, T
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds (      uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds ( NT * uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds (      uSec                  ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds (      uSec                  ) ;
           }
           // *************************
           // go to the next bit
@@ -164,13 +166,19 @@ class _RFL_Protocol_KAKU : public _RFL_Protocol_BaseClass {
         // *************************
         // Stop Bit = T, 39*T
         // *************************
-        digitalWrite ( TRANSMIT_PIN, HIGH ) ;
-        delayMicroseconds (      uSec ) ;
-        digitalWrite ( TRANSMIT_PIN, LOW ) ;
-        delayMicroseconds ( 39 * uSec ) ;
+        digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+        delayMicroseconds (      uSec                  ) ;
+        digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+        delayMicroseconds ( 39 * uSec                  ) ;
       }
       return true ;
     }
+
+  // ***********************************************************************************
+  // ***********************************************************************************
+  private:
+    int _Receive_Pin  ;
+    int _Transmit_Pin ;
     
     
 };

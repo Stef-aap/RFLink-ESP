@@ -12,7 +12,7 @@
 // ***********************************************************************************
 unsigned long FETCH_Pulse_Plus_1 ;  //  here 3320,  inside 3540
 // ***********************************************************************************
-boolean FetchSignal () {
+boolean FetchSignal ( int Receive_Pin ) {
   // ************************************************************
   //   LoopsPerMilli      maxloops       timeout [msec)
   //      500               3500          0.8 ... 1.7  (zeer wisselend)
@@ -67,7 +67,7 @@ boolean FetchSignal () {
     // als het nivo laag is, wacht tot het einde van dit laag nivo
     // ************************************************************
 //    while ( ( digitalRead ( PIN_RF_RX_DATA ) == Start_Level ) ) ;
-    while ( ( digitalRead ( RECEIVE_PIN ) == Start_Level ) && ( millis() < Start_Time ) ) ;
+    while ( ( digitalRead ( Receive_Pin ) == Start_Level ) && ( millis() < Start_Time ) ) ;
     
     // ************************************************************
     // hier is het nivo hoog, wacht totdat het naar laag springt
@@ -77,15 +77,15 @@ boolean FetchSignal () {
     //   maar vanwege de herhalende sequences zullen we toch regelmatig de juiste waarde meten
     // ************************************************************
     FETCH_Pulse_Plus_1 = micros() ;
-//    while ( ( digitalRead ( RECEIVE_PIN ) != Start_Level ) ) ;
-    while ( ( digitalRead ( RECEIVE_PIN ) != Start_Level ) && ( millis() < Start_Time ) ) ;
+//    while ( ( digitalRead ( Receive_Pin ) != Start_Level ) ) ;
+    while ( ( digitalRead ( Receive_Pin ) != Start_Level ) && ( millis() < Start_Time ) ) ;
     
     // ************************************************************
     // Wacht tot het einde van de laag periode
     // ************************************************************
     LastPulse = micros() ;
-//    while ( ( digitalRead ( RECEIVE_PIN ) == Start_Level ) ) ;
-    while ( ( digitalRead ( RECEIVE_PIN ) == Start_Level ) && ( millis() < Start_Time ) ) ;
+//    while ( ( digitalRead ( Receive_Pin ) == Start_Level ) ) ;
+    while ( ( digitalRead ( Receive_Pin ) == Start_Level ) && ( millis() < Start_Time ) ) ;
     PulseLength = micros() - LastPulse;
 
     // ************************************************************
@@ -115,7 +115,7 @@ boolean FetchSignal () {
     // ************************************************************
     numloops  = 0 ;
     LastPulse = micros () ;
-    while ( ( digitalRead ( RECEIVE_PIN ) == Start_Level ) ^ Toggle )
+    while ( ( digitalRead ( Receive_Pin ) == Start_Level ) ^ Toggle )
       if ( numloops++ == maxloops ) break ;
     PulseLength = micros() - LastPulse; 
     

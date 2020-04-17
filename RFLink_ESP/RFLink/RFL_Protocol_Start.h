@@ -57,8 +57,8 @@ class _RFL_Protocol_Start : public _RFL_Protocol_BaseClass {
       if ( ( Learning_Mode == 4 ) || ( Learning_Mode == 5 ) ) {             
         int Time ;
 /*
-        sprintf ( pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
-        Serial.print ( pbuffer ) ;
+        sprintf ( _RFLink_pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
+        Serial.print ( _RFLink_pbuffer ) ;
         Serial.print ( F( "DEBUG_Start;Pulses=" ) ) ;
         Serial.print ( RawSignal.Number - 3 ) ;
         Serial.print ( F ( ";Pulses(uSec)=" )) ;
@@ -74,8 +74,8 @@ class _RFL_Protocol_Start : public _RFL_Protocol_BaseClass {
 */
 if ( Learning_Mode == 4 ) Line_2_File = "LM-4 : " ;
 else                      Line_2_File = "LM-5 : " ;
-sprintf ( pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
-Line_2_File += String ( pbuffer ) ;
+sprintf ( _RFLink_pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
+Line_2_File += String ( _RFLink_pbuffer ) ;
 Line_2_File += F( "DEBUG_Start;Pulses=" ) ;
 Line_2_File += String ( RawSignal.Number - 3 ) ;
 Line_2_File += F ( ";Pulses(uSec)=" ) ;
@@ -117,8 +117,8 @@ RFLink_File.Log_Line ( Line_2_File ) ;
         }
 
         /*
-        sprintf ( pbuffer, "\n20;%02X;", PKSequenceNumber++ ) ;
-        Serial.print ( pbuffer ) ;
+        sprintf ( _RFLink_pbuffer, "\n20;%02X;", PKSequenceNumber++ ) ;
+        Serial.print ( _RFLink_pbuffer ) ;
         Serial.print ( F( "DEBUG_Start;Pulses=" ) ) ;
         Serial.print ( RawSignal.Number - 3 ) ;
         Serial.print ( F ( ";Pulses(uSec)=" )) ;
@@ -133,8 +133,8 @@ RFLink_File.Log_Line ( Line_2_File ) ;
 */        
 
 Line_2_File = "LM-6 : " ;
-sprintf ( pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
-Line_2_File += String ( pbuffer ) ;
+sprintf ( _RFLink_pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
+Line_2_File += String ( _RFLink_pbuffer ) ;
 Line_2_File += F( "DEBUG_Start;Pulses=" ) ;
 Line_2_File += String ( RawSignal.Number - 3 ) ;
 Line_2_File += F ( ";Pulses(uSec)=" ) ;
@@ -180,9 +180,9 @@ Line_2_File += String ( RawSignal.Mean ) ;
 20;07;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101  0101      1CA5094A
 
 */
-        sprintf ( pbuffer, "   %08X", BitStream ) ; 
-        //Serial.print ( pbuffer ) ;
-Line_2_File += BitString + "   " + String ( pbuffer ) ;
+        sprintf ( _RFLink_pbuffer, "   %08X", BitStream ) ; 
+        //Serial.print ( _RFLink_pbuffer ) ;
+Line_2_File += BitString + "   " + String ( _RFLink_pbuffer ) ;
 RFLink_File.Log_Line ( Line_2_File ) ;
         return true;
       }

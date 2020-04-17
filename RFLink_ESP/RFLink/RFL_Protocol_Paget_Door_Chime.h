@@ -11,7 +11,9 @@ class _RFL_Protocol_Paget_Door_Chime : public _RFL_Protocol_BaseClass {
     // ***********************************************************************
     // Creator, 
     // ***********************************************************************
-    _RFL_Protocol_Paget_Door_Chime () {
+    _RFL_Protocol_Paget_Door_Chime ( int Receive_Pin, int Transmit_Pin ) {
+      this->_Receive_Pin  = Receive_Pin  ;
+      this->_Transmit_Pin = Transmit_Pin ;
       Name = "Paget_Door_Chime" ;
     }
  
@@ -74,11 +76,17 @@ class _RFL_Protocol_Paget_Door_Chime : public _RFL_Protocol_BaseClass {
 
       BitStream  = ( BitStream >> 16 ) & 0xFFFFFFFF ; 
       /*
-      sprintf ( pbuffer, "20;%02X;Door_Chime;ID=%04X;SWITCH=1;CMD=ON;CHIME=%02X;", PKSequenceNumber++, BitStream, Chime ) ; 
-      Serial.println  (  pbuffer ) ;
+      sprintf ( _RFLink_pbuffer, "20;%02X;Door_Chime;ID=%04X;SWITCH=1;CMD=ON;CHIME=%02X;", PKSequenceNumber++, BitStream, Chime ) ; 
+      Serial.println  (  _RFLink_pbuffer ) ;
       return true;
       */
       return Send_Message ( "Door_Chime", BitStream, 1, "ON", "CHIME=" + String(Chime)  ) ;     
     }
+
+  // ***********************************************************************************
+  // ***********************************************************************************
+  private:
+    int _Receive_Pin  ;
+    int _Transmit_Pin ;
 };
 #endif

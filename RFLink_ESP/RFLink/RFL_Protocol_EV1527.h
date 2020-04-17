@@ -11,7 +11,9 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
     // ***********************************************************************
     // Creator, 
     // ***********************************************************************
-    _RFL_Protocol_EV1527 () {
+    _RFL_Protocol_EV1527 ( int Receive_Pin, int Transmit_Pin ) {
+      this->_Receive_Pin  = Receive_Pin  ;
+      this->_Transmit_Pin = Transmit_Pin ;
       Name = "EV1527" ;
     }
  
@@ -102,9 +104,9 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
           Switch        = 1 ;
           String On_Off = "OFF" ;
           if ( ( BitStream & 0x03 ) != 0 ) On_Off = "ON" ; 
-          //sprintf ( pbuffer, "20;%02X;%s;ID=%05X;SWITCH=01;CMD=%s;", PKSequenceNumber++, Device.c_str(), Id, On_Off.c_str() ) ; 
-          sprintf ( pbuffer , "%s;ID=%05X;", Device.c_str(), Id ) ; 
-          sprintf ( pbuffer2, "SWITCH=01;CMD=%s;", On_Off.c_str() ) ; 
+          //sprintf ( _RFLink_pbuffer, "20;%02X;%s;ID=%05X;SWITCH=01;CMD=%s;", PKSequenceNumber++, Device.c_str(), Id, On_Off.c_str() ) ; 
+          sprintf ( _RFLink_pbuffer , "%s;ID=%05X;", Device.c_str(), Id ) ; 
+          sprintf ( _RFLink_pbuffer2, "SWITCH=01;CMD=%s;", On_Off.c_str() ) ; 
 //        }
 //        else return true; //ok, but no output
       }
@@ -115,16 +117,16 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
       else {
 //        Last_Floating = false ;
 //        unsigned long Switch = BitStream & 0xF ;
-        //sprintf ( pbuffer, "20;%02X;%s;ID=%05X;SWITCH=%02X;CMD=ON;", PKSequenceNumber++, Device.c_str(), Id, Switch ) ; 
-        sprintf ( pbuffer, "%s;ID=%05X;", Device.c_str(), Id ) ; 
-        sprintf ( pbuffer2, "SWITCH=%02X;CMD=ON;", Switch ) ; 
+        //sprintf ( _RFLink_pbuffer, "20;%02X;%s;ID=%05X;SWITCH=%02X;CMD=ON;", PKSequenceNumber++, Device.c_str(), Id, Switch ) ; 
+        sprintf ( _RFLink_pbuffer, "%s;ID=%05X;", Device.c_str(), Id ) ; 
+        sprintf ( _RFLink_pbuffer2, "SWITCH=%02X;CMD=ON;", Switch ) ; 
       }
  
       /*
-      if ( Unknown_Device ( pbuffer ) ) return false ;
+      if ( Unknown_Device ( _RFLink_pbuffer ) ) return false ;
       Serial.print   ( PreFix ) ;
-      Serial.print   ( pbuffer ) ;
-      Serial.println ( pbuffer2 ) ;
+      Serial.print   ( _RFLink_pbuffer ) ;
+      Serial.println ( _RFLink_pbuffer2 ) ;
       PKSequenceNumber += 1 ;
       return true;
       */
@@ -156,10 +158,10 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
         // *************************
         // preamble
         // *************************
-        digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-        delayMicroseconds (      uSec          ) ;
-        digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-        delayMicroseconds ( 31 * uSec          ) ;
+        digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+        delayMicroseconds (      uSec                  ) ;
+        digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+        delayMicroseconds ( 31 * uSec                  ) ;
         
         // *************************
         // 20 address bits + 4 data bits
@@ -167,16 +169,16 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
         for ( int i=0; i<NData; i++ ) {
           Zero = ( Data & Mask ) == 0 ;
           if ( Zero ) {
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds (     uSec           ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds ( 3 * uSec           ) ;
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds (     uSec                   ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds ( 3 * uSec                   ) ;
           } else {
-            digitalWrite      ( TRANSMIT_PIN, HIGH ) ;
-            delayMicroseconds ( 3 * uSec           ) ;
-            digitalWrite      ( TRANSMIT_PIN, LOW  ) ;
-            delayMicroseconds (     uSec           ) ;
-          }
+            digitalWrite      ( this->_Transmit_Pin, HIGH ) ;
+            delayMicroseconds ( 3 * uSec                   ) ;
+            digitalWrite      ( this->_Transmit_Pin, LOW  ) ;
+            delayMicroseconds (     uSec                   ) ;
+          } 
           // *************************
           // go to the next bit
           // *************************
@@ -186,7 +188,11 @@ class _RFL_Protocol_EV1527 : public _RFL_Protocol_BaseClass {
       return true ;
     }
 
-//  private:
+  // ***********************************************************************************
+  // ***********************************************************************************
+  private:
+    int _Receive_Pin  ;
+    int _Transmit_Pin ;
 //    int  Count = 0 ;  
 //    bool Last_Floating ;
  
