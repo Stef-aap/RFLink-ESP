@@ -1,3 +1,6 @@
+// Version 0.2, 16-04-2020, SM
+//   - Transmit_Pin and Receive_Pin passed a s variable (instead of #define)
+//
 // Version 0.1, 07-04-2020, SM
 //   - initial version
 //   - 19;print;   toegevoegd (=print devices)
@@ -8,7 +11,7 @@
 
 
 #ifndef Sensor_RFLink_h
-#define Sensor_RFLink_h    0.1
+#define Sensor_RFLink_h    0.2
 
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
@@ -61,19 +64,37 @@ class _Sensor_RFLink : public _Sensor_BaseClass {
     // _Sensor_RFLink ********************************************************
     // Creator, 
     // ***********************************************************************
+    _Sensor_RFLink ( String FS  ) {
+      this -> Default_Settings () ;
+      this -> Constructor_Finish () ;      
+   }
     _Sensor_RFLink ( int Receive_Pin, int Transmit_Pin ) {
-      this->_Receive_Pin  = Receive_Pin ;
-      this->_Transmit_Pin = Transmit_Pin ;
+      this -> _Receive_Pin  = Receive_Pin ;
+      this -> _Transmit_Pin = Transmit_Pin ;
+      this -> Constructor_Finish () ;      
+    }
+
+    // _Sensor_RFLink ********************************************************
+    // ***********************************************************************
+    void Constructor_Finish () {
       Version_Name = "V" + String ( Sensor_RFLink_h ) + "   Sensor_RFLink.h" ;
       Serial.println ( "CREATE    " + Version_Name ) ;
       //this -> _JSON_Long_Header  = "Date\tTime\t" ;
       //this -> _JSON_Short_Header = "Date\tTime\t" ;
       
-      this->MQTT_Callback_Topic = MQTT_Topic_Rec ;
+      
+      My_StringSplitter *Splitter = new My_StringSplitter ( MQTT_Topic, '/' ) ;
+      String First_Part = Splitter->getItemAtIndex ( 0 ) ;      
+      
+      this->MQTT_Callback_Topic = First_Part + "/from_HA/" ;   //MQTT_Topic_Rec ;
+      _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/" ;
+Serial.println ( "xaaa" + MQTT_Topic ) ;
+Serial.println ( "xbbb" + MQTT_Callback_Topic ) ;
+Serial.println ( "xccc" + _RFLink_MQTT_Topic_Send ) ;
 
       Help_Text = "    >>>>>>> ToDO Help tekst" ;
     }
-
+    
     // _Sensor_RFLink ********************************************************
     // ***********************************************************************
     void setup () {
@@ -84,9 +105,9 @@ class _Sensor_RFLink : public _Sensor_BaseClass {
 
 
       // *********   PROTOCOL CLASSES, available and in this order   ************
-      RFL_Protocols.Add ( new _RFL_Protocol_KAKU             () ) ;  
-      RFL_Protocols.Add ( new _RFL_Protocol_EV1527           () ) ;  
-      RFL_Protocols.Add ( new _RFL_Protocol_Paget_Door_Chime () ) ;  
+      RFL_Protocols.Add ( new _RFL_Protocol_KAKU             ( this->_Receive_Pin, this->_Transmit_Pin ) ) ;  
+      RFL_Protocols.Add ( new _RFL_Protocol_EV1527           ( this->_Receive_Pin, this->_Transmit_Pin ) ) ;  
+      RFL_Protocols.Add ( new _RFL_Protocol_Paget_Door_Chime ( this->_Receive_Pin, this->_Transmit_Pin ) ) ;  
       RFL_Protocols.setup () ;
       // ************************************************************************
       //Serial.printf ( "20;%02X;Nodo RadioFrequencyLink - MiRa V%s\r\n", 
@@ -94,21 +115,71 @@ class _Sensor_RFLink : public _Sensor_BaseClass {
 
       RawSignal.Time = millis() ;
       
+      My_StringSplitter *Splitter = new My_StringSplitter ( MQTT_Topic, '/' ) ;
+      String First_Part = Splitter->getItemAtIndex ( 0 ) ;      
+      
+      this->MQTT_Callback_Topic = First_Part + "/from_HA/" ;   //MQTT_Topic_Rec ;
+      _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/" ;
+Serial.println ( "aaa" + MQTT_Topic ) ;
+Serial.println ( "bbb" + MQTT_Callback_Topic ) ;
+Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
+
       RFLink_File.Begin () ;
 
     } 
 
+
+    // **********************************************************************************************
+    // **********************************************************************************************
+    void Default_Settings ( bool Force = false ) {
+      this->_Receive_Pin  = Settings.Get_Set_Default_Int ( "RFLink Receive  GPIO", 12, Force ) ;
+      this->_Transmit_Pin = Settings.Get_Set_Default_Int ( "RFLink Transmit GPIO", 14, Force ) ;
+    }
+    
+    // **********************************************************************************************
+    // **********************************************************************************************
+    bool Check_Modified_Settings () {
+      bool Restart   = false ;
+
+      int  New_Value_Int ;
+      int  Receive_Pin  = Settings.Read_Int ( "RFLink Receive  GPIO" ) ;
+      int  Transmit_Pin = Settings.Read_Int ( "RFLink Transmit GPIO" ) ;
+      
+      for ( int i=0; i<My_Webserver.args(); i++ ) {
+        New_Value_Int = (My_Webserver.arg(i)).toInt() ;
+        
+        if ( My_Webserver.argName(i) == "RFLink Receive  GPIO" ) {
+          if ( New_Value_Int != Receive_Pin ) {
+            _My_Settings_Buffer [ "RFLink Receive  GPIO" ] = New_Value_Int ;
+            Restart = true ;
+          }
+        }  
+        
+        else if ( My_Webserver.argName(i) == "RFLink Transmit GPIO" ) {
+          if ( New_Value_Int != Transmit_Pin ) {
+            _My_Settings_Buffer [ "RFLink Transmit GPIO" ] = New_Value_Int ;
+            Restart = true ;
+          }
+        }  
+      }
+      return Restart ;
+    }
+
+
+
     // _Sensor_RFLink ********************************************************
     // ***********************************************************************
     void loop () {
-      if ( FetchSignal () ) {
+      if ( FetchSignal ( this->_Receive_Pin ) ) {
         RFL_Protocols.Decode ();
 //        Line = "MQTT-Receive  Topic=" + Topic + "   Payload=" +  Payload + " - Converted: " + Line ;
 		
       }
       
       if ( ( millis() - this->_Heartbeat_Last_Time ) > 60000 ) {
-		String Topic   = MQTT_Topic_Send + "Heartbeat" ;
+		//String Topic   = MQTT_Topic_Send + "Heartbeat" ;
+		String Topic   = _RFLink_MQTT_Topic_Send + "Heartbeat" ;
+    
 		String Payload ;
 		Payload += "{\"Seconds\":" ;
 		Payload += String ( millis() / 1000 ) ;
@@ -116,6 +187,7 @@ class _Sensor_RFLink : public _Sensor_BaseClass {
 		Payload += String ( WiFi.RSSI() ) ;
 		Payload += "}" ;
 		//My_MQTT_Client->Publish_Without_( Topic.c_str(), Payload.c_str() );
+Serial.println ( "333" + Topic ) ;    
 		My_MQTT_Client->Publish_Without_ ( Topic, Payload );
 		this->_Heartbeat_Last_Time = millis() ;    
 	  }
@@ -376,7 +448,8 @@ RFLink_File.Log_Line ( Line_2_File ) ;
           if ( RFL_Protocols.Home_Command ( InputBuffer_Serial ) ){
  //           if ( Home_Automation == "MQTT" ) {
               Received_MQTT_Topic.replace ( "from_HA", "from_RFLink" ) ;
-              My_MQTT_Client->Publish ( Received_MQTT_Topic, Received_MQTT_Payload ) ;
+Serial.println ( "222" + Received_MQTT_Topic ) ;    
+              My_MQTT_Client->Publish_Without_ ( Received_MQTT_Topic, Received_MQTT_Payload ) ;
  /*           }
             //else if ( Home_Automation == "RS232" ) {
             else {

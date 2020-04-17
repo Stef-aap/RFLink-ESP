@@ -1,4 +1,8 @@
 // ***********************************************************************************
+// Version 1.6   17-04-2020, SM
+//    - property _Topic  vervangen door global MQTT_Topic
+//    - several subtopics derived from MQTT_Topic
+//
 // Version 1.5   12-04-2020, SM
 //    - Method Publish_Without_ added
 //
@@ -53,7 +57,7 @@
 // ***********************************************************************************
 
 #ifndef Receiver_MQTT_h
-#define Receiver_MQTT_h   1.5
+#define Receiver_MQTT_h   1.6
 
 #include "Receiver_Base.h"
 #include "PubSubClient.h"       // MQTT client 
@@ -67,7 +71,6 @@ WiFiClient   _MQTT_WifiClient;
 class _Receiver_MQTT : public _Receiver_BaseClass {
 
   public:
-//    WiFiClient   _MQTT_WifiClient;
     PubSubClient *MyMQTT           ;
     //int          Broker_Index  = 0 ;
 
@@ -80,7 +83,7 @@ class _Receiver_MQTT : public _Receiver_BaseClass {
     }  
       
     _Receiver_MQTT ( String Topic = "MQTT_Receiver/Test", bool Make_Device_Active = true ) {  //, bool Keep_Connection = false ){
-      this->_Topic        = Topic ;  
+      MQTT_Topic = Topic ;
       this->Device_Active = Make_Device_Active ;
       this -> Constructor_Finish () ;
     }  
@@ -88,8 +91,7 @@ class _Receiver_MQTT : public _Receiver_BaseClass {
     // ***********************************************************************
     // ***********************************************************************
     void Constructor_Finish () {
-//return;
-      MQTT_Topics_Append ( _Topic ) ;
+      MQTT_Topics_Append ( MQTT_Topic ) ;
       
 //      _Keep_Connection = Keep_Connection ;
 ////      _MQTT_WifiClient     = espClient ;
@@ -102,9 +104,9 @@ class _Receiver_MQTT : public _Receiver_BaseClass {
 _Receiver_MQTT   MQTT ( Topic ) ;\n\
 _Receiver_MQTT   MQTT () ;\n\
 Topic = " ;
-      Help_Text += String ( _Topic ) ;
+      Help_Text += String ( MQTT_Topic ) ;
 */
-      Help_Text = "Topic = " + _Topic ;
+      Help_Text = "Topic = " + MQTT_Topic ;
 
       if ( ! this->Device_Active ) return ;
       
@@ -117,8 +119,6 @@ Topic = " ;
       MyMQTT -> setServer ( MQTT_Broker_IP.c_str(), Broker_Port ) ;
       this->_MQTT_Broker_IPx = MQTT_Broker_IP ;
       _MQTT_ID = String ( WiFi.macAddress () ) ;
-      
-//return ;
       
       // *****************************************************
       // Omdat het geen callback is maar een event, moet dit zo moeilijk
@@ -139,7 +139,8 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
       Serial.print   ( "         Broker = " ) ;
       Serial.println ( MQTT_Broker_IP ) ;
       
-      _Subscription_Out = _Topic + "_" ;          
+      //_Subscription_Out = _Topic + "_" ;          
+      _Subscription_Out = MQTT_Topic + "_" ;          
       _LWT              = "\"$$Dead " + _MQTT_ID + "\"" ;
       _ALIVE            = "\"$$Alive " + _MQTT_ID + "\"" ;
       _Error_Time       = 0 ;
@@ -151,8 +152,7 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
     // **********************************************************************************************
     void Default_Settings ( bool Force = false  ) {
       if ( ! this->Device_Active ) return ;
-
-      _Topic         = Settings.Get_Set_Default_String ( "MQTT Topic"    , "huis/verdieping/kamer/ding", Force ) ;
+      MQTT_Topic     = Settings.Get_Set_Default_String ( "MQTT Topic"    , "huis/verdieping/kamer/ding", Force ) ;
       MQTT_Broker_IP = Settings.Get_Set_Default_String ( "MQTT Broker-IP", "192.168.0.18"              , Force ) ;
     }
     
@@ -190,7 +190,6 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
     // ***********************************************************************
     void loop(){
       if ( ! this->Device_Active ) return ;
-//return ;
       
       if ( ! MyMQTT -> connected() ) {
         // **********************************************************
@@ -251,8 +250,8 @@ Serial.println ( "Published To: " + this->_MQTT_Broker_IPx + "    Topic: " + Top
     bool Send_Data ( String Payload ) {
       if ( ! this->Device_Active ) return false ;
 
-Serial.println ( "    publish: " + _Topic  + " // " + Payload ) ;      
-      return Publish ( _Topic, Payload ) ;
+Serial.println ( "    publish: " + MQTT_Topic  + " // " + Payload ) ;      
+      return Publish ( MQTT_Topic, Payload ) ;
     }   
 
 
@@ -262,7 +261,6 @@ Serial.println ( "    publish: " + _Topic  + " // " + Payload ) ;
     int           _State       = 0        ;
     unsigned long _Error_Time  = 0        ;
 //    unsigned long _State_Start = 0        ;
-    String        _Topic       = ""       ;
     String        _MQTT_ID                ;
 //    int           _MQTT_Connect_Retries   ;
 //    unsigned long _MQTT_Connect_Start     ;
