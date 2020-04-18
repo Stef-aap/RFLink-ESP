@@ -73,7 +73,7 @@ class _Sensor_BMP280 : public _Sensor_BaseClass {
       JSON_Data += "," ;
     }
     
-     #ifdef INCLUDE_RECEIVER_LUFTDATEN
+     #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
     // ***********************************************************************
     // Get all the sampled data as a partial JSON string, suited for Luftdaten
     // ***********************************************************************

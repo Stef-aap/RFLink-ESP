@@ -475,7 +475,7 @@ boolean FtpServer::processCommand()
         client.println( "226 " + String(nm) + " matches total");
       }
 #elif defined ESP32
-			File root = SPIFFS.open(cwdName);
+			fs::File root = SPIFFS.open(cwdName);
 			if(!root){
 					client.println( "550 Can't open directory " + String(cwdName) );
 					// return;
@@ -485,7 +485,7 @@ boolean FtpServer::processCommand()
 				// 		return;
 				// }
 
-				File file = root.openNextFile();
+				fs::File file = root.openNextFile();
 				while(file){
 					if(file.isDirectory()){
 						data.println( "+r,s <DIR> " + String(file.name()));
@@ -542,7 +542,7 @@ boolean FtpServer::processCommand()
         client.println( "226 " + String(nm) + " matches total");
       }
 #elif defined ESP32
-			File root = SPIFFS.open(cwdName);
+			fs::File root = SPIFFS.open(cwdName);
 			// if(!root){
 			// 		client.println( "550 Can't open directory " + String(cwdName) );
 			// 		// return;
@@ -552,7 +552,7 @@ boolean FtpServer::processCommand()
 				// 		return;
 				// }
 
-				File file = root.openNextFile();
+				fs::File file = root.openNextFile();
 				while(file){
 					// if(file.isDirectory()){
 					// 	data.println( "+r,s <DIR> " + String(file.name()));
@@ -603,12 +603,12 @@ boolean FtpServer::processCommand()
         client.println( "226 " + String(nm) + " matches total");
       }
 #elif defined ESP32
-		File root = SPIFFS.open(cwdName);
+		fs::File root = SPIFFS.open(cwdName);
 		if(!root){
 				client.println( "550 Can't open directory " + String(cwdName) );
 		} else {
 
-			File file = root.openNextFile();
+			fs::File file = root.openNextFile();
 			while(file){
 				data.println( file.name());
 					nm ++;

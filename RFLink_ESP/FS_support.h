@@ -265,18 +265,6 @@ Print_Heap () ;
       // ESP32
       // **************************************************    
       #ifdef ESP32
-        /* Moet worden herschreven naar zelfde stijl als ESP8266 (zonder Filelist)
-        fs::File dir = SPIFFS.open ( Path ) ;
-        fs::File file = dir.openNextFile () ;
-        while ( file && ( i < _FileList_Max_N ) ) {
-          String Filename = String( file.name() ).substring(1) ;
-          if ( Ends.length() == 0 || Filename.endsWith ( Ends ) ) {
-            _FileList[i] = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
-            i++ ;
-          }
-          file = dir.openNextFile () ;
-        }
-        */
         fs::File  dir = SPIFFS.open ( Path ) ;
         fs::File file = dir.openNextFile () ;
         while ( file ) {

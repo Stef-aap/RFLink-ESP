@@ -434,6 +434,7 @@ SdFile SDfile ;
     // Receiver_SDfat ********************************************************
     // ***********************************************************************
     void HTML_File_CheckList ( String Path = "/", String Ends = "" ) {
+/* moet worden heschreven zonder sort !! zie FS_support      
       if ( !_Card_Present ) return ;
       
       String Filename ;
@@ -476,9 +477,9 @@ SdFile SDfile ;
         
         My_Webserver.sendContent ( Result.c_str() ) ;
       }
-//*/
       My_Webserver.sendContent ( F("<br><input type=\"submit\" value=\"Show Graph(s)\">\n\
 </form>\n") ) ;
+//*/
     }
     
   // Receiver_SDfat ********************************************************
@@ -582,7 +583,7 @@ delALL YES      // TODO Delete ALL bestanden";
     
     // Receiver_SDfat ********************************************************
     // ***********************************************************************
-#ifndef NO_HTML_ChaeckList    
+/*
     void Get_Ordered_DirList ( String Path = "/", String Ends = "", bool Reversed=false ) {
       if ( !_Card_Present ) return ;
       
@@ -615,7 +616,7 @@ delALL YES      // TODO Delete ALL bestanden";
       _FileList_Len = i ;
       MySort ( _FileList, _FileList_Len, Reversed ) ;
     }
-#endif
+*/
 
     // Receiver_SDfat ********************************************************
     // ***********************************************************************

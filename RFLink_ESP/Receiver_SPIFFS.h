@@ -21,8 +21,8 @@
 #endif
 /*
 ...................
-Connected to ....
-IP address: .....
+Connected to MiRa_Home_Router
+IP address: 192.168.0.4
 SPIFFS opened!
 Ftp server waiting for connection on port 21
 Client connected!
@@ -227,14 +227,14 @@ class _Receiver_SPIFFS : public _Receiver_BaseClass {
     int    _Max_NFile        ;      
     String _Filename         ;
 
-    String _Serial_Commands_Text = "======  Receiver_SPIFFS  ======\n\
-dir [FILENAME]  // Display een lijst van alle bestanden die beginnen met Filename\n\
-copy FILENAME   // Kopieer bestand naar de USB poort\n\
-move FILENAME   // Kopieer bestand naar de USB poort en delete bestand\n\
-dump FILENAME   // Print de inhoude van een bestand\n\
-dumpALL         // Print de inhoud van alle bestanden\n\
-create FILENAME // Create bestand als nog niet bestaat , append regel text\n\
-del    FILENAME // Delete bestand\n\
+    String _Serial_Commands_Text = "======  Receiver_SPIFFS  ======\r\n\
+dir [FILENAME]  // Display een lijst van alle bestanden die beginnen met Filename\r\n\
+copy FILENAME   // Kopieer bestand naar de USB poort\r\n\
+move FILENAME   // Kopieer bestand naar de USB poort en delete bestand\r\n\
+dump FILENAME   // Print de inhoude van een bestand\r\n\
+dumpALL         // Print de inhoud van alle bestanden\r\n\
+create FILENAME // Create bestand als nog niet bestaat , append regel text\r\n\
+del    FILENAME // Delete bestand\r\n\
 delALL YES      // Delete ALL bestanden";
 
 };

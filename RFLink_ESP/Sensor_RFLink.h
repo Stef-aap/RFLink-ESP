@@ -186,8 +186,7 @@ Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
 		Payload += ", \"RSSI\":" ;
 		Payload += String ( WiFi.RSSI() ) ;
 		Payload += "}" ;
-		//My_MQTT_Client->Publish_Without_( Topic.c_str(), Payload.c_str() );
-Serial.println ( "333" + Topic ) ;    
+//Serial.println ( "333" + Topic ) ;    
 		My_MQTT_Client->Publish_Without_ ( Topic, Payload );
 		this->_Heartbeat_Last_Time = millis() ;    
 	  }
@@ -448,7 +447,7 @@ RFLink_File.Log_Line ( Line_2_File ) ;
           if ( RFL_Protocols.Home_Command ( InputBuffer_Serial ) ){
  //           if ( Home_Automation == "MQTT" ) {
               Received_MQTT_Topic.replace ( "from_HA", "from_RFLink" ) ;
-Serial.println ( "222" + Received_MQTT_Topic ) ;    
+//Serial.println ( "222" + Received_MQTT_Topic ) ;    
               My_MQTT_Client->Publish_Without_ ( Received_MQTT_Topic, Received_MQTT_Payload ) ;
  /*           }
             //else if ( Home_Automation == "RS232" ) {

@@ -168,7 +168,7 @@ class _Sensor_BME280_AF : public _Sensor_BaseClass {
       
     } 
  
-    #ifdef INCLUDE_RECEIVER_LUFTDATEN
+    #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
     // ***********************************************************************
     // Get all the sampled data as a partial JSON string, suited for Luftdaten
     // ***********************************************************************

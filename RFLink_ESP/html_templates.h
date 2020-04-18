@@ -16,10 +16,13 @@ const char HTML_Sensor_StartPagina_Begin [] PROGMEM = R"(<!doctype html>
   </style>
 </head>
 <body>
-<h2><img src="logo.gif" style="width:24px;height:24px;" /> MiRa Sensors Data</h2>
-<a href="Settings.html" target="_self" >Settings</a><br>
-<a href="Build_Info.html" target="_self" >Simpel Build Info</a><br>
-<a href="Values.html" target="_self" >Current Values</a><br>)" ;
+<h2><img src="logo.gif" style="width:24px;height:24px;" /> MiRa Sensors Data</h2>)" ; 
+
+
+const char HTML_Sensor_StartPagina_Begin_Settings  [] PROGMEM = R"(<a href="Settings.html" target="_self" >Settings</a><br>)" ; 
+const char HTML_Sensor_StartPagina_Begin_BuildInfo [] PROGMEM = R"(<a href="Build_Info.html" target="_self" >Simpel Build Info</a><br>)" ;
+const char HTML_Sensor_StartPagina_Begin_Values    [] PROGMEM = R"(<a href="Values.html" target="_self" >Current Values</a><br>)" ;
+
 
 // ***********************************************************************************
 const char HTML_Sensor_StartPagina_End [] PROGMEM = R"(<br><br>

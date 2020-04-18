@@ -267,6 +267,10 @@ void Send_index_html () {
   My_Webserver.setContentLength ( CONTENT_LENGTH_UNKNOWN ) ;
   My_Webserver.send_P ( 200, "text/html", HTML_Sensor_StartPagina_Begin );
   
+  if ( Settings_By_WebInterface ) My_Webserver.sendContent_P ( HTML_Sensor_StartPagina_Begin_Settings );
+  if ( Build_Info.length() > 0 ) My_Webserver.sendContent_P ( HTML_Sensor_StartPagina_Begin_BuildInfo );
+  My_Webserver.sendContent_P ( HTML_Sensor_StartPagina_Begin_Values    );
+  
   File_System.HTML_File_CheckList ( "/" ) ;  //, ".csv" ) ;
   
   #ifdef Receiver_SDfat_h

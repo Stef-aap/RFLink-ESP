@@ -262,22 +262,6 @@ Serial.println ( "Get_Set_Default_String  ::: " + Value + "::: " + Default + "  
 _My_Settings_Class    Settings ;
 
 
-/*
-#include "Receiver_Serial.h"
-// ***********************************************************************************
-// ***********************************************************************************
-void Settings_Setup () {
-  int Baudrate = Settings.Read_Int ( "RS232-Baudrate" ) ;
-  Serial_Setup ( Baudrate ) ;
-  Serial.println ( "Settings.Baudrate = " + String ( Baudrate ) ) ;
-
-  File_System.Dump ( _My_Settings_Filename ) ;
-  Settings.Create_WebPage () ;
-  
-  //Settings.Create_Sensors () ;
-  
-}
-//*/
 
 
 #endif

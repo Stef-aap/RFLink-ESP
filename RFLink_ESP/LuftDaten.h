@@ -210,6 +210,14 @@ bool _Send_LuftData () {
   
   sendData ( Temp, SDS_API_PIN, host_dusti, httpPort_dusti, url_dusti, "", FPSTR(TXT_CONTENT_TYPE_JSON)) ;
   return true ;
+/* 
+{ "software_version": "NRZ-2017-100", 
+  "sensordatavalues": [ {"value_type":"SDS_P1","value":"31.34"},
+                        {"value_type":"SDS_P2","value":"17.61"},
+                        {"value_type":"samples","value":"5112893"},
+                        {"value_type":"signal","value":"-64"}],
+  "SSID":"MiRa_Home_Router"}
+*/    
 }
 
 
