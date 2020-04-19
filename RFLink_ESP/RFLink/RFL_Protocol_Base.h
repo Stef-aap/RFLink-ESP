@@ -104,7 +104,7 @@ String Topic = _RFLink_MQTT_Topic_Send + Name + "_"  ;
     
     //Serial.println ( "MQTT Send     Topic: " + Topic + "   Payload: " + Payload ) ;
 Serial.println ( "111" + Topic ) ;    
-    My_MQTT_Client->Publish ( Topic, Payload ) ;
+    My_MQTT_Client->Publish_Without_ ( Topic, Payload ) ;
 
 Line_2_File = "MQTT-Send  Topic=" + Topic + "   Payload=" +  Payload  ;
 RFLink_File.Log_Line ( Line_2_File ) ;
