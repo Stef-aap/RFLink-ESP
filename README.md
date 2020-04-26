@@ -1,11 +1,18 @@
-# RFLink-ESP V3.1
+# RFLink-ESP V3.2
 
 This is a fork of RFLink, build for the ESP8266 and the ESP32.
 The previous versions (2.1 ... 2.4) have been proven to be stable, running 24/7 for over 2 years without any problem.
 Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver libraries, which is easier to maintain and opens the possibility to easy add new features.
 I believe that one or more of the forks has a better RF detection.
 
+If all build flags are enabled, to include as much libraries as possible, the following libraries are needed:
 <img src="docs/RFLink_libs.png">
+
+V3.2
+- added Email on (re-)start (at the moment this only works for ESP32)
+        by a call to Restart_Email also a restart email for the ESP8266 can be send
+- added warning MQTT message on (re-)start
+- added username/password to MQTTconnection (may be left empty)
 
 V3.1 of RFLink-ESP has the following new or improved features
 - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
