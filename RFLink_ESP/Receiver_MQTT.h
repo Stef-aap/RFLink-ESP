@@ -82,9 +82,12 @@ class _Receiver_MQTT : public _Receiver_BaseClass {
       this -> Constructor_Finish () ;
     }  
       
-    _Receiver_MQTT ( String Topic = "MQTT_Receiver/Test", bool Make_Device_Active = true ) {  //, bool Keep_Connection = false ){
+//    _Receiver_MQTT ( String Topic = "MQTT_Receiver/Test", bool Make_Device_Active = true ) {  //, bool Keep_Connection = false ){
+    _Receiver_MQTT ( String Topic="MQTT_Receiver/Test", String User="", String Password="" ) {
       MQTT_Topic = Topic ;
-      this->Device_Active = Make_Device_Active ;
+      this->_MQTT_User = User ;
+      this->_MQTT_PWD  = Password ;
+//      this->Device_Active = Make_Device_Active ;
       this -> Constructor_Finish () ;
     }  
 
@@ -154,6 +157,8 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
       if ( ! this->Device_Active ) return ;
       MQTT_Topic     = Settings.Get_Set_Default_String ( "MQTT Topic"    , "huis/verdieping/kamer/ding", Force ) ;
       MQTT_Broker_IP = Settings.Get_Set_Default_String ( "MQTT Broker-IP", "192.168.0.18"              , Force ) ;
+      _MQTT_User     = Settings.Get_Set_Default_String ( "MQTT User"     , ""                          , Force ) ;
+      _MQTT_PWD      = Settings.Get_Set_Default_String ( "$MQTT Password", ""                          , Force ) ;
     }
     
     // **********************************************************************************************
@@ -164,8 +169,10 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
       bool   Restart   = false ;
 
       String New_Value ;
-      String Topic  = Settings.Read_String ( "MQTT Topic"     ) ;
-      String Broker = Settings.Read_String ( "MQTT Broker-IP" ) ;
+      String Topic    = Settings.Read_String ( "MQTT Topic"     ) ;
+      String Broker   = Settings.Read_String ( "MQTT Broker-IP" ) ;
+      String User     = Settings.Read_String ( "MQTT User"      ) ;
+      String Password = Settings.Read_String ( "$MQTT Password" ) ;
       
       for ( int i=0; i<My_Webserver.args(); i++ ) {
         New_Value = My_Webserver.arg(i) ;
@@ -176,12 +183,28 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
             Restart = true ;
           }
         }
+
         else if ( My_Webserver.argName(i) == "MQTT Broker-IP" ) {
           if ( New_Value != Broker ) {
             _My_Settings_Buffer [ "MQTT Broker-IP" ] = New_Value ;
             Restart = true ;
           }
         }  
+
+        else if ( My_Webserver.argName(i) == "MQTT User" ) {
+          if ( New_Value != User ) {
+            _My_Settings_Buffer [ "MQTT User" ] = New_Value ;
+            Restart = true ;
+          }
+        }  
+
+        else if ( My_Webserver.argName(i) == "$MQTT Password" ) {
+          if ( New_Value != Password ) {
+            _My_Settings_Buffer [ "$MQTT Password" ] = New_Value ;
+            Restart = true ;
+          }
+        }  
+
       }
       return Restart ;
     }
@@ -219,6 +242,8 @@ MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
     bool Publish ( String Topic, String Payload ) {
       return this->Publish_Without_ ( Topic + "_", Payload ) ;
     }
+    
+    // ***********************************************************************
     bool Publish_Without_ ( String Topic, String Payload ) {
       if ( ! this->Device_Active ) return false ;
 
@@ -247,6 +272,12 @@ Serial.println ( "Published To: " + this->_MQTT_Broker_IPx + "    Topic: " + Top
     
     // ***********************************************************************
     // ***********************************************************************
+    bool Connected () { 
+      return MyMQTT->connected () ;
+    }
+    
+    // ***********************************************************************
+    // ***********************************************************************
     bool Send_Data ( String Payload ) {
       if ( ! this->Device_Active ) return false ;
 
@@ -258,20 +289,23 @@ Serial.println ( "    publish: " + MQTT_Topic  + " // " + Payload ) ;
   // ***********************************************************************
   // ***********************************************************************
   private :
-    int           _State       = 0        ;
-    unsigned long _Error_Time  = 0        ;
+    int           _State       = 0     ;
+    unsigned long _Error_Time  = 0     ;
+    String        _MQTT_ID             ;
+    String        _MQTT_User           ;
+    String        _MQTT_PWD            ;
+    String        _Subscription_Out    ;          
+    String        _LWT                 ;
+    String        _ALIVE               ; 
+    unsigned long _ReConnect_Start = 0 ;
+    int           _ReConnect_Count = 0 ;
+    String        _MQTT_Broker_IPx ;
+
 //    unsigned long _State_Start = 0        ;
-    String        _MQTT_ID                ;
 //    int           _MQTT_Connect_Retries   ;
 //    unsigned long _MQTT_Connect_Start     ;
 //    unsigned long _Alive_Time             ;
 //    bool          _Keep_Connection        ;
-    String        _Subscription_Out       ;          
-    String        _LWT                    ;
-    String        _ALIVE                  ; 
-    unsigned long _ReConnect_Start = 0 ;
-    int           _ReConnect_Count = 0 ;
-    String        _MQTT_Broker_IPx ;
       
 
     // ***********************************************************************
@@ -285,11 +319,20 @@ Serial.println ( "    publish: " + MQTT_Topic  + " // " + Payload ) ;
       #endif
 //*/
 
-Serial.println ( "try reconnect 0 ") ;                               
+      bool Result ;
+      if ( this->_MQTT_User.length() > 0 ) {
+        Result = MyMQTT->connect ( _MQTT_ID.c_str(), this->_MQTT_User.c_str(), this->_MQTT_PWD.c_str(),
+                                   _Subscription_Out.c_str(), 1, 1, _LWT.c_str() ) ;
+      } 
+      else {
+        Result = MyMQTT->connect ( _MQTT_ID.c_str(),
+                                   _Subscription_Out.c_str(), 1, 1, _LWT.c_str() ) ;
+      }
+      
       //if ( MyMQTT->connect ( _MQTT_ID.c_str(), MQTT_User, MQTT_Pwd, 
-      if ( MyMQTT -> connect ( _MQTT_ID.c_str(),
-                              _Subscription_Out.c_str(), 1, 1, _LWT.c_str() )) {
-Serial.println ( "try reconnect 1 ") ;                               
+      //if ( MyMQTT -> connect ( _MQTT_ID.c_str(),
+      //                        _Subscription_Out.c_str(), 1, 1, _LWT.c_str() )) {
+      if ( Result ) {  
 Set_Signal_LED ( 4, 100, 100 ) ;
         for ( int i=0; i<MAX_MQTT_TOPICS; i++ ) {
           if ( MQTT_Topics[i].length() > 0 ) {
@@ -298,7 +341,6 @@ Set_Signal_LED ( 4, 100, 100 ) ;
           }
           else break ;
         }
-Serial.println ( "try reconnect 2 ") ;                              
 
         if ( ToPublish.length() > 0 ) {
           MyMQTT->publish ( _Subscription_Out.c_str(), ToPublish.c_str() );

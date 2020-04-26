@@ -48,8 +48,8 @@ class _Sensor_Wifi : public _Sensor_BaseClass {
       this -> Constructor_Finish ( WIFI_OPTIONS_SINGLE ) ;      
     }
     _Sensor_Wifi ( int Options = WIFI_OPTIONS_MUTIPLE ) {
-      _Wifi_Name = Local_Wifi_Name ;
-      _Wifi_PWD  = Local_Wifi_PWD  ;      
+      _Wifi_Name = __SECRET_Wifi_Name ;
+      _Wifi_PWD  = __SECRET_Wifi_PWD  ;      
       this -> Constructor_Finish ( Options ) ;      
     }  
 
@@ -60,9 +60,9 @@ class _Sensor_Wifi : public _Sensor_BaseClass {
       Serial.println ( "CREATE    " + Version_Name ) ;
       this -> _Wifi_Options = Options ;
       
-      #ifdef Local_Broker_IP
+      #ifdef __SECRET_Broker_IP
         if ( MQTT_Broker_IP.length()== 0 ) {
-          MQTT_Broker_IP = Local_Broker_IP ;
+          MQTT_Broker_IP = __SECRET_Broker_IP ;
         }
       #endif
     }
@@ -97,14 +97,14 @@ class _Sensor_Wifi : public _Sensor_BaseClass {
     // **********************************************************************************************
     // **********************************************************************************************
     void Default_Settings ( bool Force = false ) {
-      #ifdef Local_Wifi_Name 
-        _Wifi_Name = Settings.Get_Set_Default_String  ( "Wifi-Netwerk"  , Local_Wifi_Name, Force  ) ;
+      #ifdef __SECRET_Wifi_Name 
+        _Wifi_Name = Settings.Get_Set_Default_String  ( "Wifi-Netwerk"  , __SECRET_Wifi_Name, Force  ) ;
       #else
         _Wifi_Name = Settings.Get_Set_Default_String  ( "Wifi-Netwerk"  , "lokaal Netwerk", Force ) ;
       #endif
      
-      #ifdef Local_Wifi_PWD
-        _Wifi_PWD  = Settings.Get_Set_Default_String  ( "$Wifi-Password", Local_Wifi_PWD, Force ) ;
+      #ifdef __SECRET_Wifi_PWD
+        _Wifi_PWD  = Settings.Get_Set_Default_String  ( "$Wifi-Password", __SECRET_Wifi_PWD, Force ) ;
       #else
         _Wifi_PWD  = Settings.Get_Set_Default_String  ( "$Wifi-Password", "password", Force     ) ;
       #endif

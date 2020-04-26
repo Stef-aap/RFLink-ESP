@@ -88,9 +88,9 @@ class _Sensor_RFLink : public _Sensor_BaseClass {
       
       this->MQTT_Callback_Topic = First_Part + "/from_HA/" ;   //MQTT_Topic_Rec ;
       _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/" ;
-Serial.println ( "xaaa" + MQTT_Topic ) ;
-Serial.println ( "xbbb" + MQTT_Callback_Topic ) ;
-Serial.println ( "xccc" + _RFLink_MQTT_Topic_Send ) ;
+//Serial.println ( "xaaa" + MQTT_Topic ) ;
+//Serial.println ( "xbbb" + MQTT_Callback_Topic ) ;
+//Serial.println ( "xccc" + _RFLink_MQTT_Topic_Send ) ;
 
       Help_Text = "    >>>>>>> ToDO Help tekst" ;
     }
@@ -120,9 +120,9 @@ Serial.println ( "xccc" + _RFLink_MQTT_Topic_Send ) ;
       
       this->MQTT_Callback_Topic = First_Part + "/from_HA/" ;   //MQTT_Topic_Rec ;
       _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/" ;
-Serial.println ( "aaa" + MQTT_Topic ) ;
-Serial.println ( "bbb" + MQTT_Callback_Topic ) ;
-Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
+//Serial.println ( "aaa" + MQTT_Topic ) ;
+//Serial.println ( "bbb" + MQTT_Callback_Topic ) ;
+//Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
 
       RFLink_File.Begin () ;
 
@@ -177,21 +177,20 @@ Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
       }
       
       if ( ( millis() - this->_Heartbeat_Last_Time ) > 60000 ) {
-		//String Topic   = MQTT_Topic_Send + "Heartbeat" ;
-		String Topic   = _RFLink_MQTT_Topic_Send + "Heartbeat" ;
-    
-		String Payload ;
-		Payload += "{\"Seconds\":" ;
-		Payload += String ( millis() / 1000 ) ;
-		Payload += ", \"RSSI\":" ;
-		Payload += String ( WiFi.RSSI() ) ;
-		Payload += "}" ;
+        //String Topic   = MQTT_Topic_Send + "Heartbeat" ;
+        String Topic   = _RFLink_MQTT_Topic_Send + "Heartbeat" ;
+        
+        String Payload ;
+        Payload += "{\"Seconds\":" ;
+        Payload += String ( millis() / 1000 ) ;
+        Payload += ", \"RSSI\":" ;
+        Payload += String ( WiFi.RSSI() ) ;
+        Payload += "}" ;
 //Serial.println ( "333" + Topic ) ;    
-		My_MQTT_Client->Publish_Without_ ( Topic, Payload );
-		this->_Heartbeat_Last_Time = millis() ;    
-	  }
+        My_MQTT_Client->Publish_Without_ ( Topic, Payload );
+        this->_Heartbeat_Last_Time = millis() ;    
+	    }
 
-	  
 	  
       if ( Learning_Mode == 9 ) {
         if ( millis() > 2000 + _Learning_Mode_9_LastTime ) {
@@ -206,6 +205,32 @@ Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
           _Learning_Mode_9_State = ! _Learning_Mode_9_State ;
           _Learning_Mode_9_LastTime = millis() ;
         }
+      }
+      
+      
+      // ***********************************
+      // On Restart, Send Email 
+      // ***********************************
+      if ( this->First_Time_After_Restart_Email && ( WiFi.status () == WL_CONNECTED ) ) {
+//Serial.println ( "(((((((((((((((((((((((((((((((((((((((((" );        
+        this->First_Time_After_Restart_Email = false ;
+        String Email_Subject = (String)_Main_Name + " Warning: Device Restarted" ;
+        Send_Email ( "", Email_Subject, "", false ) ;
+      }
+      // ***********************************
+      // On restart, Send Special MQTT message
+      // ***********************************
+      //((_Receiver_MQTT*)_p_Receiver_Email) -> Send_Email ( Mail_To, Subject, Body, HTML_Format ) ;
+      if ( this->First_Time_After_Restart_MQTT && My_MQTT_Client->Connected() ) {
+        String Topic   = _RFLink_MQTT_Topic_Send + "Restarted" ;
+        String Payload ;
+        Payload += "{\"Seconds\":" ;
+        Payload += String ( millis() / 1000 ) ;
+        Payload += ", \"RSSI\":" ;
+        Payload += String ( WiFi.RSSI() ) ;
+        Payload += "}" ;
+        My_MQTT_Client->Publish_Without_ ( Topic, Payload );
+        this->First_Time_After_Restart_MQTT = false ;
       }
       
     }
@@ -548,9 +573,12 @@ RFLink_File.Log_Line ( Line_2_File ) ;
   // ***********************************************************************
   private:
   // ***********************************************************************
-    int _Receive_Pin  = -1 ;
-    int _Transmit_Pin = -1 ;
-	unsigned long _Heartbeat_Last_Time = 0 ;
+    int           _Receive_Pin  = -1 ;
+    int           _Transmit_Pin = -1 ;
+  	unsigned long _Heartbeat_Last_Time = 0 ;
+    bool          First_Time_After_Restart_Email = true ;
+    bool          First_Time_After_Restart_MQTT  = true ;
+
 
     bool          _Learning_Mode_9_State        ;
     unsigned long _Learning_Mode_9_LastTime = 0 ;
@@ -581,7 +609,6 @@ RFLink_File.Log_Line ( Line_2_File ) ;
 
     String Commands_Text = "\n\
 10;LIST;          // list all commands\r\n\
-10;PRINT;         // list all Known Devices\r\n\
 10;PING;          // return PONG\r\n\
 10;REBOOT;        // reboot RFLink\r\n\
 10;VERSION;       // displays version information\r\n\
@@ -589,6 +616,7 @@ RFLink_File.Log_Line ( Line_2_File ) ;
 10;DEBUG=x;       // Enter Learning/Debug Mode\r\n\
 12;Name;ID;       // In Learning_Mode=1 add this device\r\n\
 X                 // In Learning_Mode=1 add the last seen Device\r\n\
+19;PRINT;         // list all Known Devices\r\n\
 19;DIR;           // Directory of the file-system\r\n\
 19;DUMP;Filename; // Print the content of the file\r\n\
 19:DEL;Filename;  // Delete the file\r\n\

@@ -254,6 +254,7 @@ void Store_Modified_Settings_From_Webserver ( bool Restart_Needed ) ;
 //void Settings_Factory () ;
 void Set_Signal_LED ( int N, int On, int Off ) ;
 void Update_All_Headers () ;
+void Send_Email ( String Mail_To, String Subject, String Body, bool HTML_Format ) ;
 // ****************************************************************************
 
 
@@ -464,6 +465,7 @@ _Receiver_BaseClass  *My_MQTT_Client ;
 bool _MQTT_Client_Available = false ;
 _Receiver_BaseClass *_Character_Display ;
 _Receiver_BaseClass  *_p_Receiver_SDfat = NULL ;
+_Receiver_BaseClass  *_p_Receiver_Email = NULL ;
 
 
 String MQTT_ID ;
@@ -473,7 +475,7 @@ void Debug ( String Line ) {
   }
   #ifndef NOT_INCLUDE_RECEIVER_MQTT
   if ( _Debug_Over_MQTT ) {
-    if ( My_MQTT_Client->connected() ) {
+    if ( My_MQTT_Client->Connected() ) {
       // ********************************************************
       // If MQTT_ID still empty, take the last part of MQTT_Topic
       // ********************************************************
@@ -1187,6 +1189,10 @@ void Settings_Factory () {
 
 #include "Receiver_Serial.h"
 
+#ifndef NOT_INCLUDE_RECEIVER_EMAIL
+  #include "Receiver_Email.h"
+#endif
+
 #ifndef NOT_INCLUDE_RECEIVER_SSD1306
   #include "Receiver_SSD1306.h"
 #endif
@@ -1245,6 +1251,10 @@ Serial.println ( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
           _p_Receiver_SDfat = Receiver ;   
         }
       #endif
+      
+      if ( Receiver -> _Is_Receiver_Email ) {
+        _p_Receiver_Email = Receiver ;   
+      }
       
       External_Watchdog_Toggle () ;
       return Receiver ;
@@ -1563,6 +1573,40 @@ Serial.println ( "Restart Needed total " + String (Restart_Needed) ) ;
 }
 
 
+
+// ***********************************************************************************
+// Special function (only for ESP8266) to sed a mail on (re-)start
+// Call this function before any sensor or receiver is added!!!!
+// ***********************************************************************************
+void Restart_Email ( String MailTo, String Subject, String Body, bool HTML_Format=false ) {
+  #ifndef ESP32
+    _Email_Client_Class  My_Mail_Client ( __SECRET_SMTP_Server, __SECRET_SMTP_Port, 
+                                          __SECRET_SMTP_User, __SECRET_SMTP_PWD ) ;
+
+    bool Result ;
+
+    Result = My_Mail_Client.Send_Mail ( MailTo, Subject, Body )  ;
+    if ( Result ) Serial.println ( "Email Succeeded" ) ;
+    else          Serial.println ( "Email Failed"    ) ;
+  #endif
+}
+
+
+// ********************************************************************************
+// ********************************************************************************
+void Send_Email ( String Mail_To, String Subject, String Body, bool HTML_Format=false ) {
+//Serial.println ( "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + Subject ) ;
+  #ifndef NOT_INCLUDE_RECEIVER_EMAIL
+    if ( _p_Receiver_Email != NULL ){
+//Serial.println ( "(((((((((((((((((((((((((((((((((((((((((" );        
+      ((_Receiver_Email*)_p_Receiver_Email) -> Send_Email ( Mail_To, Subject, Body, HTML_Format ) ;
+    }
+  #endif
+}
+
+
+
+
 int           _Loop_Send_Time = 10000 ;
 unsigned long _Loop_Last_Time = 0 ;
 // ***********************************************************************************
@@ -1582,6 +1626,12 @@ void Settings_Setup () {
   Settings.Setup() ;
   // ************************************************************
   // ************************************************************
+
+  #ifndef NOT_INCLUDE_RECEIVER_EMAIL 
+    #ifndef ESP32
+      Restart_Email ( __SECRET_SMTP_MailTo, "RFLink Restarted", "Body" ) ;
+    #endif 
+  #endif
   
   //??int Baudrate = Settings.Get_Set_Default_Int ( F("RS232 Baudrate"), 115200 ) ;
   int Baudrate = Settings.Get_Set_Default_Int ( "RS232 Baudrate", 115200 ) ;
@@ -1786,6 +1836,15 @@ void Settings_Setup () {
 #else
   _My_Settings_Buffer.remove ( F("Receiver_Fijnstof_Conditionering") ) ;  
 #endif
+
+#ifndef NOT_INCLUDE_RECEIVER_EMAIL
+  if ( Settings.Read_Bool  ( F("Receiver_Email") ) )  Receivers.Add ( new _Receiver_Email () ) ;
+  else _My_Settings_Buffer [ F("Receiver_Email")  ] = false ;
+#else
+  _My_Settings_Buffer.remove ( F("Receiver_Email") ) ;  
+#endif
+
+
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
   if ( Settings.Read_Bool  ( F("Receiver_MQTT")       ) )  Receivers.Add ( new _Receiver_MQTT ( 684 ) ) ;

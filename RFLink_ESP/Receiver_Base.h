@@ -22,6 +22,7 @@ class _Receiver_BaseClass {
     String   MQTT_Callback_Topic = "" ;
     bool     Character_Display   = false ;
     bool     _Is_Receiver_SDFat  = false ;
+    bool     _Is_Receiver_Email  = false ;
     bool     Device_Active       = true ;
 
     // **********************************************************************************************
@@ -95,7 +96,7 @@ class _Receiver_BaseClass {
     // ***********************************************************************
     virtual bool Publish          ( String Topic, String Payload ) {}    
     virtual bool Publish_Without_ ( String Topic, String Payload ) {}    
-    virtual bool connected () {}    
+    virtual bool Connected () {}    
 
     // ***********************************************************************
     // even voor SSD1306

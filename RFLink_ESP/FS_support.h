@@ -98,8 +98,8 @@ class _FS_class {
         if ( !this->_Opened ) {
           this->_Opened = SPIFFS.begin ( true ) ;  // format if no filesystem yet
         }
-Serial.println ( "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ) ;
-Serial.println ( this->_Opened ) ;
+//Serial.println ( "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ) ;
+//Serial.println ( this->_Opened ) ;
         if ( this->_Opened ) {
           if ( _Parse_Filename ( Filename ) ) {
             String Last_File_Pre  = _Temp_Last_File_Pre  ;

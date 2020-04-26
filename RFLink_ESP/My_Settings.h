@@ -213,9 +213,10 @@ class _My_Settings_Class {
     // ***********************************************************************
     String Get_Set_Default_String ( String Key, String Default, bool Force = false ) {
       String Value = _My_Settings_Buffer [ Key ].as<String>();
-Serial.println ( "Get_Set_Default_String  ::: " + Value + "::: " + Default + "  ;;;  " + String (Force) )  ;     
+//Serial.println ( "Get_Set_Default_String  ::: " + Value + "::: " + Default + "  ;;;  " + String (Force) )  ;     
       if ( Force || ( Value == "null" ) ) {
         _My_Settings_Buffer [ Key ] = Default ;
+//Serial.println ( Key + "---" + String(Default) )  ;     
         UnStored_Changes = true ;
         return Default ;
       }
