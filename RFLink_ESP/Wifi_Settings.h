@@ -4,9 +4,19 @@
 // ***********************************************************************
 //  PRIVATE GLOBALS
 // ***********************************************************************
-#define Local_Wifi_Name  "Home Network SSID"
-#define Local_Wifi_PWD   "Password"   
-#define Local_Broker_IP  "192.168.22.23" 
+#define __SECRET_Wifi_Name  "Home Network SSID"
+#define __SECRET_Wifi_PWD   "Password"   
+#define __SECRET_Broker_IP  "192.168.22.23" 
+
+#define __SECRET_SMTP_Server "smtp.gmail.com"
+#ifdef ESP32
+  #define __SECRET_SMTP_Port   587
+#else
+  #define __SECRET_SMTP_Port   465
+#endif
+#define __SECRET_SMTP_User   "someone@gmail.com"
+#define __SECRET_SMTP_PWD    "someones password"
+#define __SECRET_SMTP_MailTo "someone@gmail.com"
 
 // ***********************************************************************
 //  Multi_WiFi support, here you can add more network SSID
