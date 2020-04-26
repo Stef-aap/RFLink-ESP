@@ -1,11 +1,10 @@
+// Version 0.2,  25-04-2020,  SM
+//    - includes removed (problems distributing on Github)
+//
 // Version 0.1
 
 #ifndef RFLink_File_h
-#define RFLink_File_h   0.1
-
-//#include "FS.h"
-//#include "SPIFFS.h"
-//#include "FS_support.h"
+#define RFLink_File_h   0.2
 
 
 // ***********************************************************************************
