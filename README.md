@@ -9,8 +9,7 @@ If all build flags are enabled, to include as much libraries as possible, the fo
 <img src="docs/RFLink_libs.png">
 
 V3.2
-- added Email on (re-)start (at the moment this only works for ESP32)
-        by a call to Restart_Email also a restart email for the ESP8266 can be send
+- added Email on (re-)start (at the moment this only works for ESP32). Although by a call to Restart_Email (as shown in the main program) also a (re-)start email for the ESP8266 can be send
 - added warning MQTT message on (re-)start
 - added username/password to MQTTconnection (may be left empty)
 
