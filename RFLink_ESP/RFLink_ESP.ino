@@ -2,7 +2,7 @@
 //   ESP8266: CPU Frequency 160 MHz, FS 1 MB
 //   ESP32  : CPU Frequency 240 MHz, FS 1 MB 
 // ****************************************************************************
-// Version 3.2, 2020-04-23, SM
+// Version 3.2, 2020-04-23, SM  (RFLink_ESP_03)
 //   - added Email on (re-)start (at the moment this only works for ESP32)
 //        by a call to Restart_Email also a restart email for the ESP8266 can be send
 //   - added warning MQTT message on (re-)start
@@ -80,7 +80,7 @@
 // If the program is build by WebSettings, this block is the end of the program,
 //    in fact any program !!, and all programs are identical (except for build flags above)
 // ****************************************************************************
-#define Use_Web_Settings_Version
+//#define Use_Web_Settings_Version
 #ifdef Use_Web_Settings_Version
   void setup() { Settings_Setup () ; }
   void loop () { Settings_Loop  () ; }
