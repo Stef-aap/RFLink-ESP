@@ -5,7 +5,7 @@ The previous versions (2.1 ... 2.4) have been proven to be stable, running 24/7 
 Version V3.0 is a complete rebuild, based on my standard Sensor/Receiver libraries, which is easier to maintain and opens the possibility to easy add new features.
 I believe that one or more of the forks has a better RF detection.
 
-![]doc/RFLink_libs.png
+<img src="docs/RFLink_libs.png">
 
 V3.1 of RFLink-ESP has the following new or improved features
 - complete rebuild on the base of Sensors/Receivers-concept (more features with less effort)
