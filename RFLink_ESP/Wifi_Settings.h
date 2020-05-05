@@ -28,7 +28,7 @@
     wifiMulti->addAP ( SSID, PWD ) ;
   }
   void AddAccessPoints ( ESP8266WiFiMulti *wifiMulti ) {
-      _AddAccessPoint ( wifiMulti, Local_Wifi_Name  , Local_Wifi_PWD   );
+      _AddAccessPoint ( wifiMulti, __SECRET_Wifi_Name  , __SECRET_Wifi_PWD   );
       _AddAccessPoint ( wifiMulti, "A_Second SSID"  , "The Password"   );
   }
 #endif
