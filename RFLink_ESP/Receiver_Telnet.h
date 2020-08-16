@@ -1,25 +1,24 @@
 // Version 0.1    10-04-2020, SM
 
 #ifndef Receiver_Telnet_h
-#define Receiver_Telnet_h   0.1
+#define Receiver_Telnet_h 0.1
 
 #include "Receiver_Base.h"
 
 #ifdef ESP8266
-  #include <ESP8266WiFi.h>
+#include <ESP8266WiFi.h>
 #elif defined ESP32
-  #include <WiFi.h>
+#include <WiFi.h>
 #endif
 
 // ***********************************************************************************
 // ***********************************************************************************
 // Definieer een nieuwe Serial port, die we expliciet benaderen met Serial_Device
-//HardwareSerial Serial_Device ( 0 ) ;
+// HardwareSerial Serial_Device ( 0 ) ;
 // Definieer de Telnet Server en Client
-WiFiServer   Telnet_Server ( 23 ) ;
-WiFiClient   Telnet_Client ;
-//bool MySerial_2_Telnet = false ;
-
+WiFiServer Telnet_Server(23);
+WiFiClient Telnet_Client;
+// bool MySerial_2_Telnet = false ;
 
 // ***********************************************************************************
 // DE TRUC  !!
@@ -27,56 +26,49 @@ WiFiClient   Telnet_Client ;
 //#define Serial  Telnet_Client
 // ***********************************************************************************
 
-
-
-
 // ***********************************************************************************
 // ***********************************************************************************
 class _Receiver_Telnet : public _Receiver_BaseClass {
-  
-  public:
-   
-    // ***********************************************************************
-    // Creator, 
-    // ***********************************************************************
-    _Receiver_Telnet () {
-      Version_Name = "V" + String ( Receiver_Telnet_h ) + "   Receiver_Telnet.h" ;
-      Serial.println ( "CREATE    " + Version_Name ) ;
-    }
 
-    // ***********************************************************************
-    // Allowed after a wifi connection is established
-    // ***********************************************************************
-    void setup () {
-      Telnet_Server.begin () ;
-      Telnet_Server.setNoDelay ( true ) ;
-      delay ( 1000 ) ;
-    }
+public:
+  // ***********************************************************************
+  // Creator,
+  // ***********************************************************************
+  _Receiver_Telnet() {
+    Version_Name = "V" + String(Receiver_Telnet_h) + "   Receiver_Telnet.h";
+    Serial.println("CREATE    " + Version_Name);
+  }
 
-    // ***********************************************************************
-    // only one client is supported
-    // ***********************************************************************
-    void loop () {
-      //check if there are any new clients
-      if ( Telnet_Server.hasClient () ) {
-        if ( ! Telnet_Client.connected() ) { 
-          Telnet_Client = Telnet_Server.available();
-          // first character is rubish
-          delay ( 300 ) ;
-          while ( Telnet_Client.available() ) {
-            Telnet_Client.read() ;
-          }
+  // ***********************************************************************
+  // Allowed after a wifi connection is established
+  // ***********************************************************************
+  void setup() {
+    Telnet_Server.begin();
+    Telnet_Server.setNoDelay(true);
+    delay(1000);
+  }
+
+  // ***********************************************************************
+  // only one client is supported
+  // ***********************************************************************
+  void loop() {
+    // check if there are any new clients
+    if (Telnet_Server.hasClient()) {
+      if (!Telnet_Client.connected()) {
+        Telnet_Client = Telnet_Server.available();
+        // first character is rubish
+        delay(300);
+        while (Telnet_Client.available()) {
+          Telnet_Client.read();
         }
       }
     }
-    
-    // ***********************************************************************
-    // ***********************************************************************
-    virtual bool Send_Data ( String JSON_Message ) {
-      return true ;
-    }
-};
+  }
 
+  // ***********************************************************************
+  // ***********************************************************************
+  virtual bool Send_Data(String JSON_Message) { return true; }
+};
 
 // ***********************************************************************************
 // De class die dynamisch kan schakelen tussen UART eb TelNet
@@ -84,93 +76,84 @@ class _Receiver_Telnet : public _Receiver_BaseClass {
 // en direct een instance aanmaken
 // en een define om "Serial" tijdens compilatie te vervangen door deze instance
 // ***********************************************************************************
-bool MySerial_2_Telnet = false ;
+bool MySerial_2_Telnet = false;
 class Class_MySerial : public Stream {
-  public:
+public:
+  // **************************************
+  Class_MySerial() { Serial_Device.begin(115200); }
 
-    // **************************************
-    Class_MySerial ( ) {
-      Serial_Device.begin ( 115200 );
-    }
-    
-    // **************************************
-    // **************************************
-    void begin ( int Baudrate = 115200 ) {
-      Serial_Device.begin ( Baudrate );
-    }
-    
-    
-    // **************************************
-    // needed for ESP32
-    // **************************************
-    void flush () {}
+  // **************************************
+  // **************************************
+  void begin(int Baudrate = 115200) { Serial_Device.begin(Baudrate); }
 
-    
-    // **************************************
-    // by implemneting the "write" method all print and println variants will be supported
-    // **************************************
-    size_t write ( uint8_t val ) {
-      Serial_Device.write ( val ) ;
-      //if ( MySerial_2_Telnet ) Telnet_Client.write ( val ) ;
-      Telnet_Client.write ( val ) ;
-      return 1;
-    }
-    // **************************************
-    size_t write ( const uint8_t *buffer, size_t size ) {
-      Serial_Device.write ( buffer, size ) ;
-      //if ( MySerial_2_Telnet ) Telnet_Client.write ( buffer, size ) ;
-      Telnet_Client.write ( buffer, size ) ;
-      return size;
-    }
-    // **************************************
-    //Serial_Device.write(str)
+  // **************************************
+  // needed for ESP32
+  // **************************************
+  void flush() {}
 
-    // **************************************
-    // all other methods can be created by the 3 methods above
-    // **************************************
-    inline size_t write(const char * buffer, size_t size) { return write((uint8_t*) buffer, size); }
-    inline size_t write(const char * s)                   { return write((uint8_t*) s, strlen(s)); }
-    inline size_t write(unsigned long n)                  { return write((uint8_t) n); }
-    inline size_t write(long n)                           { return write((uint8_t) n); }
-    inline size_t write(unsigned int n)                   { return write((uint8_t) n); }
-    inline size_t write(int n)                            { return write((uint8_t) n); }
+  // **************************************
+  // by implemneting the "write" method all print and println variants will be supported
+  // **************************************
+  size_t write(uint8_t val) {
+    Serial_Device.write(val);
+    // if ( MySerial_2_Telnet ) Telnet_Client.write ( val ) ;
+    Telnet_Client.write(val);
+    return 1;
+  }
+  // **************************************
+  size_t write(const uint8_t *buffer, size_t size) {
+    Serial_Device.write(buffer, size);
+    // if ( MySerial_2_Telnet ) Telnet_Client.write ( buffer, size ) ;
+    Telnet_Client.write(buffer, size);
+    return size;
+  }
+  // **************************************
+  // Serial_Device.write(str)
 
-    
-    // **************************************
-    int available ( void ) {
-      int N_Char = 0 ;
-      _Read_From_Serial = false ;
-      //if ( MySerial_2_Telnet ) N_Char = Telnet_Client.available () ;
-      N_Char = Telnet_Client.available () ;
-      if ( Serial_Device.available() >= N_Char ) {
-        N_Char = Serial_Device.available() ;
-        this->_Read_From_Serial = true ;
-      }
-      return N_Char ;
-    }
+  // **************************************
+  // all other methods can be created by the 3 methods above
+  // **************************************
+  inline size_t write(const char *buffer, size_t size) { return write((uint8_t *)buffer, size); }
+  inline size_t write(const char *s) { return write((uint8_t *)s, strlen(s)); }
+  inline size_t write(unsigned long n) { return write((uint8_t)n); }
+  inline size_t write(long n) { return write((uint8_t)n); }
+  inline size_t write(unsigned int n) { return write((uint8_t)n); }
+  inline size_t write(int n) { return write((uint8_t)n); }
 
-    // **************************************
-    int read ( void ) {
-      if ( available() ) {
-        if ( this->_Read_From_Serial ) return Serial_Device.read () ;
-        else                           return Telnet_Client.read () ;
-        }
-        return -1;
+  // **************************************
+  int available(void) {
+    int N_Char = 0;
+    _Read_From_Serial = false;
+    // if ( MySerial_2_Telnet ) N_Char = Telnet_Client.available () ;
+    N_Char = Telnet_Client.available();
+    if (Serial_Device.available() >= N_Char) {
+      N_Char = Serial_Device.available();
+      this->_Read_From_Serial = true;
     }
+    return N_Char;
+  }
 
-    // **************************************
-    // **************************************
-    int peek ( void ) {
-        return -1;
+  // **************************************
+  int read(void) {
+    if (available()) {
+      if (this->_Read_From_Serial)
+        return Serial_Device.read();
+      else
+        return Telnet_Client.read();
     }
+    return -1;
+  }
+
+  // **************************************
+  // **************************************
+  int peek(void) { return -1; }
 
   // ****************************************************************
-  private:
-    bool _Read_From_Serial = true ;
+private:
+  bool _Read_From_Serial = true;
 };
 // **************************************
-Class_MySerial   My_Serial ;
-#define Serial   My_Serial
-
+Class_MySerial My_Serial;
+#define Serial My_Serial
 
 #endif

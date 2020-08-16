@@ -4,8 +4,8 @@
 // Version 0.1, 14-08-2019, SM, checked by ..
 //    - initial version
 // ****************************************************************************
-#define _Main_Name     "Settings Minimal"
-#define _Main_Version  0.1
+#define _Main_Name "Settings Minimal"
+#define _Main_Version 0.1
 
 // *************************************************************************
 // build parameters to reduce RAM size
@@ -20,16 +20,16 @@
 
 // ****************************************************************************
 void setup() {
-  Serial_Setup ( 115200 ) ;
+  Serial_Setup(115200);
 
-  Sensors  .Add ( new _Sensor_Wifi     () ) ;
-  Receivers.Add ( new _Receiver_SPIFFS () ) ;
+  Sensors.Add(new _Sensor_Wifi());
+  Receivers.Add(new _Receiver_SPIFFS());
 
-  Sensors  .setup () ;
-  Receivers.setup () ;
+  Sensors.setup();
+  Receivers.setup();
 }
 // ****************************************************************************
 void loop() {
-  Sensors  .loop () ;
-  Receivers.loop () ;
+  Sensors.loop();
+  Receivers.loop();
 }
