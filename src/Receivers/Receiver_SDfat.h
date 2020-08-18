@@ -65,7 +65,7 @@ File textfile = SD.open("/myfile.txt", FILE_READ);
 #include "SdFat.h"
 #include "sdios.h"
 
-#include "FS_support.h" // is dat nodig ???
+#include "Clients/FS_support.h" // is dat nodig ???
 #include "My_File_Support.h"
 
 // MOET WORDEN VERWIJDERS VAN FILELIST BESTAAT NIET MEER
@@ -646,8 +646,7 @@ delALL YES      // TODO Delete ALL bestanden";
     String Last_Line;
 
     while (sdin.getline(_SDcard_Line, sizeof(_SDcard_Line), '\n') || sdin.gcount()) {
-      if (sdin.fail())
-        sdin.clear(sdin.rdstate() & ~ios_base::failbit);
+      if (sdin.fail()) sdin.clear(sdin.rdstate() & ~ios_base::failbit);
       else {
         if (_SDcard_Line[0] != 0) {
           Last_Line = _SDcard_Line;

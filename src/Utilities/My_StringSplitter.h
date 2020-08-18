@@ -69,8 +69,7 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   String getItemAtIndex(int index) {
-    if ((index >= 0) && (index < count))
-      return op[index];
+    if ((index >= 0) && (index < count)) return op[index];
     else if ((index < 0) && (index >= -count)) {
       return op[count + index];
     } else

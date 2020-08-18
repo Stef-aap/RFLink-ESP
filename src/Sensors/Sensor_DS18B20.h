@@ -1,10 +1,10 @@
 // ***********************************************************************************
 // INSTRUCTIE:
-// definieer OneWire_Pin, voor het includen van Sensor_Receiver_2.h
+// definieer OneWire_Pin, voor het includen van Sensor_Receiver.h
 //   Any pin 2 to 12 (not 13) and A0 to A5
 //
 //   #define OneWire_Pin  2
-//   #include "Sensor_Receiver_2.h"
+//   #include "Sensor_Receiver.h"
 //
 // ***********************************************************************************
 // Version 1.0, 13-06-2019, SM, checked by ...
@@ -40,16 +40,16 @@
 //    - initial version
 
 #ifndef Sensor_DS18B20_h
-#define Sensor_DS18B20_h 1.0
+  #define Sensor_DS18B20_h 1.0
 
-// PIN for OneWire, if necessary must be defined before library Sensor_Receiver_2
-// Any pin 2 to 12 (not 13) and A0 to A5
-#ifndef OneWire_Pin
-#define OneWire_Pin 2
-#endif
+  // PIN for OneWire, if necessary must be defined before library Sensor_Receiver
+  // Any pin 2 to 12 (not 13) and A0 to A5
+  #ifndef OneWire_Pin
+    #define OneWire_Pin 2
+  #endif
 
-#include "Sensor_Base.h"
-#include <OneWire.h>
+  #include "Sensor_Base.h"
+  #include <OneWire.h>
 
 // Setup a oneWire instance to communicate with any OneWire devices
 OneWire _OneWire(OneWire_Pin);

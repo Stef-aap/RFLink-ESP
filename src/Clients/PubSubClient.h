@@ -27,22 +27,22 @@
 // MQTT_VERSION : Pick the version
 //#define MQTT_VERSION MQTT_VERSION_3_1
 #ifndef MQTT_VERSION
-#define MQTT_VERSION MQTT_VERSION_3_1_1
+  #define MQTT_VERSION MQTT_VERSION_3_1_1
 #endif
 
 // MQTT_MAX_PACKET_SIZE : Maximum packet size
 #ifndef MQTT_MAX_PACKET_SIZE
-#define MQTT_MAX_PACKET_SIZE 128
+  #define MQTT_MAX_PACKET_SIZE 128
 #endif
 
 // MQTT_KEEPALIVE : keepAlive interval in Seconds
 #ifndef MQTT_KEEPALIVE
-#define MQTT_KEEPALIVE 15
+  #define MQTT_KEEPALIVE 15
 #endif
 
 // MQTT_SOCKET_TIMEOUT: socket timeout interval in Seconds
 #ifndef MQTT_SOCKET_TIMEOUT
-#define MQTT_SOCKET_TIMEOUT 15
+  #define MQTT_SOCKET_TIMEOUT 15
 #endif
 
 // MQTT_MAX_TRANSFER_SIZE : limit how much data is passed to the network client
@@ -86,10 +86,10 @@
 #define MQTT_MAX_HEADER_SIZE 5
 
 #if defined(ESP8266) || defined(ESP32)
-#include <functional>
-#define MQTT_CALLBACK_SIGNATURE std::function<void(char *, uint8_t *, unsigned int)> callback
+  #include <functional>
+  #define MQTT_CALLBACK_SIGNATURE std::function<void(char *, uint8_t *, unsigned int)> callback
 #else
-#define MQTT_CALLBACK_SIGNATURE void (*callback)(char *, uint8_t *, unsigned int)
+  #define MQTT_CALLBACK_SIGNATURE void (*callback)(char *, uint8_t *, unsigned int)
 #endif
 
 #define CHECK_STRING_LENGTH(l, s)                                                                                      \

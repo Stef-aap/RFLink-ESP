@@ -20,7 +20,6 @@
 #define Receiver_OTA_h 0.6
 
 #include "Receiver_Base.h"
-#include "Wifi_Settings.h" // all personal info for wifi / mqtt
 #include <ArduinoOTA.h>
 
 // ***********************************************************************************
@@ -58,8 +57,7 @@ public:
     });
     ArduinoOTA.onError([](ota_error_t error) {
       Serial.printf("Error[%u]: ", error);
-      if (error == OTA_AUTH_ERROR)
-        Serial.println("Auth Failed");
+      if (error == OTA_AUTH_ERROR) Serial.println("Auth Failed");
       else if (error == OTA_BEGIN_ERROR)
         Serial.println("Begin Failed");
       else if (error == OTA_CONNECT_ERROR)
@@ -132,11 +130,11 @@ private:
       Value = _Main_Name;
 #else
       _Mac = String(WiFi.macAddress());
-#ifdef ESP32
+  #ifdef ESP32
       Value = "ESP32-" + _Mac.substring(9, 11) + _Mac.substring(12, 14) + _Mac.substring(15);
-#else
+  #else
       Value = "esp8266-" + _Mac.substring(9, 11) + _Mac.substring(12, 14) + _Mac.substring(15);
-#endif
+  #endif
 #endif
       _My_Settings_Buffer["OTA Hostname"] = Value;
     }

@@ -35,8 +35,7 @@ public:
   // *********************************************************
   // *********************************************************
   void On(int Duration_ms = 100) {
-    if (_Blink_LED_Invert)
-      digitalWrite(_Blink_LED_Pin, HIGH);
+    if (_Blink_LED_Invert) digitalWrite(_Blink_LED_Pin, HIGH);
     else
       digitalWrite(_Blink_LED_Pin, LOW);
     _Blink_LED_Time = Duration_ms + millis();
@@ -45,8 +44,7 @@ public:
   // *********************************************************
   // *********************************************************
   void Off() {
-    if (_Blink_LED_Invert)
-      digitalWrite(_Blink_LED_Pin, LOW);
+    if (_Blink_LED_Invert) digitalWrite(_Blink_LED_Pin, LOW);
     else
       digitalWrite(_Blink_LED_Pin, HIGH);
     _Blink_LED_Time = 0;

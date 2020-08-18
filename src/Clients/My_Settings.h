@@ -7,12 +7,12 @@
 #include <ArduinoJson.h>
 
 #ifdef FileSystem_SPIFFS
-#include "FS_support.h"
+  #include "Clients/FS_support.h"
 #endif
 
-#include "html_templates.h"
+#include "Web/html_templates.h"
 
-String _My_Settings_Filename = "/Settings.h";
+String _My_Settings_Filename = "/Settings.json";
 
 DynamicJsonDocument _My_Settings_Buffer(2000); // ArduinoJson V6
 // StaticJsonDocument  <2000> _My_Settings_Buffer ;   // ArduinoJson V6
@@ -30,14 +30,14 @@ public:
   void Setup() {
     //*   DIT LIJKT ME ONZIN HIER  IS WEL DEGELIJK NODIG !!!
 #ifdef FileSystem_SPIFFS
-#ifdef ESP32
+  #ifdef ESP32
     SPIFFS.begin(true); // format if no filesystem yet
-#else
+  #else
     if (!SPIFFS.begin()) {
       SPIFFS.format();
     }
     SPIFFS.begin();
-#endif
+  #endif
 
     Serial.println("===== Read_Settings from file = " + _My_Settings_Filename);
     fs::File file = SPIFFS.open(_My_Settings_Filename, "r");
@@ -164,8 +164,7 @@ public:
         Line = "<input type=\"text\" name=\"";
         Line += Key;
         Line += "\" value=\"";
-        if (Key.startsWith("$"))
-          Line += "********";
+        if (Key.startsWith("$")) Line += "********";
         else
           Line += Value;
         Line += "\"> ";

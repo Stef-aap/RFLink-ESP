@@ -6,12 +6,12 @@
 #define Receiver_Email_h 0.1
 
 #ifdef ESP32
-#include "ESP32_MailClient.h"
+  #include "ESP32_MailClient.h"
 
 // should be part of the class
 SMTPData Mail_Client;
 #else
-#include "Email_Support.h"
+  #include "Clients/Email_Support.h"
 #endif
 
 // _Receiver_Email  ******************************************************************
@@ -165,8 +165,7 @@ Serial.println ( "MailTo: " + MailTo ) ;
       Mail_Client.setPriority("High");
       Mail_Client.setSubject(Subject);
       Mail_Client.setMessage(Body, HTML_Format);
-      if (MailTo.length() > 0)
-        Mail_Client.addRecipient(MailTo);
+      if (MailTo.length() > 0) Mail_Client.addRecipient(MailTo);
       else
         Mail_Client.addRecipient(this->_SMTP_User);
       // Mail_Client.setSendCallback ( Receiver_Email_Callback ) ;
@@ -182,15 +181,15 @@ Serial.println ( "MailTo: " + MailTo ) ;
 
 // ESP 8266  *********************************************************
 #else
-    // WERKT NIET OM ONBEKENDE REDEN !!!!
-    /*
-        _Email_Client_Class  My_Mail_Client ( this->_SMTP_Server, this->_SMTP_Port,
-                                              this->_SMTP_User, this->_SMTP_PWD ) ;
-        bool Result ;
-        Result = My_Mail_Client.Send_Mail ( MailTo, Subject, Body, HTML_Format )  ;
-        if ( Result ) Serial.println ( "Email Succeeded" ) ;
-        else          Serial.println ( "Email Failed"    ) ;
-        */
+      // WERKT NIET OM ONBEKENDE REDEN !!!!
+      /*
+          _Email_Client_Class  My_Mail_Client ( this->_SMTP_Server, this->_SMTP_Port,
+                                                this->_SMTP_User, this->_SMTP_PWD ) ;
+          bool Result ;
+          Result = My_Mail_Client.Send_Mail ( MailTo, Subject, Body, HTML_Format )  ;
+          if ( Result ) Serial.println ( "Email Succeeded" ) ;
+          else          Serial.println ( "Email Failed"    ) ;
+          */
 #endif
   }
   // ***********************************************************************

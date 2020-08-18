@@ -27,11 +27,11 @@
 
 String WebServer_Root_Page = "/index.html";
 
-#include "FS_support.h"
+#include "Clients/FS_support.h"
 #ifdef ESP32
-#include "SD_MMC_support.h"
+  #include "SD_MMC_support.h"
 #endif
-#include "html_templates.h"
+#include "Web/html_templates.h"
 
 // ***********************************************************************
 // Stream de opgegeven file naar de webclient
@@ -44,8 +44,7 @@ bool Load_File(fs::FS &Drive, String path) {
 
   // EXISTS TOEVOEGEN
 
-  if (path.endsWith(".src"))
-    path = path.substring(0, path.lastIndexOf("."));
+  if (path.endsWith(".src")) path = path.substring(0, path.lastIndexOf("."));
   else if (path.endsWith(".h"))
     dataType = "text/html";
   else if (path.endsWith(".html"))

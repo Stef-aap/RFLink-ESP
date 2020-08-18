@@ -12,7 +12,7 @@
 #define Sensor_RFLink_h 0.2
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
-#include "Receiver_MQTT.h"
+  #include "Receivers/Receiver_MQTT.h"
 #endif
 
 #include "RFLink/RFLink_File.h"
@@ -521,16 +521,14 @@ public:
     // 14; Set CMD1 for Transmit Predefined CMDs
     // *********************************************
     else if (LowerCase.startsWith("13;")) {
-      if (LowerCase.length() > 4)
-        _Learning_Mode_9_Cmd1 = Serial_Command.substring(3);
+      if (LowerCase.length() > 4) _Learning_Mode_9_Cmd1 = Serial_Command.substring(3);
       else {
         Serial.println("LM-9, CMD1 = " + _Learning_Mode_9_Cmd1);
         Serial.println("LM-9, CMD2 = " + _Learning_Mode_9_Cmd2);
       }
       return true;
     } else if (LowerCase.startsWith("14;")) {
-      if (LowerCase.length() > 4)
-        _Learning_Mode_9_Cmd2 = Serial_Command.substring(3);
+      if (LowerCase.length() > 4) _Learning_Mode_9_Cmd2 = Serial_Command.substring(3);
       else {
         Serial.println("LM-9, CMD1 = " + _Learning_Mode_9_Cmd1);
         Serial.println("LM-9, CMD2 = " + _Learning_Mode_9_Cmd2);

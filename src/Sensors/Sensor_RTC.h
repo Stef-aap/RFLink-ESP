@@ -10,10 +10,10 @@
 // ***********************************************************************************
 
 // ***********************************************************************************
-// Gebruik definieer Set_RTC_YMD_HMS_DoW, voordat Sensor_Receiver_2 wordt geimporteerd
+// Gebruik definieer Set_RTC_YMD_HMS_DoW, voordat Sensor_Receiver wordt geimporteerd
 // ***********************************************************************************
 //#define Set_RTC_YMD_HMS_DoW  "2020,1,10,13,11,13,MON"
-//#include "Sensor_Receiver_2.h"
+//#include "Sensor_Receiver.h"
 // ***********************************************************************************
 
 #ifndef Sensor_RTC_h
@@ -63,8 +63,7 @@ public:
 
     int DoW;
     Line = Splitter->getItemAtIndex(6);
-    if (Line == "MON")
-      DoW = MON;
+    if (Line == "MON") DoW = MON;
     else if (Line == "TUE")
       DoW = TUE;
     else if (Line == "WED")

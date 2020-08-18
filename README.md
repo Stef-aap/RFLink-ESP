@@ -27,10 +27,10 @@ V3.1 of RFLink-ESP has the following new or improved features
 - command added:  13; and 14;   // shows/sets 2 commands for Learning_Mode 8/9
 - programs added to upload files to the ESP by FTP
 
-# Schmurtz
+## Schmurtz
 forked V2.1 and made it more compatible with other Bridge-libraries. https://github.com/schmurtzm/RFLink-ESP
 
-# RFLink-ESP V2.1
+## RFLink-ESP V2.1
 Home Assistant / Domoticz tested with a RFLink, modified for ESP8266 and ESP32
 
 This is a fork of RFLink, and because we couldn't get it working reliable, we ended up in a complete rewrite of RFLink.
@@ -55,3 +55,24 @@ Some ideas for the future
 - Cleanup global constants and variables
 - Using SI4432 as Receiver / Transmitter (Transmitter can be used for all frequencies, Receiver might be able to fetch a complete sequence, so listening at more frequencies at the same time might even be possible)
 - Logging of false positives, including time (Neighbours ??)  NTP: https://www.instructables.com/id/Arduino-Internet-Time-Client/
+
+## Secrets
+
+Create a `secrets.h` file under `src/`
+
+// ***********************************************************************
+//  PRIVATE GLOBALS
+// ***********************************************************************
+#define __SECRET_Wifi_Name "Home Network SSID"
+#define __SECRET_Wifi_PWD "Password"
+#define __SECRET_Broker_IP "192.168.22.23"
+
+#define __SECRET_SMTP_Server "smtp.gmail.com"
+#ifdef ESP32
+#define __SECRET_SMTP_Port 587
+#else
+#define __SECRET_SMTP_Port 465
+#endif
+#define __SECRET_SMTP_User "someone@gmail.com"
+#define __SECRET_SMTP_PWD "someones password"
+#define __SECRET_SMTP_MailTo "someone@gmail.com"

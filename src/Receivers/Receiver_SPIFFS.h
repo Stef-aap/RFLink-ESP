@@ -11,12 +11,12 @@
 #ifndef Receiver_SPIFFS_h
 #define Receiver_SPIFFS_h 0.3
 
-#include "FS_support.h"
+#include "Clients/FS_support.h"
 
 //#define FTP_DEBUG   JAAAAAAA
 //#include <ESP8266FtpServer.h>
 #ifdef YES_INCLUDE_FTPSERVER
-#include "My_FtpServer.h"
+  #include "My_FtpServer.h"
 FtpServer ftpSrv; // set #define FTP_DEBUG in ESP8266FtpServer.h to see ftp verbose on serial
 #endif
 /*
@@ -149,8 +149,7 @@ public:
     Serial.println("FTPFTPFTPFTPFTP:::::::::::::::" + Payload);
     Serial.println("Loop Priority was : " + String(Loop_Priority));
     String FTP = root["FTP"];
-    if (FTP == "ON")
-      Loop_Priority = 1;
+    if (FTP == "ON") Loop_Priority = 1;
     else if (FTP == "OFF") {
       Loop_Priority = 0;
     }

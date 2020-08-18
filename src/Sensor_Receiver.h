@@ -146,8 +146,8 @@ String _DEBUG_Global_String = "";
 // ****************************************************************************
 // ****************************************************************************
 
-#ifndef Sensor_Receiver_2_h
-#define Sensor_Receiver_2_h 3.0
+#ifndef Sensor_Receiver_h
+#define Sensor_Receiver_h 3.0
 
 #define BI "/B_Info.txt"
 
@@ -155,27 +155,27 @@ String _DEBUG_Global_String = "";
 //#define FileSystem_SDMMC
 //#define FileSystem_SDcard
 
-#include "My_StringSplitter.h"
+#include "Utilities/My_StringSplitter.h"
 
 #ifdef ESP32
-#include "My_ESP32_Support.h"
+  #include "My_ESP32_Support.h"
 #endif
 
 #ifdef ESP32
-#include <WiFi.h>
-#include <WiFiAP.h>
+  #include <WiFi.h>
+  #include <WiFiAP.h>
 #else
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
+  #include <ESP8266WiFi.h>
+  #include <ESP8266WiFiMulti.h>
 #endif
 
 #ifdef ESP32
-#include <WebServer.h>
+  #include <WebServer.h>
 //#include <ESPmDNS.h>
 WebServer My_Webserver(80);
 #else
-//#include <ESP8266WiFi.h>
-#include <ESP8266WebServer.h>
+  //#include <ESP8266WiFi.h>
+  #include <ESP8266WebServer.h>
 //#include <FS.h>   //Include File System Headers
 //  ESP8266WebServer.h - Dead simple web-server.
 //  Supports only one simultaneous client, knows how to handle GET and POST.
@@ -193,12 +193,12 @@ HardwareSerial Serial_Device(0); // UART_NUM_0 ) ;
 #endif
 
 #ifdef YES_INCLUDE_RECEIVER_TELNET
-#include "Receiver_Telnet.h"
+  #include "Receivers/Receiver_Telnet.h"
 #endif
 // ****************************************************************************
 
 #ifdef ESP32
-#include <Preferences.h>
+  #include <Preferences.h>
 Preferences My_Prefs;
 #endif
 /*
@@ -266,13 +266,13 @@ void Print_Heap(int ID = -1) {
 // ****************************************************************************
 // Belangrijk: hier wordt de settingsfile gelezen
 // ****************************************************************************
-#include "My_Settings.h"
+#include "Clients/My_Settings.h"
 // ****************************************************************************
 
 // ****************************************************************************
 // ****************************************************************************
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
-#define MAX_MQTT_TOPICS 5
+  #define MAX_MQTT_TOPICS 5
 String MQTT_Topics[] = {"", "", "", "", ""};
 void MQTT_Topics_Append(String Topic) {
 
@@ -329,7 +329,7 @@ word _TM1638_Dots[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 
 #ifdef YES_INCLUDE_RECEIVER_TELNET
-  #include "Receiver_Telnet.h"
+  #include "Receivers/Receiver_Telnet.h"
 #endif
 */
 
@@ -337,7 +337,7 @@ word _TM1638_Dots[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 // ********************************************
 #define WIFI_TX_POWER 82
 
-//#include "Sensor_Watchdog.h"
+//#include "Sensors/Sensor_Watchdog.h"
 
 bool Allow_Wifi_Not_Found = false;
 //#include "Wifi_MyLib.h"
@@ -345,14 +345,14 @@ bool Allow_Wifi_Not_Found = false;
 
 // stond helemaal bovenaan
 #ifndef ESP32
-#include "user_interface.h" //system_get_sdk_version()
+  #include "user_interface.h" //system_get_sdk_version()
 #endif
 
 //#include "My_DateTime.h"
 #include <Wire.h>
 #include <vector>
 
-#include "Receiver_Base.h"
+#include "Receivers/Receiver_Base.h"
 //#include "Domoticz.h"
 
 // ****************************************************************************
@@ -564,7 +564,7 @@ void Create_HTML_Values_Page() {
 //#include "ext_def.h"
 unsigned long LuftDaten_Sample_Count = 0;
 #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
-#include "LuftDaten.h"
+  #include "LuftDaten.h"
 #endif
 //#include "Quirks.h"
 
@@ -572,117 +572,117 @@ unsigned long LuftDaten_Sample_Count = 0;
 // Here all available sensors are included
 //   and the base class, from which all sensors should be derived.
 // ****************************************************************************
-#include "Sensor_Base.h"
+#include "Sensors/Sensor_Base.h"
 
 #ifndef NOT_INCLUDE_SENSOR_ADS1115
-#include "Sensor_ADS1115.h"
+  #include "Sensors/Sensor_ADS1115.h"
 #endif
 #ifndef NOT_INCLUDE_SENSOR_ADS1115_DIFF
-#include "Sensor_ADS1115_Diff3.h"
+  #include "Sensors/Sensor_ADS1115_Diff3.h"
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_BLAUWE_ENGEL
-#include "Sensor_Blauwe_Engel.h"
+  #include "Sensors/Sensor_Blauwe_Engel.h"
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_BME280
-#include "Sensor_BME280_AF.h"
+  #include "Sensors/Sensor_BME280_AF.h"
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_BMP280
-#include "Sensor_BMP280.h"
+  #include "Sensors/Sensor_BMP280.h"
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_DHT22
-#include "Sensor_DHT22.h"
+  #include "Sensors/Sensor_DHT22.h"
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_DS18B20
-#include "Sensor_DS18B20.h"
+  #include "Sensors/Sensor_DS18B20.h"
 #endif
 
-#include "Sensor_Dummy.h"
+#include "Sensors/Sensor_Dummy.h"
 
 #ifndef ESP32
-#include "Sensor_EnergyMeter.h"
+  #include "Sensors/Sensor_EnergyMeter.h"
 #endif
 
 #ifdef ESP32
-#include "Sensor_ESP32_ADC.h"
+  #include "Sensors/Sensor_ESP32_ADC.h"
 #endif
-#include "Sensor_I2C_Scan.h"
+#include "Sensors/Sensor_I2C_Scan.h"
 
 #ifdef INCLUDE_IR_SAMSUNG_TV
-#include "Sensor_IR_Samsung_TV.h"
+  #include "Sensors/Sensor_IR_Samsung_TV.h"
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_MHZ14
-#include "Sensor_MHZ14.h"
+  #include "Sensors/Sensor_MHZ14.h"
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_MLX90614
-#include "Sensor_MLX90614.h"
+  #include "Sensors/Sensor_MLX90614.h"
 #endif
 
 #ifdef ESP32
-#ifdef YES_INCLUDE_SENSOR_MLX90640
-#include "Sensor_MLX90640.h"
-#endif
+  #ifdef YES_INCLUDE_SENSOR_MLX90640
+    #include "Sensors/Sensor_MLX90640.h"
+  #endif
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_MPU9250
-#include "Sensor_MPU9250.h"
+  #include "Sensors/Sensor_MPU9250.h"
 #endif
 
 #ifndef ESP32
-#ifdef YES_INCLUDE_SENSOR_MQTTBroker
-#include "Sensor_MQTTBroker.h"
-#endif
+  #ifdef YES_INCLUDE_SENSOR_MQTTBroker
+    #include "Sensors/Sensor_MQTTBroker.h"
+  #endif
 #endif
 
-#include "Sensor_Noise_100.h"
+#include "Sensors/Sensor_Noise_100.h"
 
 #ifdef YES_INCLUDE_SENSOR_NTP
-#include "Sensor_NTP_Client.h"
+  #include "Sensors/Sensor_NTP_Client.h"
 #endif
 
 #ifndef ESP32
-#ifdef YES_INCLUDE_SENSOR_OKE4
-#include "Sensor_OKE4.h"
-#endif
+  #ifdef YES_INCLUDE_SENSOR_OKE4
+    #include "Sensors/Sensor_OKE4.h"
+  #endif
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_PIR
-#include "Sensor_PIR.h"
+  #include "Sensors/Sensor_PIR.h"
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_RFLINK
-#include "Sensor_RFLink.h"
+  #include "Sensors/Sensor_RFLink.h"
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_RTC
-#include "Sensor_RTC.h"
+  #include "Sensors/Sensor_RTC.h"
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_SDS011
-#include "Sensor_SDS011.h"
+  #include "Sensors/Sensor_SDS011.h"
 #endif
 
 #ifdef INCLUDE_SLIMME_METER
-#include "Sensor_SlimmeMeter.h"
+  #include "Sensors/Sensor_SlimmeMeter.h"
 #endif
 
 #ifdef INCLUDE_SONOFF
-#include "Sensor_SonOff.h"
+  #include "Sensors/Sensor_SonOff.h"
 #endif
 
-#include "Sensor_System.h"
-#include "Sensor_Timestamp.h"
-#include "Sensor_Watchdog.h"
-#include "Sensor_Wifi.h"
+#include "Sensors/Sensor_System.h"
+#include "Sensors/Sensor_Timestamp.h"
+#include "Sensors/Sensor_Watchdog.h"
+#include "Sensors/Sensor_Wifi.h"
 
 #ifdef INCLUDE_SENSOR_WITTY
-#include "Sensor_Witty_LDR.h"
+  #include "Sensors/Sensor_Witty_LDR.h"
 #endif
 
 // ****************************************************************************
@@ -723,22 +723,21 @@ public:
 
     if (Signal_LED > 0) {
       pinMode(Signal_LED, OUTPUT);
-      if (Signal_LED_Invert)
-        digitalWrite(Signal_LED, HIGH);
+      if (Signal_LED_Invert) digitalWrite(Signal_LED, HIGH);
       else
         digitalWrite(Signal_LED, LOW);
     }
 
 #ifdef _Main_Name
-#ifndef _Main_Version
-#define _Main_Version "????"
-#endif
+  #ifndef _Main_Version
+    #define _Main_Version "????"
+  #endif
     Serial.println("  MAIN    V" + String(_Main_Version) + "   " + String(_Main_Name));
 #else
     Serial.println("V?    UNKNOWN PROGRAM");
 #endif
 
-    Serial.println("CREATE    V" + String(Sensor_Receiver_2_h) + "  ======  Sensor_Receiver_2_h");
+    Serial.println("CREATE    V" + String(Sensor_Receiver_h) + "  ======  Sensor_Receiver_h");
     JSON_Data.reserve(1000);
     JSON_Short_Data.reserve(200);
     JSON_Short_Header.reserve(200);
@@ -763,8 +762,7 @@ public:
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
       if (Sensor->MQTT_Callback_Topic.length() > 0) {
-        if (Sensor->MQTT_Callback_Topic.endsWith("/"))
-          MQTT_Topics_Append(Sensor->MQTT_Callback_Topic + "#");
+        if (Sensor->MQTT_Callback_Topic.endsWith("/")) MQTT_Topics_Append(Sensor->MQTT_Callback_Topic + "#");
         else
           MQTT_Topics_Append(Sensor->MQTT_Callback_Topic);
         Serial.println("SENSOR   MQTT CALLBACK  = " + Sensor->MQTT_Callback_Topic);
@@ -851,8 +849,7 @@ public:
       case 1:
         _Signal_LED_start = millis();
         _Signal_LED_State += 1;
-        if (Signal_LED_Invert)
-          digitalWrite(Signal_LED, LOW);
+        if (Signal_LED_Invert) digitalWrite(Signal_LED, LOW);
         else
           digitalWrite(Signal_LED, HIGH);
         break;
@@ -861,8 +858,7 @@ public:
         if ((millis() - _Signal_LED_start) > _Signal_LED_ON) {
           _Signal_LED_start = millis();
           _Signal_LED_State += 1;
-          if (Signal_LED_Invert)
-            digitalWrite(Signal_LED, HIGH);
+          if (Signal_LED_Invert) digitalWrite(Signal_LED, HIGH);
           else
             digitalWrite(Signal_LED, LOW);
         }
@@ -871,8 +867,7 @@ public:
       case 3:
         if ((millis() - _Signal_LED_start) > _Signal_LED_OFF) {
           _Signal_LED_N -= 1;
-          if (_Signal_LED_N > 0)
-            _Signal_LED_State = 1;
+          if (_Signal_LED_N > 0) _Signal_LED_State = 1;
           else
             _Signal_LED_State = 0;
         }
@@ -919,8 +914,7 @@ public:
           yield();
           External_Watchdog_Toggle();
         }
-        if (Done)
-          _Serial_Command = 3;
+        if (Done) _Serial_Command = 3;
         else
           _Serial_Command += 1;
       }
@@ -944,7 +938,7 @@ public:
   void Send_IR(unsigned long Data) {
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Sensors, Send_IR,  Sensor=" + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Send_IR,  Sensor=" + String ( Debug_Counter ) ) ;
       Sensor->Send_IR(Data);
       Debug_Counter += 1;
       // External_Watchdog_Check () ;
@@ -958,7 +952,7 @@ public:
     Serial.println(F("=======================  My_Numbers  ======================="));
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Sensors, Print,  Sensor=" + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Print,  Sensor=" + String ( Debug_Counter ) ) ;
       Serial.println("Something");
       Debug_Counter += 1;
       // External_Watchdog_Check () ;
@@ -977,7 +971,7 @@ public:
 
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Sensors, Get_JSON_Data,  Sensor="  + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Get_JSON_Data,  Sensor="  + String ( Debug_Counter ) ) ;
       Sensor->Get_JSON_Data();
       Debug_Counter += 1;
       // External_Watchdog_Check () ;
@@ -1014,7 +1008,7 @@ public:
     JSON_LuftData = LuftDaten_First_Part;
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Sensors, Get_JSON_LuftData,  Sensor="  + String ( Debug_Counter ) )
+      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Get_JSON_LuftData,  Sensor="  + String ( Debug_Counter ) )
       // ;
       JSON_LuftData += Sensor->Get_JSON_LuftData();
       Debug_Counter += 1;
@@ -1063,7 +1057,7 @@ public:
     //_Sensor_List.begin().Hardware_Test ( ) ;
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Sensors, Hardware_Test,  Sensor="  + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Hardware_Test,  Sensor="  + String ( Debug_Counter ) ) ;
       Sensor->Hardware_Test(Test_Nr);
       Debug_Counter += 1;
       // External_Watchdog_Check () ;
@@ -1088,32 +1082,32 @@ private:
 // ****************************************************************************
 // Define all Receivers
 // ****************************************************************************
-#include "Receiver_Base.h"
+#include "Receivers/Receiver_Base.h"
 #ifdef YES_INCLUDE_FIJNSTOF_CONDITIONERING
-#include "Receiver_Fijnstof_Conditionering.h"
+  #include "Receivers/Receiver_Fijnstof_Conditionering.h"
 #endif
 #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
-#include "Receiver_Luftdaten.h"
-#include "Receiver_Madavi.h"
+  #include "Receivers/Receiver_Luftdaten.h"
+  #include "Receivers/Receiver_Madavi.h"
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
-#include "Receiver_MQTT.h"
+  #include "Receivers/Receiver_MQTT.h"
 #endif
 
 #ifdef YES_INCLUDE_RECEIVER_OTA
-#include "Receiver_OTA.h"
+  #include "Receivers/Receiver_OTA.h"
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_SCRATCHPAD
-#include "Receiver_ScratchPad.h"
+  #include "Receivers/Receiver_ScratchPad.h"
 #endif
 
 // **************************
 // File Systems
 // **************************
 #ifdef FileSystem_SPIFFS
-#include "Receiver_SPIFFS.h"
+  #include "Receivers/Receiver_SPIFFS.h"
 #endif
 
 // ***********************************************************************************
@@ -1135,39 +1129,39 @@ void Settings_Factory() {
 }
 
 #ifndef NOT_INCLUDE_RECEIVER_SDFAT
-#include "Receiver_SDfat.h"
+  #include "Receivers/Receiver_SDfat.h"
 #endif
 
 #ifdef FileSystem_SDMMC
-#ifdef ESP32
-#include "Receiver_SDMMC.h"
-#endif
+  #ifdef ESP32
+    #include "Receivers/Receiver_SDMMC.h"
+  #endif
 #endif
 
 #ifdef FileSystem_SDcard
-#ifdef ESP32
-#include "Receiver_SDcard.h" //DEZE GEEFT HEEL REGELMATIG PROBLEMEN !!!!
-#endif
+  #ifdef ESP32
+    #include "Receivers/Receiver_SDcard.h" //DEZE GEEFT HEEL REGELMATIG PROBLEMEN !!!!
+  #endif
 #endif
 // **************************
 // **************************
 
-#include "Receiver_Serial.h"
+#include "Receivers/Receiver_Serial.h"
 
 #ifndef NOT_INCLUDE_RECEIVER_EMAIL
-#include "Receiver_Email.h"
+  #include "Receivers/Receiver_Email.h"
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_SSD1306
-#include "Receiver_SSD1306.h"
+  #include "Receivers/Receiver_SSD1306.h"
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_TM1638
-#include "Receiver_TM1638.h"
+  #include "Receivers/Receiver_TM1638.h"
 #endif
 
 #ifdef YES_INCLUDE_RECEIVER_WEBSERVER
-#include "Receiver_Webserver.h"
+  #include "Receivers/Receiver_Webserver.h"
 #endif
 
 // *************************************************************************
@@ -1233,7 +1227,7 @@ public:
     }
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Receivers, setup ,  Receiver="  + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, setup ,  Receiver="  + String ( Debug_Counter ) ) ;
       Receiver->setup();
       Debug_Counter += 1;
 
@@ -1246,8 +1240,7 @@ public:
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
       if (Receiver->MQTT_Callback_Topic.length() > 0) {
-        if (Receiver->MQTT_Callback_Topic.endsWith("/"))
-          MQTT_Topics_Append(Receiver->MQTT_Callback_Topic + "#");
+        if (Receiver->MQTT_Callback_Topic.endsWith("/")) MQTT_Topics_Append(Receiver->MQTT_Callback_Topic + "#");
         else
           MQTT_Topics_Append(Receiver->MQTT_Callback_Topic);
         Serial.println("RECEIVER MQTT CALLBACK  = " + Receiver->MQTT_Callback_Topic);
@@ -1360,7 +1353,7 @@ public:
 //    Seriële Commando's zijn Case-Ongevoelig" ) ;
         // Serial.println ( "Receiver handle serial" ) ;
         for (auto Receiver : _Receiver_List) {
-          // External_Watchdog_Arm ( "Sensor_Receiver_2, Receivers, loop2,  Receiver="  + String ( Debug_Counter ) ) ;
+          // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, loop2,  Receiver="  + String ( Debug_Counter ) ) ;
           if (Receiver->Handle_Serial_Command(_InputBuffer_Serial_String)) {
             Done = true;
             break;
@@ -1370,8 +1363,7 @@ public:
           External_Watchdog_Toggle();
         }
         //          _Serial_Command = false ;
-        if (Done)
-          _Serial_Command = 3;
+        if (Done) _Serial_Command = 3;
         else
           _Serial_Command += 1;
         _SerialInByteCounter = 0;
@@ -1385,7 +1377,7 @@ public:
     Serial.println(F("=======================  My_Numbers  ======================="));
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Receivers, Print,  Receiver="  + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, Print,  Receiver="  + String ( Debug_Counter ) ) ;
       Serial.println(F("Something Else"));
       Debug_Counter += 1;
       // External_Watchdog_Check () ;
@@ -1402,7 +1394,7 @@ public:
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
       // Serial.println ( "Send Data RECEIVER = " + String ( Debug_Counter ) ) ;
-      // External_Watchdog_Arm ( "Sensor_Receiver_2, Receivers, Send_Data  Receiver=" + String ( Debug_Counter ) ) ;
+      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, Send_Data  Receiver=" + String ( Debug_Counter ) ) ;
       if (!Receiver->Send_Data(JSON_Message)) {
         Result_OK = false;
       }
@@ -1542,8 +1534,7 @@ void Restart_Email(String MailTo, String Subject, String Body, bool HTML_Format 
   bool Result;
 
   Result = My_Mail_Client.Send_Mail(MailTo, Subject, Body);
-  if (Result)
-    Serial.println("Email Succeeded");
+  if (Result) Serial.println("Email Succeeded");
   else
     Serial.println("Email Failed");
 #endif
@@ -1580,9 +1571,9 @@ void Settings_Setup() {
   // ************************************************************
 
 #ifndef NOT_INCLUDE_RECEIVER_EMAIL
-#ifndef ESP32
+  #ifndef ESP32
   Restart_Email(__SECRET_SMTP_MailTo, "RFLink Restarted", "Body");
-#endif
+  #endif
 #endif
 
   //??int Baudrate = Settings.Get_Set_Default_Int ( F("RS232 Baudrate"), 115200 ) ;
@@ -1593,8 +1584,8 @@ void Settings_Setup() {
   My_Prefs.begin("My_Prefs", false); // not readonly
   uint8_t Reboot_Options = My_Prefs.getChar("Reboot_Options", 0);
   Serial.println("                   Reboot Options : " + String(Reboot_Options));
-  // Reboot_Options += 1 ;
-  // My_Prefs.putChar ( F("Reboot_Options"), Reboot_Options ) ;
+    // Reboot_Options += 1 ;
+    // My_Prefs.putChar ( F("Reboot_Options"), Reboot_Options ) ;
 #endif
 
   _Loop_Send_Time = Settings.Get_Set_Default_Int(F("Sample Period[ms]"), 10000);
@@ -1646,14 +1637,12 @@ void Settings_Setup() {
   // Create Sensors (en als niet nodig, zorg in ieder geval dat ie in de settings file staat )
   // ************************************************************
   // Settings.Create_Sensors () ;
-  if (Settings.Read_Bool(F("Sensor_Watchdog")))
-    Sensors.Add(new _Sensor_Watchdog());
+  if (Settings.Read_Bool(F("Sensor_Watchdog"))) Sensors.Add(new _Sensor_Watchdog());
   else
     _My_Settings_Buffer[F("Sensor_Watchdog")] = false;
 
 #ifndef NOT_INCLUDE_SENSOR_ADS1115
-  if (Settings.Read_Bool(F("Sensor_ADS1115")))
-    Sensors.Add(new _Sensor_ADS1115("FS"));
+  if (Settings.Read_Bool(F("Sensor_ADS1115"))) Sensors.Add(new _Sensor_ADS1115("FS"));
   else
     _My_Settings_Buffer[F("Sensor_ADS1115")] = false;
 #else
@@ -1661,8 +1650,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_ADS1115_DIFF
-  if (Settings.Read_Bool(F("Sensor_ADS1115_Diff3")))
-    Sensors.Add(new _Sensor_ADS1115_Diff3("FS"));
+  if (Settings.Read_Bool(F("Sensor_ADS1115_Diff3"))) Sensors.Add(new _Sensor_ADS1115_Diff3("FS"));
   else
     _My_Settings_Buffer[F("Sensor_ADS1115_Diff3")] = false;
 #else
@@ -1670,8 +1658,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_BME280
-  if (Settings.Read_Bool(F("Sensor_BME280")))
-    Sensors.Add(new _Sensor_BME280_AF("FS"));
+  if (Settings.Read_Bool(F("Sensor_BME280"))) Sensors.Add(new _Sensor_BME280_AF("FS"));
   else
     _My_Settings_Buffer[F("Sensor_BME280")] = false;
 #else
@@ -1679,8 +1666,7 @@ void Settings_Setup() {
 #endif
 
 #ifdef YES_INCLUDE_BLAUWE_ENGEL
-  if (Settings.Read_Bool(F("Sensor_Blauwe_Engel")))
-    Sensors.Add(new _Sensor_Blauwe_Engel("FS"));
+  if (Settings.Read_Bool(F("Sensor_Blauwe_Engel"))) Sensors.Add(new _Sensor_Blauwe_Engel("FS"));
   else
     _My_Settings_Buffer[F("Sensor_Blauwe_Engel")] = false;
 #else
@@ -1688,8 +1674,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_DHT22
-  if (Settings.Read_Bool(F("Sensor_DHT22")))
-    Sensors.Add(new _Sensor_DHT22());
+  if (Settings.Read_Bool(F("Sensor_DHT22"))) Sensors.Add(new _Sensor_DHT22());
   else
     _My_Settings_Buffer[F("Sensor_DHT22")] = false;
 #else
@@ -1697,27 +1682,23 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_DS18B20
-  if (Settings.Read_Bool(F("Sensor_DS18B20")))
-    Sensors.Add(new _Sensor_DS18B20("FS"));
+  if (Settings.Read_Bool(F("Sensor_DS18B20"))) Sensors.Add(new _Sensor_DS18B20("FS"));
   else
     _My_Settings_Buffer[F("Sensor_DS18B20")] = false;
 #else
   _My_Settings_Buffer.remove(F("Sensor_DS18B20"));
 #endif
 
-  if (Settings.Read_Bool(F("Sensor_Dummy")))
-    Sensors.Add(new _Sensor_Dummy());
+  if (Settings.Read_Bool(F("Sensor_Dummy"))) Sensors.Add(new _Sensor_Dummy());
   else
     _My_Settings_Buffer[F("Sensor_Dummy")] = false;
 
-  if (Settings.Read_Bool(F("Sensor_I2C_Scan")))
-    Sensors.Add(new _Sensor_I2C_Scan("FS"));
+  if (Settings.Read_Bool(F("Sensor_I2C_Scan"))) Sensors.Add(new _Sensor_I2C_Scan("FS"));
   else
     _My_Settings_Buffer[F("Sensor_I2C_Scan")] = false;
 
 #ifndef NOT_INCLUDE_SENSOR_MHZ14
-  if (Settings.Read_Bool(F("Sensor_MHZ14")))
-    Sensors.Add(new _Sensor_MHZ14("FS"));
+  if (Settings.Read_Bool(F("Sensor_MHZ14"))) Sensors.Add(new _Sensor_MHZ14("FS"));
   else
     _My_Settings_Buffer[F("Sensor_MHZ14")] = false;
 #else
@@ -1725,8 +1706,7 @@ void Settings_Setup() {
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_MLX90614
-  if (Settings.Read_Bool(F("Sensor_MLX90614")))
-    Sensors.Add(new _Sensor_MLX90614());
+  if (Settings.Read_Bool(F("Sensor_MLX90614"))) Sensors.Add(new _Sensor_MLX90614());
   else
     _My_Settings_Buffer[F("Sensor_MLX90614")] = false;
 #else
@@ -1734,19 +1714,17 @@ void Settings_Setup() {
 #endif
 
 #ifdef ESP32
-#ifdef YES_INCLUDE_SENSOR_MLX90640
-  if (Settings.Read_Bool(F("Sensor_MLX90640")))
-    Sensors.Add(new _Sensor_MLX90640());
+  #ifdef YES_INCLUDE_SENSOR_MLX90640
+  if (Settings.Read_Bool(F("Sensor_MLX90640"))) Sensors.Add(new _Sensor_MLX90640());
   else
     _My_Settings_Buffer[F("Sensor_MLX90640")] = false;
-#else
+  #else
   _My_Settings_Buffer.remove(F("Sensor_MLX90640"));
-#endif
+  #endif
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_MPU9250
-  if (Settings.Read_Bool(F("Sensor_MPU9250")))
-    Sensors.Add(new _Sensor_MPU9250());
+  if (Settings.Read_Bool(F("Sensor_MPU9250"))) Sensors.Add(new _Sensor_MPU9250());
   else
     _My_Settings_Buffer[F("Sensor_MPU9250")] = false;
 #else
@@ -1754,24 +1732,21 @@ void Settings_Setup() {
 #endif
 
 #ifndef ESP32
-#ifdef YES_INCLUDE_SENSOR_MQTTBroker
-  if (Settings.Read_Bool(F("Sensor_MQTTBroker")))
-    Sensors.Add(new _Sensor_MQTTBroker());
+  #ifdef YES_INCLUDE_SENSOR_MQTTBroker
+  if (Settings.Read_Bool(F("Sensor_MQTTBroker"))) Sensors.Add(new _Sensor_MQTTBroker());
   else
     _My_Settings_Buffer[F("Sensor_MQTTBroker")] = false;
-#else
+  #else
   _My_Settings_Buffer.remove(F("Sensor_MQTTBroker"));
-#endif
+  #endif
 #endif
 
-  if (Settings.Read_Bool(F("Sensor_Noise_100")))
-    Sensors.Add(new _Sensor_Noise_100());
+  if (Settings.Read_Bool(F("Sensor_Noise_100"))) Sensors.Add(new _Sensor_Noise_100());
   else
     _My_Settings_Buffer[F("Sensor_Noise_100")] = false;
 
 #ifdef YES_INCLUDE_SENSOR_NTP
-  if (Settings.Read_Bool(F("Sensor_NTP_Client")))
-    Sensors.Add(new _Sensor_NTP_Client());
+  if (Settings.Read_Bool(F("Sensor_NTP_Client"))) Sensors.Add(new _Sensor_NTP_Client());
   else
     _My_Settings_Buffer[F("Sensor_NTP_Client")] = false;
 #else
@@ -1779,8 +1754,7 @@ void Settings_Setup() {
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_RTC
-  if (Settings.Read_Bool(F("Sensor_RTC")))
-    Sensors.Add(new _Sensor_RTC());
+  if (Settings.Read_Bool(F("Sensor_RTC"))) Sensors.Add(new _Sensor_RTC());
   else
     _My_Settings_Buffer[F("Sensor_RTC")] = false;
 #else
@@ -1788,8 +1762,7 @@ void Settings_Setup() {
 #endif
 
 #ifdef YES_INCLUDE_SENSOR_RFLINK
-  if (Settings.Read_Bool(F("Sensor_RFLink")))
-    Sensors.Add(new _Sensor_RFLink("FS"));
+  if (Settings.Read_Bool(F("Sensor_RFLink"))) Sensors.Add(new _Sensor_RFLink("FS"));
   else
     _My_Settings_Buffer[F("Sensor_RFLink")] = false;
 #else
@@ -1797,22 +1770,19 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_SENSOR_SDS011
-  if (Settings.Read_Bool(F("Sensor_SDS011")))
-    Sensors.Add(new _Sensor_SDS011());
+  if (Settings.Read_Bool(F("Sensor_SDS011"))) Sensors.Add(new _Sensor_SDS011());
   else
     _My_Settings_Buffer[F("Sensor_SDS011")] = false;
 #else
   _My_Settings_Buffer.remove(F("Sensor_SDS011"));
 #endif
 
-  if (Settings.Read_Bool(F("Sensor_System")))
-    Sensors.Add(new _Sensor_System());
+  if (Settings.Read_Bool(F("Sensor_System"))) Sensors.Add(new _Sensor_System());
   else
     _My_Settings_Buffer[F("Sensor_System")] = false;
 
 #ifdef INCLUDE_SENSOR_WITTY
-  if (Settings.Read_Bool(F("Sensor_Witty_LDR")))
-    Sensors.Add(new _Sensor_Witty_LDR());
+  if (Settings.Read_Bool(F("Sensor_Witty_LDR"))) Sensors.Add(new _Sensor_Witty_LDR());
   else
     _My_Settings_Buffer[F("Sensor_Witty_LDR")] = false;
 #else
@@ -1823,8 +1793,7 @@ void Settings_Setup() {
     // create Receivers
     // ************************************************************
 #ifdef YES_INCLUDE_FIJNSTOF_CONDITIONERING
-  if (Settings.Read_Bool(F("Receiver_Fijnstof_Conditionering")))
-    Receivers.Add(new _Receiver_Fijnstof_Conditionering());
+  if (Settings.Read_Bool(F("Receiver_Fijnstof_Conditionering"))) Receivers.Add(new _Receiver_Fijnstof_Conditionering());
   else
     _My_Settings_Buffer[F("Receiver_Fijnstof_Conditionering")] = false;
 #else
@@ -1832,8 +1801,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_EMAIL
-  if (Settings.Read_Bool(F("Receiver_Email")))
-    Receivers.Add(new _Receiver_Email());
+  if (Settings.Read_Bool(F("Receiver_Email"))) Receivers.Add(new _Receiver_Email());
   else
     _My_Settings_Buffer[F("Receiver_Email")] = false;
 #else
@@ -1841,8 +1809,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
-  if (Settings.Read_Bool(F("Receiver_MQTT")))
-    Receivers.Add(new _Receiver_MQTT(684));
+  if (Settings.Read_Bool(F("Receiver_MQTT"))) Receivers.Add(new _Receiver_MQTT(684));
   else
     _My_Settings_Buffer[F("Receiver_MQTT")] = false;
 #else
@@ -1850,33 +1817,29 @@ void Settings_Setup() {
 #endif
 
 #ifdef FileSystem_SDMMC
-#ifdef ESP32
-  if (Settings.Read_Bool(F("Receiver_SD_MMC")))
-    Receivers.Add(new _Receiver_SDMMC(684));
+  #ifdef ESP32
+  if (Settings.Read_Bool(F("Receiver_SD_MMC"))) Receivers.Add(new _Receiver_SDMMC(684));
   else
     _My_Settings_Buffer[F("Receiver_SD_MMC")] = false;
-#endif
+  #endif
 #else
   _My_Settings_Buffer.remove(F("Receiver_SD_MMC"));
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_SCRATCHPAD
-  if (Settings.Read_Bool(F("Receiver_ScratchPad")))
-    Receivers.Add(new _Receiver_ScratchPad());
+  if (Settings.Read_Bool(F("Receiver_ScratchPad"))) Receivers.Add(new _Receiver_ScratchPad());
   else
     _My_Settings_Buffer[F("Receiver_ScratchPad")] = false;
 #else
   _My_Settings_Buffer.remove(F("Receiver_ScratchPad"));
 #endif
 
-  if (Settings.Read_Bool(F("Receiver_Serial")))
-    Receivers.Add(new _Receiver_Serial());
+  if (Settings.Read_Bool(F("Receiver_Serial"))) Receivers.Add(new _Receiver_Serial());
   else
     _My_Settings_Buffer[F("Receiver_Serial")] = false;
 
 #ifndef NOT_INCLUDE_RECEIVER_SSD1306
-  if (Settings.Read_Bool(F("Receiver_SSD1306")))
-    Receivers.Add(new _Receiver_SSD1306());
+  if (Settings.Read_Bool(F("Receiver_SSD1306"))) Receivers.Add(new _Receiver_SSD1306());
   else
     _My_Settings_Buffer[F("Receiver_SSD1306")] = false;
 #else
@@ -1884,8 +1847,7 @@ void Settings_Setup() {
 #endif
 
 #ifndef NOT_INCLUDE_RECEIVER_TM1638
-  if (Settings.Read_Bool(F("Receiver_TM1638")))
-    Receivers.Add(new _Receiver_TM1638("FS"));
+  if (Settings.Read_Bool(F("Receiver_TM1638"))) Receivers.Add(new _Receiver_TM1638("FS"));
   else
     _My_Settings_Buffer[F("Receiver_TM1638")] = false;
 #else
@@ -1893,8 +1855,7 @@ void Settings_Setup() {
 #endif
 
 #ifdef YES_INCLUDE_RECEIVER_OTA
-  if (Settings.Read_Bool(F("Receiver_OTA")))
-    Receivers.Add(new _Receiver_OTA());
+  if (Settings.Read_Bool(F("Receiver_OTA"))) Receivers.Add(new _Receiver_OTA());
   else
     _My_Settings_Buffer[F("Receiver_OTA")] = false;
 #else
@@ -1981,5 +1942,5 @@ void _MQTT_Callback_Wrapper(char *topic, byte *payload, unsigned int length) {
 }
 #endif
 
-// Serial.println ( F("end of Sensor_Receiver_2.h reached") ) ;
+// Serial.println ( F("end of Sensor_Receiver.h reached") ) ;
 #endif

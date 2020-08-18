@@ -135,10 +135,10 @@ boolean PubSubClient::connect(const char *id, const char *user, const char *pass
 
 #if MQTT_VERSION == MQTT_VERSION_3_1
       uint8_t d[9] = {0x00, 0x06, 'M', 'Q', 'I', 's', 'd', 'p', MQTT_VERSION};
-#define MQTT_HEADER_VERSION_LENGTH 9
+  #define MQTT_HEADER_VERSION_LENGTH 9
 #elif MQTT_VERSION == MQTT_VERSION_3_1_1
       uint8_t d[7] = {0x00, 0x04, 'M', 'Q', 'T', 'T', MQTT_VERSION};
-#define MQTT_HEADER_VERSION_LENGTH 7
+  #define MQTT_HEADER_VERSION_LENGTH 7
 #endif
       for (j = 0; j < MQTT_HEADER_VERSION_LENGTH; j++) {
         buffer[length++] = d[j];

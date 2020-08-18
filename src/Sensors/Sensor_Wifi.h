@@ -20,16 +20,14 @@
 #define Sensor_Wifi_h 0.3
 
 #ifdef ESP32
-#include <WiFi.h>
-#include <WiFiAP.h>
+  #include <WiFi.h>
+  #include <WiFiAP.h>
 #else
-#include <ESP8266WiFi.h>
-#include <ESP8266WiFiMulti.h>
+  #include <ESP8266WiFi.h>
+  #include <ESP8266WiFiMulti.h>
 //  #include <ESP8266mDNS.h>
 ESP8266WiFiMulti wifiMulti;
 #endif
-
-#include "Wifi_Settings.h" // all personal info for wifi / mqtt
 
 #define WIFI_OPTIONS_MUTIPLE 0
 #define WIFI_OPTIONS_SINGLE 1
@@ -87,8 +85,7 @@ public:
 
     // if      ( this -> _Wifi_Options == WIFI_OPTIONS_CONFIG  ) this -> _Setup_User_Config () ;
     // else
-    if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE)
-      this->_Setup_Multi_Wifi();
+    if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE) this->_Setup_Multi_Wifi();
     else
       this->_Setup_Single_Wifi();
   }
@@ -176,9 +173,9 @@ public:
     WiFi.setHostname(_AP_ssid.c_str());
 #else
     WiFi.hostname(_AP_ssid);
-    // Is dit nodig ?
-    // kost bijna 3000 bytes ram !!!
-    // MDNS.begin ( _AP_ssid.c_str()  ) ;    //String(_AP_ssid) ) ;  //mag niet hier ??
+      // Is dit nodig ?
+      // kost bijna 3000 bytes ram !!!
+      // MDNS.begin ( _AP_ssid.c_str()  ) ;    //String(_AP_ssid) ) ;  //mag niet hier ??
 #endif
     if (Max_Count <= 0) {
       this->_Create_SoftAP();
@@ -193,25 +190,25 @@ public:
 // Sometimes communication is better with higher TX power and G-Mode
 // *****************************************************************
 #ifndef ESP32
-#ifndef WIFI_TX_POWER
-#define WIFI_TX_POWER 82
-#endif
-#ifdef WIFI_TX_POWER
+  #ifndef WIFI_TX_POWER
+    #define WIFI_TX_POWER 82
+  #endif
+  #ifdef WIFI_TX_POWER
     system_phy_set_max_tpw(WIFI_TX_POWER); // set TX power [ 0..82 ], 0.25 dBm per step
     Serial.print(F("    WIFI-Power = "));
     Serial.println(WIFI_TX_POWER);
-#endif
+  #endif
 
-#ifdef WIFI_MODE_BGN
+  #ifdef WIFI_MODE_BGN
     wifi_set_phy_mode(WIFI_MODE_BGN); // B(werkt hier niet), G, N
     Serial.print(F("    WIFI-Mode  = "));
     Serial.println(WIFI_MODE_BGN);
-#else
-#define WIFI_MODE_BGN PHY_MODE_11N
+  #else
+    #define WIFI_MODE_BGN PHY_MODE_11N
     wifi_set_phy_mode(WIFI_MODE_BGN); // B(werkt hier niet), G, N
     Serial.print(F("    WIFI-Mode  = "));
     Serial.println(WIFI_MODE_BGN);
-#endif
+  #endif
 #endif
 
     // *****************************
@@ -226,7 +223,6 @@ public:
     // WiFi.begin ( _Wifi_Name, _Wifi_PWD ) ;
     while (WiFi.status() != WL_CONNECTED) {
 #else
-    AddAccessPoints(&wifiMulti);
     while (wifiMulti.run() != WL_CONNECTED) {
 #endif
       Serial.print(".");
@@ -251,8 +247,7 @@ public:
   void loop() {
     // if      ( this -> _Wifi_Options == WIFI_OPTIONS_CONFIG  ) this -> _Loop_User_Config () ;
     // else
-    if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE)
-      this->_Loop_Multi_Wifi();
+    if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE) this->_Loop_Multi_Wifi();
     else
       this->_Loop_Single_Wifi();
   }
@@ -262,6 +257,7 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void _Loop_Multi_Wifi() {
+
 #ifdef ESP32
 #else
     if (wifiMulti.run() == WL_CONNECTED) {
@@ -286,6 +282,15 @@ public:
     }
 #endif
   }
+
+// ***********************************************************************
+// ***********************************************************************
+#ifndef ESP32
+  void AddAccessPoint(char *SSID, char *PWD) {
+    Serial.println("Wifi Access : " + String(SSID));
+    wifiMulti.addAP(SSID, PWD);
+  }
+#endif
 
   // ***********************************************************************************
   // ***********************************************************************************

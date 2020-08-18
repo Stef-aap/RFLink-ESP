@@ -16,7 +16,7 @@
 #define NOT_INCLUDE_RECEIVER_SSD1306
 #define NOT_INCLUDE_RECEIVER_TM1638
 
-#include "Sensor_Receiver_2.h"
+#include "Sensor_Receiver.h"
 
 // ****************************************************************************
 void setup() {

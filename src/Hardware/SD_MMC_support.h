@@ -1,109 +1,43 @@
-// Version 1.1,  14-04-2020, SM
-//    - nu ook voor ESP32 filelist ordering removed (not tesed!!)
+// Version 0.2,  14-04-2010, SM
+//    - Get_Ordered_DirList verwijderd
+//    - HTML_File_CheckList only sends html if anay file exists
 //
-// Version 1.0,  27-02-2020, SM
-//    - Ordering van filelist removed, vraagt teveel RAM (tzt oplossen in HTML)
-//    - SPIFFS wordt reeds geopend in de class constructor
-//    - method Read_File toegeveogd (allen geschilt voor kleine bestanden )
+// Version 0.1,  29-08-2019, SM (op basis van FS_support 0.6)
 //
-// Version 0.9,  18-02-2020, SM
-//    - bij restart wordt aantal seconden in de file opgezocht, zodat dit een monotoon stijgende reeks is
-//
-// Version 0.8,  20-12-2019, SM
-//    - Get_File_Nr added
-//
-// Version 0.7,  29-08-2019, SM
-//    - poging tot toevoeging SDMMC
-//
-// Version 0.6,  02-08-2019, SM
-//    - Dir_CheckList added
-//
-// Version 0.5,  28-07-2019, SM
-//    - Exists added
-//
-// Version 0.4
-//    - Get_Time_In_File hanged if file ended incorrect
-//    - _FS_class.Begin ESP32 support added
-//
-// Version 0.3
-//   - starting new file on size or time
-//     remove oldest file
-//
-// Version 0.2
-//   - automatic formatting ESP32 if no filesystem yet
-//
-// Version 0.1
-//
-// https://arduino-esp8266.readthedocs.io/en/latest/filesystem.html
 
-#ifndef FS_support_h
-#define FS_support_h 1.1
+#ifndef SD_MMC_support_h
+#define SD_MMC_support_h 0.2
 
-#define FS_NO_GLOBALS
 #include "FS.h"
-#include "My_File_Support.h"
 
 #ifdef ESP32
-  #include "SPIFFS.h"
+  #include "SD_MMC.h"
 #endif
 
-#include "My_StringSplitter.h"
+// FILELIEST BESTAAT NIET MEER
 
 // ***********************************************************************************
-// typical usage:
-//
-//_FS_class   FileSystem () ;
-//
-// void setup(){
-//  Serial.begin(115200);
-//  delay ( 500 ) ;
-//
-//  FileSystem.Begin () ;
 // ***********************************************************************************
-class _FS_class {
+class _SD_MMC_class {
 public:
-  int _Offset_Seconds = 0;
-
   // **************************************************
   // **************************************************
-  _FS_class() {
-    // **********************************************************************
-    // Bewust naar constructor verplaatst, zodat filesysteem direct bruikbaar
-    // **********************************************************************
-    //_DEBUG_Global_String += "\r\n+ _FS_Class.creator" ;
-#ifdef ESP32
-      // fff        this->_Opened = SPIFFS.begin ( true ) ;  // format if no filesystem yet
-      // SPIFFS.format () ;
-      // delay(1000);
-#else
-    if (!SPIFFS.begin()) {
-      SPIFFS.format();
-    }
-    this->_Opened = SPIFFS.begin();
-#endif
-    // SPIFFS.format () ;
-    if (this->_Opened) Serial.println("SPIFFS succesfull opened");
-    else
-      Serial.println("ERROR: SPIFFS could not be opened !!!! ");
-  }
+  _SD_MMC_class() {}
 
   // **************************************************
   // **************************************************
   bool Begin(String Filename = "", long Max_File_Time = 24 * 60 * 60, int Max_NFile = 10) {
-    //_DEBUG_Global_String += "\r\n+ _FS_Class.Begin" ;
+    bool Result;
+    Result = SD_MMC.begin();
+
 #ifdef ESP32
-    if (!this->_Opened) {
-      this->_Opened = SPIFFS.begin(true); // format if no filesystem yet
-    }
-    // Serial.println ( "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ) ;
-    // Serial.println ( this->_Opened ) ;
-    if (this->_Opened) {
+    if (Result) {
       if (_Parse_Filename(Filename)) {
         String Last_File_Pre = _Temp_Last_File_Pre;
         String Last_File_Post = _Temp_Last_File_Post;
         int Last_File_Nr = 0;
         String FileFound;
-        fs::File dir = SPIFFS.open("/");
+        fs::File dir = SD_MMC.open("/");
         fs::File file = dir.openNextFile();
         while (file) {
           FileFound = file.name();
@@ -118,18 +52,18 @@ public:
         _Last_File_Pre = Last_File_Pre;
         _Last_File_Post = Last_File_Post;
         _Last_File_Nr = Last_File_Nr;
-        Serial.println("Last File (SPIFFS) = " + _Last_Filename);
+        Serial.println("Last File (MMC) = " + _Last_Filename);
       }
     }
 #else
-    if (this->_Opened) {
+    if (Result) {
       if (_Parse_Filename(Filename)) {
         String Last_File_Pre = _Temp_Last_File_Pre;
         String Last_File_Post = _Temp_Last_File_Post;
         int Last_File_Nr = 0;
         String FileFound;
 
-        fs::Dir dir = SPIFFS.openDir(Last_File_Pre);
+        Dir dir = SD_MMC.openDir(Last_File_Pre);
         while (dir.next()) {
           FileFound = dir.fileName();
           if (_Parse_Filename(FileFound)) {
@@ -142,17 +76,15 @@ public:
         _Last_File_Pre = Last_File_Pre;
         _Last_File_Post = Last_File_Post;
         _Last_File_Nr = Last_File_Nr;
-        Serial.println("Last File (SPIFFS) = " + _Last_Filename);
+        Serial.println("Last File = (MMC) " + _Last_Filename);
       }
     }
 #endif
 
-    //   >0  aantal seconden (eerste kolom) dat een file maximaal mag bevatten
-    //   <0  maximaal filesize (in bytes)
     _Max_FileSize = 0;
     _Max_FileTime = 0;
     if (Max_File_Time > 0) {
-      _Max_FileTime = Max_File_Time;
+      _Max_FileTime = 1000 * Max_File_Time;
     } else {
       _Max_FileSize = -Max_File_Time;
     }
@@ -160,7 +92,8 @@ public:
     if (_Max_NFile < 0) {
       _Max_NFile = 0;
     }
-    return this->_Opened;
+
+    return Result;
   }
 
   // **************************************************
@@ -171,7 +104,7 @@ public:
 // ESP32
 // **************************************************
 #ifdef ESP32
-    fs::File dir = SPIFFS.open("/");
+    fs::File dir = SD_MMC.open("/");
     fs::File file = dir.openNextFile();
     Serial.println(">>>>>");
     while (file) {
@@ -184,7 +117,7 @@ public:
 // ESP8266
 // **************************************************
 #else
-    fs::Dir dir = SPIFFS.openDir("/");
+    Dir dir = SD_MMC.openDir("/");
     Serial.println(">>>>>");
     while (dir.next()) {
       Serial.println(dir.fileName());
@@ -194,19 +127,105 @@ public:
     return Result;
   }
 
-  void DirList_Print(String Path = "/") {
-    //    void DirList_Print ( fs::FS &Drive, String Path = "/" ) {
-    // if ( Drive == SD_MMC ) {
-    // Serial.println ( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  FS_SUPPOYU" ) ;
+  /*    // **************************************************
+    // **************************************************
+    void Get_Ordered_DirList ( String Path = "/", String Ends = "", bool Reversed=false ) {
+      int i = 0 ;
 
-    Serial.println("=====  Files in SPIFFS  =====  " + Path);
+      // **************************************************
+      // ESP32
+      // **************************************************
+      #ifdef ESP32
+        fs::File dir = SD_MMC.open ( Path ) ;
+        fs::File file = dir.openNextFile () ;
+        while ( file && ( i < _FileList_Max_N ) ) {
+          String Filename = String( file.name() ).substring(1) ;
+          if ( Ends.length() == 0 || Filename.endsWith ( Ends ) ) {
+            _FileList[i] = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
+            i++ ;
+          }
+          file = dir.openNextFile () ;
+        }
+
+      // **************************************************
+      // ESP8266
+      // **************************************************
+      #else
+        Dir dir = SD_MMC.openDir ( Path ) ;
+        while ( dir.next() && ( i < _FileList_Max_N ) ) {
+          String Filename = String(dir.fileName()).substring(1) ;
+          if ( Ends.length() == 0 || Filename.endsWith ( Ends ) ) {
+            File file = dir.openFile ( "r" ) ;
+            _FileList[i] = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
+            i++ ;
+          }
+        }
+      #endif
+
+      _FileList_Len = i ;
+      MySort ( _FileList, _FileList_Len, Reversed ) ;
+    }
+
+*/
+  // **************************************************
+  // **************************************************
+  void HTML_File_CheckList(String Path = "/", String Ends = "") {
+    String Filename;
+    String FileExt;
+    String Line;
+    String Result;
+
+    fs::File dir = SD_MMC.open(Path);
+    fs::File file = dir.openNextFile();
+    if (file) {
+      My_Webserver.sendContent("<h4>Data Files (unordered) on SD_MMC Card</h4>\n");
+      My_Webserver.sendContent("<form action=\"/Files_Selected.php\" method=\"get\">\n");
+      My_Webserver.sendContent("<table>\n");
+      My_Webserver.sendContent(
+          "<thead><tr><td>Graph</td><td>Filename</td><td>Size</td><td>Download</td></tr></thead><tbody>\n");
+
+      while (file) {
+        String Filename = String(file.name()).substring(1);
+        if (Ends.length() == 0 || Filename.endsWith(Ends)) {
+          Result = "";
+          int x1 = Filename.indexOf('.');
+          FileExt = Filename.substring(x1 + 1);
+          FileExt.toLowerCase();
+          Result = "<tr><td>";
+          // if ( FileExt.endsWith ( "csv" ) ) {
+          if (FileExt == "csv") {
+            Result += F("<label><input type=\"checkbox\" name=\"");
+            Result += Filename;
+            Result += "\"></label>";
+          }
+          Result += "</td><td>" + Filename + "</td><td>" + String(file.size());
+
+          Result += "</td><td><a href=\"";
+          Result += Filename;
+          Result += F("\" download>Download</a><td></tr>\n");
+
+          My_Webserver.sendContent(Result.c_str());
+          delay(40);
+          yield();
+        }
+        file = dir.openNextFile();
+      }
+
+      My_Webserver.sendContent("</tbody></table><input type=\"submit\" value=\"Show Graph(s)\">\n</form>\n");
+    }
+  }
+
+  // **************************************************
+  // **************************************************
+  void DirList_Print(String Path = "/") {
+    Serial.println("=====  Files in SD_MMC  =====  " + Path);
     int Count = 0;
 
 // **************************************************
 // ESP32
 // **************************************************
 #ifdef ESP32
-    fs::File dir = SPIFFS.open("/");
+    fs::File dir = SD_MMC.open("/");
     fs::File file = dir.openNextFile();
     while (file) {
       Serial.print("    ");
@@ -218,13 +237,13 @@ public:
       Count += 1;
     }
 
-    Serial.printf("Files=%i  Total=%i  Used=%i  Free=%i  MaxOpen=%i\n", Count, SPIFFS.totalBytes(), SPIFFS.usedBytes(),
-                  SPIFFS.totalBytes() - SPIFFS.usedBytes(), 10);
+    Serial.printf("Files=%i  Total=%i  Used=%i  Free=%i  MaxOpen=%i\n", Count, SD_MMC.totalBytes(), SD_MMC.usedBytes(),
+                  SD_MMC.totalBytes() - SD_MMC.usedBytes(), 10);
 // **************************************************
 // ESP8266
 // **************************************************
 #else
-    fs::Dir dir = SPIFFS.openDir(Path);
+    Dir dir = Drive.openDir(Path);
     while (dir.next()) {
       Serial.print("    " + dir.fileName() + "\t[");
       fs::File file = dir.openFile("r");
@@ -233,106 +252,14 @@ public:
       Count += 1;
     }
 
-    fs::FSInfo fs_info;
-    SPIFFS.info(fs_info);
+    FSInfo fs_info;
+    SD_MMC.info(fs_info);
     Serial.printf("Files=%i  Total=%i  Used=%i  Free=%i  MaxOpen=%i  MaxPathLength=%i  BlockSize=%i  PageSize=%i\n",
                   Count, fs_info.totalBytes, fs_info.usedBytes, fs_info.totalBytes - fs_info.usedBytes,
                   fs_info.maxOpenFiles, fs_info.maxPathLength, fs_info.blockSize, fs_info.pageSize);
+#endif
     Print_Heap();
-#endif
   }
-
-  // **************************************************
-  // **************************************************
-  void HTML_File_CheckList(String Path = "/", String Ends = "") {
-    String Filename;
-    String FileExt;
-    String Line;
-    String Result;
-
-    My_Webserver.sendContent("<h4>Data Files (unordered) on ESP-chip</h4>\n");
-    My_Webserver.sendContent("<form action=\"/Files_Selected.php\" method=\"get\">\n");
-    My_Webserver.sendContent("<table>\n");
-    My_Webserver.sendContent(
-        "<thead><tr><td>Graph</td><td>Filename</td><td>Size</td><td>Download</td></tr></thead><tbody>\n");
-
-// **************************************************
-// ESP32
-// **************************************************
-#ifdef ESP32
-    fs::File dir = SPIFFS.open(Path);
-    fs::File file = dir.openNextFile();
-    while (file) {
-      String Filename = String(file.name()).substring(1);
-      if (Ends.length() == 0 || Filename.endsWith(Ends)) {
-        Result = "";
-        int x1 = Filename.indexOf('.');
-        FileExt = Filename.substring(x1 + 1);
-        FileExt.toLowerCase();
-        Result = "<tr><td>";
-        // if ( FileExt.endsWith ( "csv" ) ) {
-        if (FileExt == "csv") {
-          Result += F("<label><input type=\"checkbox\" name=\"");
-          Result += Filename;
-          Result += "\"></label>";
-        }
-        Result += "</td><td>" + Filename + "</td><td>" + String(file.size());
-
-        Result += "</td><td><a href=\"";
-        Result += Filename;
-        Result += F("\" download>Download</a><td></tr>\n");
-
-        My_Webserver.sendContent(Result.c_str());
-        delay(40);
-        yield();
-      }
-      file = dir.openNextFile();
-    }
-
-// **************************************************
-// ESP8266
-// **************************************************
-#else
-    fs::Dir dir = SPIFFS.openDir(Path);
-    while (dir.next()) {
-      String Filename = String(dir.fileName()).substring(1);
-      if (Ends.length() == 0 || Filename.endsWith(Ends)) {
-        Result = "";
-        fs::File file = dir.openFile("r");
-        Filename = String(dir.fileName()).substring(1);
-        // Line     = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
-        // Line     = Filename + "</td><td>" + String ( file.size() ) + "</td><td>" ;
-
-        int x1 = Filename.indexOf('.');
-        FileExt = Filename.substring(x1 + 1);
-        FileExt.toLowerCase();
-        // Serial.println ( x1 ) ;
-        // Serial.println ( FileExt  );
-        Result = "<tr><td>";
-        // if ( FileExt.endsWith ( "csv" ) ) {
-        if (FileExt == "csv") {
-          Result += F("<label><input type=\"checkbox\" name=\"");
-          Result += Filename;
-          Result += "\"></label>";
-        }
-        Result += "</td><td>" + Filename + "</td><td>" + String(file.size());
-
-        Result += "</td><td><a href=\"";
-        Result += Filename;
-        Result += F("\" download>Download</a><td></tr>\n");
-
-        My_Webserver.sendContent(Result.c_str());
-        delay(40);
-        yield();
-      }
-    }
-#endif
-    My_Webserver.sendContent("</tbody></table><input type=\"submit\" value=\"Show Graph(s)\">\n</form>\n");
-  }
-
-  // **************************************************
-  // **************************************************
-  int Get_File_Nr() { return _Last_File_Nr; }
 
   // **************************************************
   // **************************************************
@@ -346,44 +273,9 @@ public:
       _Last_File_Pre = "/MLX_";
       _Last_File_Post = ".bin";
     }
-
-    // if ( _Last_File_Nr < 10 ) _Last_Filename = _Last_File_Pre + "0" + String ( _Last_File_Nr ) + _Last_File_Post ;
-    // else _Last_Filename = _Last_File_Pre + String ( _Last_File_Nr ) + _Last_File_Post ;
     _Last_Filename = _Last_File_Pre + String(_Last_File_Nr) + _Last_File_Post;
 
     return _Last_Filename;
-  }
-
-  // **************************************************
-  // ene variant om de laatste MLX_xxx.bin file te bepalen
-  // **************************************************
-  int Get_Last_File_Number() {
-
-    int Last_FileNr = 0;
-// **************************************************
-// ESP32
-// **************************************************
-#ifdef ESP32
-    fs::File dir = SPIFFS.open("/");
-    fs::File file = dir.openNextFile();
-    while (file) {
-      String Filename = file.name();
-      int FileNr = Parse_FileNr(Filename);
-      if (FileNr > Last_FileNr) Last_FileNr = FileNr;
-      file = dir.openNextFile();
-    }
-// **************************************************
-// ESP8266
-// **************************************************
-#else
-    fs::Dir dir = SPIFFS.openDir("/");
-    while (dir.next()) {
-      String Filename = dir.fileName();
-      int FileNr = Parse_FileNr(Filename);
-      if (FileNr > Last_FileNr) Last_FileNr = FileNr;
-    }
-#endif
-    return Last_FileNr;
   }
 
   // **************************************************
@@ -397,7 +289,7 @@ public:
 // ESP32
 // **************************************************
 #ifdef ESP32
-    fs::File dir = SPIFFS.open("/");
+    fs::File dir = SD_MMC.open("/");
     fs::File file = dir.openNextFile();
     while (file) {
       _Last_Filename = file.name();
@@ -407,7 +299,7 @@ public:
 // ESP8266
 // **************************************************
 #else
-    fs::Dir dir = SPIFFS.openDir("/");
+    Dir dir = SD_MMC.openDir("/");
     while (dir.next()) {
       //_Last_Filename = dir.Filename() ;
       _Last_Filename = dir.fileName();
@@ -435,7 +327,7 @@ public:
   // **************************************************
   void Dump(String Filename) {
     Serial.println("===== Dump " + Filename);
-    fs::File file = SPIFFS.open(Filename, "r");
+    fs::File file = SD_MMC.open(Filename, "r");
     if (file) {
       while (file.available()) {
         Serial.print(file.readString());
@@ -446,25 +338,12 @@ public:
       Serial.println("ERROR: file not found");
     }
   }
-  // **************************************************
-  // **************************************************
-  String Read_File(String Filename) {
-    String Line;
-    fs::File file = SPIFFS.open(Filename, "r");
-    if (file) {
-      while (file.available()) {
-        Line += file.readString();
-      }
-      file.close();
-    }
-    return Line;
-  }
 
   // **************************************************
   // **************************************************
   int Get_Time_In_File(String Filename) {
     int Delta_T = 0;
-    fs::File file = SPIFFS.open(Filename, "r");
+    fs::File file = SD_MMC.open(Filename, "r");
     String Line_0;
     String Line_1;
     String Line_2;
@@ -529,59 +408,59 @@ public:
   // **************************************************
   // **************************************************
   /*
-      int Get_Time_In_File_HANGT_TEVEEL_AF_VAN_NTP_SERVER ( String Filename ) {
-        File file = SPIFFS.open ( Filename, "r" ) ;
-        String Line_0 ;
-        String Line_1 ;
-        String Line_x ;
-        if ( file ) {
-          if ( file.available() ) {
-            Line_0 = file.readStringUntil ( '\n' ) ;
-          }
-          if ( file.available() ) {
-            Line_1 = file.readStringUntil ( '\n' ) ;
-          }
-          while ( file.available() ){
-            Line_x = file.readStringUntil ( '\n' ) ;
-          }
-          file.close () ;
+    int Get_Time_In_File_HANGT_TEVEEL_AF_VAN_NTP_SERVER ( String Filename ) {
+      fs::File file = SD_MMC.open ( Filename, "r" ) ;
+      String Line_0 ;
+      String Line_1 ;
+      String Line_x ;
+      if ( file ) {
+        if ( file.available() ) {
+          Line_0 = file.readStringUntil ( '\n' ) ;
+        }
+        if ( file.available() ) {
+          Line_1 = file.readStringUntil ( '\n' ) ;
+        }
+        while ( file.available() ){
+          Line_x = file.readStringUntil ( '\n' ) ;
+        }
+        file.close () ;
 
-          My_StringSplitter *Splitter = new My_StringSplitter ( Line_0, '\t' ) ;
-          int ItemCount = Splitter -> getItemCount () ;
-          int DT_i ;
-          for ( DT_i = 0; DT_i < ItemCount; DT_i++ ) {
-            String Item = Splitter -> getItemAtIndex ( DT_i ) ;
-            if ( Item == "DateTime" ) {
-              break ;
-            }
+        My_StringSplitter *Splitter = new My_StringSplitter ( Line_0, '\t' ) ;
+        int ItemCount = Splitter -> getItemCount () ;
+        int DT_i ;
+        for ( DT_i = 0; DT_i < ItemCount; DT_i++ ) {
+          String Item = Splitter -> getItemAtIndex ( DT_i ) ;
+          if ( Item == "DateTime" ) {
+            break ;
           }
+        }
 
-          if ( DT_i < ItemCount ) {
-            Splitter -> newString ( Line_1, '\t' ) ;
-            String Date1 = Splitter -> getItemAtIndex ( DT_i ) ;
-            time_t DT1 = String_2_UnixTime ( Date1 ) ;
+        if ( DT_i < ItemCount ) {
+          Splitter -> newString ( Line_1, '\t' ) ;
+          String Date1 = Splitter -> getItemAtIndex ( DT_i ) ;
+          time_t DT1 = String_2_UnixTime ( Date1 ) ;
 
-            Splitter -> newString ( Line_x, '\t' ) ;
-            String Date2 = Splitter -> getItemAtIndex ( DT_i ) ;
-            time_t DT2 = String_2_UnixTime ( Date2 ) ;
+          Splitter -> newString ( Line_x, '\t' ) ;
+          String Date2 = Splitter -> getItemAtIndex ( DT_i ) ;
+          time_t DT2 = String_2_UnixTime ( Date2 ) ;
 
-            Serial.print ( "Delta T in file = ") ;
-            Serial.println ( DT2-DT1 ) ;
-            return (int) (DT2-DT1) ;
-          }
-          else {
-            return 0 ;
-          }
+          Serial.print ( "Delta T in file = ") ;
+          Serial.println ( DT2-DT1 ) ;
+          return (int) (DT2-DT1) ;
         }
         else {
           return 0 ;
         }
       }
-  */
+      else {
+        return 0 ;
+      }
+    }
+*/
   // **************************************************
   // **************************************************
   bool Exists(String Filename) {
-    fs::File file = SPIFFS.open(Filename, "r");
+    fs::File file = SD_MMC.open(Filename, "r");
     if (file) {
       file.close();
       return true;
@@ -596,7 +475,7 @@ public:
 // ESP32
 // **************************************************
 #ifdef ESP32
-    fs::File dir = SPIFFS.open("");
+    fs::File dir = SD_MMC.open("");
     fs::File file = dir.openNextFile();
     while (file) {
       String Filename = file.name();
@@ -619,7 +498,7 @@ public:
 // **************************************************
 #else
     // String Result ;
-    fs::Dir dir = SPIFFS.openDir("");
+    Dir dir = SD_MMC.openDir("");
     while (dir.next()) {
       // Result += dir.fileName() + "\n" ;
       fs::File file = dir.openFile("r");
@@ -643,7 +522,7 @@ public:
   // **************************************************
   bool Delete(String Filename) {
     Serial.println("===== Delete " + Filename);
-    bool Result = SPIFFS.remove(Filename);
+    bool Result = SD_MMC.remove(Filename);
     if (Result) {
       Serial.println("\n===============");
     } else {
@@ -660,11 +539,11 @@ public:
 #ifdef ESP32
     Serial.println("!!!!!!!! ToDo _FS_class.Delete_All");
 #else
-    fs::Dir dir = SPIFFS.openDir("");
+    Dir dir = SD_MMC.openDir("");
     while (dir.next()) {
       Filename = dir.fileName();
       Serial.println("Delete : " + Filename);
-      SPIFFS.remove(Filename);
+      SD_MMC.remove(Filename);
     }
 #endif
   }
@@ -672,7 +551,7 @@ public:
   // **************************************************
   // **************************************************
   bool Store_File(String Filename, String Line) {
-    fs::File file = SPIFFS.open(Filename, "w");
+    fs::File file = SD_MMC.open(Filename, "w");
     file.print(Line);
     file.close();
     return true;
@@ -681,7 +560,7 @@ public:
   // **************************************************
   // **************************************************
   bool Append_File(String Filename, String Line) {
-    fs::File file = SPIFFS.open(Filename, "a");
+    fs::File file = SD_MMC.open(Filename, "a");
     file.print(Line);
     file.close();
     return true;
@@ -690,7 +569,7 @@ public:
   // **************************************************
   // **************************************************
   bool Create_CSV_File(String Filename, String Header) {
-    if (not SPIFFS.exists(Filename)) {
+    if (not SD_MMC.exists(Filename)) {
       Append_File(Filename, Header);
     }
   }
@@ -703,7 +582,10 @@ public:
     // ************************************************************
     bool NewFile = false;
     if (_Max_FileSize > 0) {
-      fs::File file = SPIFFS.open(Filename, "r");
+      fs::File file = SD_MMC.open(Filename, "r");
+      Serial.print("fileszie/Max");
+      Serial.print(file.size());
+      Serial.println(_Max_FileSize);
       if (file.size() > _Max_FileSize) {
         NewFile = true;
       }
@@ -714,52 +596,50 @@ public:
       // ************************************************************
       if (!_Initialized) {
         // Serial.println ( "Before gettime" ) ;
-        _Offset_Seconds = millis() / 1000 + 10 + Get_Time_In_File(Filename);
+        _Offset_Millis = 1000 * Get_Time_In_File(Filename);
         // Serial.println ( "Agter gettime" ) ;
-        if (_Offset_Seconds > _Max_FileTime) {
-          NewFile = true;
+        if (_Offset_Millis > _Max_FileTime) {
+          _Offset_Millis = _Max_FileTime;
         }
         _Initialized = true;
       }
       /*
-      Serial.print   ( "millis / Delta / maxfileTIME / Offset = ");
-      Serial.print ( millis() ) ;
-      Serial.print ( " / " );
-      Serial.print ( _Max_FileTime - _Offset_Seconds ) ;
-      Serial.print ( " / " ) ;
-      Serial.print ( _Max_FileTime ) ;
-      Serial.print ( " / " );
-      Serial.println ( _Offset_Seconds ) ;
-      //*/
-      // if ( ( millis() - _File_Millis ) > ( _Max_FileTime - _Offset_Seconds ) ) {
-      if ((millis() / 1000 + _Offset_Seconds) > _Max_FileTime) {
+Serial.print   ( "millis / Delta / maxfileTIME / Offset = ");
+Serial.print ( millis() ) ;
+Serial.print ( " / " );
+Serial.print ( _Max_FileTime - _Offset_Millis ) ;
+Serial.print ( " / " ) ;
+Serial.print ( _Max_FileTime ) ;
+Serial.print ( " / " );
+Serial.println ( _Offset_Millis ) ;
+*/
+      if ((millis() - _File_Millis) > (_Max_FileTime - _Offset_Millis)) {
         NewFile = true;
       }
     }
 
     // if ( ( millis() - _File_Millis ) > _Max_FileTime ) {
     if (NewFile) {
-      //_File_Millis = millis() ;
+      _File_Millis = millis();
       if (_Last_File_Nr > _Max_NFile) {
         String File_To_Remove = _Last_File_Pre + String(_Last_File_Nr - _Max_NFile) + _Last_File_Post;
-        SPIFFS.remove(File_To_Remove);
+        SD_MMC.remove(File_To_Remove);
         Serial.println("rrrrrrrrrrrrrrrrrr " + File_To_Remove);
       }
-      SPIFFS.rename(Filename, Get_Next_Filename());
+      SD_MMC.rename(Filename, Get_Next_Filename());
       Serial.println("???????????????????" + _Get_Last_Filename());
     }
 
     //_Get_Last_Filename () ;
-    if (not SPIFFS.exists(Filename)) {
+    if (not SD_MMC.exists(Filename)) {
       Append_File(Filename, Header);
-      _Offset_Seconds = -(millis() / 1000);
+      _Offset_Millis = 0;
     }
   }
 
   // *************************************************
 private:
   // *************************************************
-  bool _Opened = false;
   String _Last_Filename = "";
   String _Last_File_Pre = "";
   String _Last_File_Post = "";
@@ -769,9 +649,9 @@ private:
   String _Temp_Last_File_Post = "";
   int _Temp_Last_File_Nr = 0;
 
-  // unsigned long _File_Millis   = 0 ;
+  unsigned long _File_Millis = 0;
   bool _Initialized = false;
-  // int           _Offset_Millis = 0 ;
+  int _Offset_Millis = 0;
 
   unsigned long _Max_FileTime;
   long _Max_FileSize;
@@ -801,6 +681,6 @@ private:
 
 // ***********************************************************************************
 // ***********************************************************************************
-_FS_class File_System;
+_SD_MMC_class SD_MMC_System;
 
 #endif

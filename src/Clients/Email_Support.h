@@ -88,7 +88,7 @@ String Encode64(String Line) {
 }
 
 #ifndef ESP32
-#include <WiFiClientSecure.h>
+  #include <WiFiClientSecure.h>
 
 // ***********************************************************************************
 bool Email_Wait(WiFiClientSecure &Mail_Client, String Response = "", uint16_t timeOut = 10000) {

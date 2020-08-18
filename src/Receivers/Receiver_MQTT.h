@@ -30,7 +30,7 @@
 //    - reset on no conection removed
 //
 // Version 0.8   19-07-2019, SM
-//    - MQTT Callback overgeheveld naarSensor_Receiver_2.h  (nu kunnen meerdere Sensors/Receivers MQTT ontvangen )
+//    - MQTT Callback overgeheveld naarSensor_Receiver.h  (nu kunnen meerdere Sensors/Receivers MQTT ontvangen )
 //
 // Version 0.7   29-05-2019, SM
 //    - doet geen restart als geen connectie kan worden gerealiseerd en Allow_Wifi_Not_Found == true
