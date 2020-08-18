@@ -158,7 +158,7 @@ String _DEBUG_Global_String = "";
 #include "Utilities/My_StringSplitter.h"
 
 #ifdef ESP32
-  #include "My_ESP32_Support.h"
+  #include "Utilities/My_ESP32_Support.h"
 #endif
 
 #ifdef ESP32
@@ -348,7 +348,7 @@ bool Allow_Wifi_Not_Found = false;
   #include "user_interface.h" //system_get_sdk_version()
 #endif
 
-//#include "My_DateTime.h"
+//#include "Utilities/My_DateTime.h"
 #include <Wire.h>
 #include <vector>
 
@@ -564,7 +564,7 @@ void Create_HTML_Values_Page() {
 //#include "ext_def.h"
 unsigned long LuftDaten_Sample_Count = 0;
 #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
-  #include "LuftDaten.h"
+  #include "Clients/LuftDaten.h"
 #endif
 //#include "Quirks.h"
 

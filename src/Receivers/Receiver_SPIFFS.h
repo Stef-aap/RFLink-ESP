@@ -16,7 +16,7 @@
 //#define FTP_DEBUG   JAAAAAAA
 //#include <ESP8266FtpServer.h>
 #ifdef YES_INCLUDE_FTPSERVER
-  #include "My_FtpServer.h"
+  #include "Clients/My_FtpServer.h"
 FtpServer ftpSrv; // set #define FTP_DEBUG in ESP8266FtpServer.h to see ftp verbose on serial
 #endif
 /*

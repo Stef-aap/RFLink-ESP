@@ -12,7 +12,7 @@
 
 #include "Sensor_Base.h"
 //#include <Adafruit_ADS1015.h>
-#include "Stef_Adafruit_ADS1015.h"
+#include "Hardware/Stef_Adafruit_ADS1015.h"
 
 // ***********************************************************************************
 // https://os.mbed.com/teams/PQ_Hybrid_Electrical_Equipment_Team/code/ADS1015/file/71b44421e736/Adafruit_ADS1015.h/

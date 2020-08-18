@@ -59,7 +59,7 @@
 #ifndef Receiver_MQTT_h
 #define Receiver_MQTT_h 1.6
 
-#include "PubSubClient.h" // MQTT client
+#include "Clients/PubSubClient.h" // MQTT client
 #include "Receiver_Base.h"
 
 #define Broker_Port 1883

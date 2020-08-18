@@ -23,7 +23,7 @@
 
 #include "Sensor_Base.h"
 //#include <Adafruit_ADS1015.h>
-#include "Stef_Adafruit_ADS1015.h"
+#include "Hardware/Stef_Adafruit_ADS1015.h"
 
 const char *Signal[] = {"Signal-1", "Signal-2", "Signal-3", "Signal-4"};
 

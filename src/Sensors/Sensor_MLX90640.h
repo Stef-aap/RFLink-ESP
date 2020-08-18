@@ -8,8 +8,8 @@
 #ifndef Sensor_MLX90640_h
 #define Sensor_MLX90640_h 0.2
 
-#include "MLX90640_API.h"
-#include "MLX90640_I2C_Driver.h"
+#include "Hardware/MLX90640_API.h"
+#include "Hardware/MLX90640_I2C_Driver.h"
 #include "driver/adc.h"
 #include <SimpleKalmanFilter.h>
 #include <Wire.h>

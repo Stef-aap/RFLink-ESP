@@ -4,7 +4,7 @@
 #ifndef Receiver_Madavi_h
 #define Receiver_Madavi_h 0.1
 
-#include "LuftDaten.h"
+#include "Clients/LuftDaten.h"
 #include "Receiver_Base.h"
 
 // ***********************************************************************************

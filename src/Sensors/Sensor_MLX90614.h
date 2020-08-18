@@ -8,7 +8,7 @@
 #define Sensor_MLX90614_h 0.2
 
 #include "Sensor_Base.h"
-#include "Stef_SparkFunMLX90614.h"
+#include "Hardware/Stef_SparkFunMLX90614.h"
 #include <SimpleKalmanFilter.h>
 #include <Wire.h>
 
