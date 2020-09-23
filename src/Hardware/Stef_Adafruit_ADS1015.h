@@ -22,9 +22,9 @@
 #define Stef_Adafruit_ADS1015_h 0.5
 
 #if ARDUINO >= 100
-#include "Arduino.h"
+  #include "Arduino.h"
 #else
-#include "WProgram.h"
+  #include "WProgram.h"
 #endif
 
 #include <Wire.h>
@@ -133,9 +133,6 @@ public:
   uint16_t readADC_SingleEnded(uint8_t channel);
   int16_t readADC_Differential_0_1(void);
 
-  // int16_t   readADC_Differential_1_0(void);
-  // int16_t readADC_Differential ( int Mux ) ;
-  // int16_t readADC_Differential ( uint16_t Mux ) ;
   int16_t readADC_Differential_0_3(void);
   int16_t readADC_Differential_1_3(void);
   int16_t readADC_Differential_2_3(void);

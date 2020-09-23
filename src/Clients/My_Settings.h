@@ -15,13 +15,12 @@
 String _My_Settings_Filename = "/Settings.json";
 
 DynamicJsonDocument _My_Settings_Buffer(2000); // ArduinoJson V6
-// StaticJsonDocument  <2000> _My_Settings_Buffer ;   // ArduinoJson V6
 
 // ***********************************************************************************
 // ***********************************************************************************
 class _My_Settings_Class {
 public:
-  JsonObject DocumentRoot; //= _My_Settings_Buffer.as<JsonObject>() ;
+  JsonObject DocumentRoot;
 
   // ***********************************************************************
   // ***********************************************************************
@@ -54,22 +53,6 @@ public:
 #endif
   }
 
-  /*
-    // ***********************************************************************
-    // ***********************************************************************
-    void Create_Sensors ( ) {
-      for ( JsonPair KeyValue : DocumentRoot ) {
-        String      Key   = String ( KeyValue.key().c_str() ) ;
-        JsonVariant Value = KeyValue.value () ;
-
-        if ( Key == "Sensor_Blauwe_Engel" ) {
-          Sensors.Add ( new _Sensor_Blauwe_Engel  () ) ;
-        }
-      }
-    }
-
-//*/
-
   // ***********************************************************************
   // ***********************************************************************
   void Remove(String Key) { DocumentRoot.remove(Key); }
@@ -93,17 +76,6 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  /*
-    void Store_Changes ( String Filename = _My_Settings_Filename ) {
-      if ( UnStored_Changes ) {
-        this -> Store_Settings () ;
-        UnStored_Changes = false ;
-      }
-    }
-*/
-
-  // ***********************************************************************
-  // ***********************************************************************
   void Create_WebPage(String Filename = "/Settings.html") {
 #ifdef FileSystem_SPIFFS
     Serial.print("\n      Creating Settings Webpage  @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ IP = ");
@@ -117,9 +89,6 @@ public:
 
     String Line = "";
     Line += String(FPSTR(HTML_Sensor_Settings_Begin));
-    //      Line += "<h2><img src=\"favicon.ico\" /> MiRa Sensors </h2>\n" ;
-    //      Line += "<a href=\"index.html\" target=\"_self\" >StartPage</a><br><br>\n" ;
-    //      Line += "<form action=\"/Settings_Page.php\"> \n" ;
     file.print(Line);
 
     // *************************************************
@@ -127,12 +96,9 @@ public:
     // moet er onieuw een JSON object van gemaakt worden
     // *************************************************
     JsonObject DocumentRoot = _My_Settings_Buffer.as<JsonObject>();
-    // JsonVariant Variant      = _My_Settings_Buffer.to<JsonVariant>();
 
     for (JsonPair KeyValue : DocumentRoot) {
       String Key = String(KeyValue.key().c_str());
-      // Serial.println ( "KEY " + Key ) ;
-      // const char* key = p.key;
       JsonVariant Value = KeyValue.value();
 
       // ************************************************
@@ -148,14 +114,7 @@ public:
         Line += Key;
         Line += "</label><br>";
         file.println(Line);
-        // Serial.println ( Line ) ;
       }
-
-      // ************************************************
-      // ************************************************
-      // else if ( Value.is<signed int>() ) {
-      //  Serial.println ( "INTTT" ) ;
-      //}
 
       // ************************************************
       // ************************************************
@@ -171,7 +130,6 @@ public:
         Line += Key;
         Line += "<br>";
         file.println(Line);
-        // Serial.println ( Line ) ;
       }
     }
 
@@ -183,10 +141,8 @@ public:
 </body>\n\
 </html>";
     file.print(Line);
-
     file.close();
 
-// File_System.Dump ( Filename ) ;
 #endif
   }
 
@@ -202,10 +158,8 @@ public:
   // ***********************************************************************
   String Get_Set_Default_String(String Key, String Default, bool Force = false) {
     String Value = _My_Settings_Buffer[Key].as<String>();
-    // Serial.println ( "Get_Set_Default_String  ::: " + Value + "::: " + Default + "  ;;;  " + String (Force) )  ;
     if (Force || (Value == "null")) {
       _My_Settings_Buffer[Key] = Default;
-      // Serial.println ( Key + "---" + String(Default) )  ;
       UnStored_Changes = true;
       return Default;
     }
@@ -214,11 +168,7 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  int Read_Int(String Key) {
-    // Serial.println ( "999999999999999999999999999999999999999999999999  " + Key + String((int)_My_Settings_Buffer [
-    // Key ]|-1))  ;
-    return (int)_My_Settings_Buffer[Key]; //| -1 ;
-  }
+  int Read_Int(String Key) { return (int)_My_Settings_Buffer[Key]; }
 
   // ***********************************************************************
   // ***********************************************************************

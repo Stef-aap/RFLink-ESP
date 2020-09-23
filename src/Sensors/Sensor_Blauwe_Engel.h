@@ -28,22 +28,10 @@ Adafruit_SSD1306 Boiler_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 // ***********************************************************************************
 // interrupt routine, detecteert a falling edge van de Start_Knop
 // ***********************************************************************************
-// int           _Sensor_Blauwe_Engel_Knop_State          = 0 ;
-// unsigned long _Sensor_Blauwe_Engel_Falling_Start       = 0 ;
 int _Sensor_Blauwe_Engel_StartKnop_Count = 0;
 unsigned long _Sensor_Blauwe_Engel_StartKnop_Start = 0;
 static void _Sensor_Blauwe_Engel_Knop_Falling() ICACHE_RAM_ATTR;
-static void _Sensor_Blauwe_Engel_Knop_Falling() {
-  _Sensor_Blauwe_Engel_StartKnop_Count += 1;
-  // Serial.println ( "iiiiiiiiiiiiiii") ;
-  /*
-  if ( _Sensor_Blauwe_Engel_Knop_State == 0 ) {
-    _Sensor_Blauwe_Engel_Falling_Start = millis () ;
-    _Sensor_Blauwe_Engel_Knop_State    =  1 ;
-Serial.println ( "iiiiiiiiiiiiiii") ;
-  }
-*/
-}
+static void _Sensor_Blauwe_Engel_Knop_Falling() { _Sensor_Blauwe_Engel_StartKnop_Count += 1; }
 
 // ***********************************************************************************
 // interrupt routine, detecteert het aan zijn van de WarmWater-LED
@@ -51,10 +39,7 @@ Serial.println ( "iiiiiiiiiiiiiii") ;
 int _Sensor_Blauwe_Engel_LED_Count = 0;
 unsigned long _Sensor_Blauwe_Engel_LED_Start = 0;
 static void _Sensor_Blauwe_Engel_LED_Falling() ICACHE_RAM_ATTR;
-static void _Sensor_Blauwe_Engel_LED_Falling() {
-  _Sensor_Blauwe_Engel_LED_Count += 1;
-  // Serial.println ( "OOOOOOOOOOOOOOOOOOOO") ;
-}
+static void _Sensor_Blauwe_Engel_LED_Falling() { _Sensor_Blauwe_Engel_LED_Count += 1; }
 
 const int _State_Boiler_Off = 0;
 const int _State_Boiler_ON = 5;
@@ -69,9 +54,6 @@ const int _State_Boiler_Knop_Released = 3;
 class _Sensor_Blauwe_Engel : public _Sensor_BaseClass {
 
 public:
-  //#define   ON    true
-  //#define   OFF   false
-
 #define _BOILER_KNOP_PRESS HIGH
 #define _BOILER_KNOP_RELEASE LOW
 
@@ -110,9 +92,6 @@ public:
 _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
 ";
     MQTT_Callback_Topic = "huis/verdieping0/meterkast/SlimmeEnergieMeter";
-    // MQTT_Callback_Topic = "huis/ergens/Boiler_Test" ;
-    // MQTT_Callback_Topic = "camper/verdieping0/leefruimte/Sensors_02_" ;
-    // MQTT_Callback_Topic = "huis/verdieping0/kamer1/CO2_Sensor_REF2_" ;
 
     _JSON_Short_Header = "Blauwe_Engel_LED";
     _JSON_Short_Header += "\t";
@@ -144,13 +123,6 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     // ***********************************
     // setup the OLED display
     // ***********************************
-    // 128 x 64 pixel display
-    //#if (SSD1306_LCDHEIGHT != 64)
-    //#error("Height incorrect, please fix Adafruit_SSD1306.h!");
-    //#endif
-    // initialize and clear display
-    // Boiler_Display.begin ( SSD1306_SWITCHCAPVCC, _OLED_Address ) ;
-    // SSD1306_SWITCHCAPVCC = generate display voltage from 3.3V internally
     if (!Boiler_Display.begin(SSD1306_SWITCHCAPVCC, 0x3C)) {
       Serial.println("SSD1306 allocation failed");
       _Boiler_Display_Available = false;
@@ -173,9 +145,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     _TM1638_Regel[4] = String("12 1 27.5"); //  Time left [min]     //  Water [Liter]
     _TM1638_Regel[5] = String("78 2 27.5"); //  TBoiler [ Celsius]  //  Water [Liter]
     _TM1638_Regel[6] = String("SENS  03");  //  Programm Name and Version
-    //_TM1638_Regel [7] = String ( _Main_Name  ) ;       //  Programm Name and Version
-
-    // My_Prefs.putChar ( "Reboot_Options", Reboot_Options ) ;
+    // _TM1638_Regel[7] = String(_Main_Name); //  Programm Name and Version
   }
 
   // **********************************************************************************************
@@ -242,35 +212,11 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
       _Sensor_Blauwe_Engel_LED_Start = millis();
       _LED_Pulses = _Sensor_Blauwe_Engel_LED_Count;
       _Sensor_Blauwe_Engel_LED_Count = 0;
-      //_LED_Sum  += _LED_Pulses ;
-      //_LED_NSum += 1 ;
-      // Serial.println ( _LED_Sum ) ;
 
       char buffer[40];
       snprintf(buffer, sizeof(buffer), "% 9.1f", (millis() / 1000.0));
       _TM1638_Regel[3] = String(String(buffer));
     }
-
-    /*
-      // ***********************************************************
-      // Lees de gebruikers Knop en kijk of de Boiler aangezet moet worden
-      // ***********************************************************
-      if ( _Sensor_Blauwe_Engel_Knop_State == 1 ) {
-        if ( digitalRead ( _Start_Knop_Pin ) == LOW ) {
-          if ( ( millis() - _Sensor_Blauwe_Engel_Falling_Start ) > 100 ) {
-            _Sensor_Blauwe_Engel_Knop_State = 2 ;
-            Set_Boiler ( true ) ;
-          }
-        }
-        else {
-          _Sensor_Blauwe_Engel_Knop_State = 0 ;
-        }
-      }
-      else if ( _Sensor_Blauwe_Engel_Knop_State == 2 ) {
-        delay ( 100 ) ;
-        _Sensor_Blauwe_Engel_Knop_State = 0 ;
-      }
-*/
 
     // ***********************************************************
     // Stop the Boiler als de tijd is verstreken
@@ -278,7 +224,6 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     // ***********************************************************
     if (_Boiler_Start > 0) {
       if ((millis() - _Boiler_Start) > (_Boiler_Period)) {
-        // Set_Boiler ( false ) ;
         _Boiler_Start = 0;
         _Boiler_Should_be_ON = false;
         _Boiler_Knop_Try = 0;
@@ -331,7 +276,6 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
             _Boiler_Knop_Try = 0;
             Serial.println("ZET TO ZERO");
             if (_Boiler_Start == 0) {
-              //                _Boiler_First_Start = millis () ;
               _Water_Start = _W_Dag;
             }
             _Boiler_Start = millis();
@@ -437,15 +381,6 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
       Time_ToGo = (_Boiler_Period - (millis() - _Boiler_Start)) / 1000;
     }
 
-    //      Serial.println ( "pppp" + String ( _LED_Sum) + "---" + String ( _LED_NSum ) + "---" + String ( _LED_Pulses )
-    //      ) ;
-    /*      int LED = 0 ;
-      if ( _LED_NSum > 0 ) {
-        LED = _LED_Sum / _LED_NSum ;
-      }
-      _LED_Sum  = 0 ;
-      _LED_NSum = 0 ;
-*/
     JSON_Data += " \"Blauwe_Engel_LED\":";
     JSON_Data += String(_LED_Pulses);
     JSON_Data += ",";
@@ -489,9 +424,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
   // ***********************************************************************
   // ***********************************************************************
   void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
-    // Serial.println ( Payload ) ;
     _W_Dag = root["W_Dag"];
-    // Serial.println ( "GGGGGGGGGGGGGGGGGGGGGGGG: "+ String ( _W_Dag ) ) ;
     Display_Update();
   }
 
@@ -503,7 +436,6 @@ private:
   int _Boiler_LED_Pin;
   int _User_LED_Pin;
   int _State = 0;
-  //    unsigned long _Boiler_First_Start  = 0 ;
   unsigned long _Boiler_Start = 0;
   float _Water_Start = 0;
   unsigned long _Display_Update = 0;

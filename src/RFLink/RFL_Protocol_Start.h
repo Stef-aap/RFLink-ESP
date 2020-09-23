@@ -26,50 +26,14 @@ public:
       return false;
     }
 
-    /*  wordt al in RAW gedaan
-       // ********************************************
-      // if sequence is too short
-      // ********************************************
-      if ( RawSignal.Number < 26 ) {
-                if ( Learning_Mode >= 3 ) Serial.print ( '<' ) ;
-        RawSignal.Number = 0 ;
-                    return true; //false ;
-      }
-
-      // ********************************************
-      // if sequence is too long
-      // ********************************************
-      if ( RawSignal.Number > 150 ) {
-                if ( Learning_Mode >= 3 ) Serial.print ( '>' ) ;
-        RawSignal.Number = 0 ;
-                    return true;
-      }
-*/
-
     // ********************************************
     // Display Times of each puls,
     // in LM=4 times are rounded at 30 usec
     // ********************************************
     if ((Learning_Mode == 4) || (Learning_Mode == 5)) {
       int Time;
-      /*
-        sprintf ( _RFLink_pbuffer, "20;%02X;", PKSequenceNumber++ ) ;
-        Serial.print ( _RFLink_pbuffer ) ;
-        Serial.print ( F( "DEBUG_Start;Pulses=" ) ) ;
-        Serial.print ( RawSignal.Number - 3 ) ;
-        Serial.print ( F ( ";Pulses(uSec)=" )) ;
-        for ( int x=0; x<RawSignal.Number+1; x++ ) {
-          Time = RawSignal.Pulses[x] ;
-          if ( Learning_Mode == 5 ) {
-            Time = 30 * ( Time / 30 ) ;
-          }
-          Serial.print ( Time ) ;
-          if (x < RawSignal.Number) Serial.print ( "," );
-        }
-        Serial.println ( ";" ) ;
-*/
-      if (Learning_Mode == 4)
-        Line_2_File = "LM-4 : ";
+
+      if (Learning_Mode == 4) Line_2_File = "LM-4 : ";
       else
         Line_2_File = "LM-5 : ";
       sprintf(_RFLink_pbuffer, "20;%02X;", PKSequenceNumber++);
@@ -110,22 +74,6 @@ public:
         return true;
       }
 
-      /*
-        sprintf ( _RFLink_pbuffer, "\n20;%02X;", PKSequenceNumber++ ) ;
-        Serial.print ( _RFLink_pbuffer ) ;
-        Serial.print ( F( "DEBUG_Start;Pulses=" ) ) ;
-        Serial.print ( RawSignal.Number - 3 ) ;
-        Serial.print ( F ( ";Pulses(uSec)=" )) ;
-
-        Serial.print ( "Min=") ;
-        Serial.print ( RawSignal.Min ) ;
-        Serial.print ( "   Max=") ;
-        Serial.print ( RawSignal.Max ) ;
-        Serial.print ( "   Mean=") ;
-        Serial.print ( RawSignal.Mean ) ;
-        Serial.print ( "   " ) ;
-*/
-
       Line_2_File = "LM-6 : ";
       sprintf(_RFLink_pbuffer, "20;%02X;", PKSequenceNumber++);
       Line_2_File += String(_RFLink_pbuffer);
@@ -141,11 +89,11 @@ public:
       Line_2_File += String(RawSignal.Mean);
 
       /*
-20;0E;DEBUG_Start;Pulses=50;Pulses(uSec)=Mean=450 0000  0000  0101  1101  1111  0010  0
-20;0F;EV1527;ID=005DF;SWITCH=02;CMD=ON;
-*/
+      20;0E;DEBUG_Start;Pulses=50;Pulses(uSec)=Mean=450 0000  0000  0101  1101  1111  0010  0
+      20;0F;EV1527;ID=005DF;SWITCH=02;CMD=ON;
+      */
+
       unsigned long BitStream = 0L;
-      //        for ( int x=1; x < RawSignal.Number-1; x=x+2 ) {
       for (int x = 2; x < RawSignal.Number; x = x + 2) {
         P1 = RawSignal.Pulses[x];
         P2 = RawSignal.Pulses[x + 1];
@@ -163,18 +111,17 @@ public:
           BitString += "  ";
         }
       }
-      // Serial.print ( BitString ) ;
 
       /*
-20;03;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1440   Mean=900   0111  0101  0101  0001  0101  0101 1CA5094A
-20;04;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101  0101 1CA5094A
-20;05;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101  0101 1CA5094A
-20;06;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101  0101 1CA5094A
-20;07;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101  0101 1CA5094A
+      20;03;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1440   Mean=900   0111  0101  0101  0001  0101  0101
+      1CA5094A 20;04;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001  0101
+      0101 1CA5094A 20;05;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001 0101
+      0101 1CA5094A 20;06;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001 0101
+      0101 1CA5094A 20;07;DEBUG_Start;Pulses=50;Pulses(uSec)=Min=420   Max=1410   Mean=900   0111  0101  0101  0001 0101
+      0101 1CA5094A
+      */
 
-*/
       sprintf(_RFLink_pbuffer, "   %08X", BitStream);
-      // Serial.print ( _RFLink_pbuffer ) ;
       Line_2_File += BitString + "   " + String(_RFLink_pbuffer);
       RFLink_File.Log_Line(Line_2_File);
       return true;
@@ -183,17 +130,6 @@ public:
     // ********************************************
     else if (Learning_Mode == 7) {
       // ********************************************
-      /*
-        Serial.print ( "\nNPuls=" ) ;
-        Serial.print ( RawSignal.Number -3 ) ;
-        Serial.print ( "   Min=") ;
-        Serial.print ( RawSignal.Min ) ;
-        Serial.print ( "   Max=") ;
-        Serial.print ( RawSignal.Max ) ;
-        Serial.print ( "   Mean=") ;
-        Serial.print ( RawSignal.Mean ) ;
-        Serial.print ( "   " ) ;
-*/
       Line_2_File = "NPuls=";
       Line_2_File += String(RawSignal.Number - 3);
       Line_2_File += "   Min=";
@@ -222,7 +158,7 @@ public:
 #define PULSE5000 5000
 
     byte FAconversiontype = 1; // 0=FA500R to Method 2
-    //                              // 1=FA500R to Method 1
+    //                            1=FA500R to Method 1
     byte HEconversiontype = 0; // 0=No conversion, 1=conversion to Elro 58 pulse protocol (same as FA500R Method 1)
 
     int i, j;
@@ -231,7 +167,6 @@ public:
     // Beginning of Signal translation for Impuls
     // ********************************************
     // 20;D7;DEBUG;Pulses=250;Pulses(uSec)=275,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,75,350,75,325,375,25,75,4700,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,350,75,350,75,325,375,25,75,4700,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,75,350,75,325,375,25,75,4700,75,325,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,75,325,75,350,375,25,75,4700,75,350,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,375,25,75,350,375,25,75,325,375,25,75,325,375,25,75,325,375,25,75,350,375,25,75,350,75,325,75,350,375,25,75;
-    //      if (RawSignal.Number == 250) {  // Impuls
     if (RawSignal.Number == 251) { // Impuls
       if (RawSignal.Pulses[50] > PULSE4200) {
         if (RawSignal.Pulses[100] > PULSE4200) {
@@ -246,7 +181,6 @@ public:
     // ********************************************
     // Beginning of Signal translation for Home Confort Switches/Remotes
     // ********************************************
-    //      if (RawSignal.Number == 200) {
     if (RawSignal.Number == 201) {
       if (RawSignal.Pulses[1] > PULSE2000) {
         if (RawSignal.Pulses[100] > PULSE4000) {
@@ -262,8 +196,6 @@ public:
     // ***************************************************
     // END of protocol Start, if the incoming packet is not oversized and resume normal processing of plugins
     // ***************************************************
-    // Serial.print ( "H");
-    // Serial.print ( RawSignal.Number - 3 ) ;
     if (RawSignal.Number < OVERSIZED_LIMIT) return false;
 
     // ***************************************************

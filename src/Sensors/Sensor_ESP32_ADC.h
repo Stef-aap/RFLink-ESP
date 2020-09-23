@@ -4,15 +4,13 @@
 // ***********************************************************************************
 
 #ifndef Sensor_ESP32_ADC_h
-#define Sensor_ESP32_ADC_h 0.1
+  #define Sensor_ESP32_ADC_h 0.1
 
 // ***********************************************************************************
 // ***********************************************************************************
 class _Sensor_ESP32_ADC : public _Sensor_BaseClass {
 
 public:
-  //      String Help_Text = "#define Sensor_ESP_ADC" ;
-
   // ***********************************************************************
   // Creator,
   // ***********************************************************************
@@ -34,7 +32,6 @@ public:
     Version_Name = "V" + String(Sensor_ESP32_ADC_h) + "   Sensor_ESP32_ADC.h";
     Serial.println(Version_Name);
 
-    // unsigned long Start = millis() ;
     for (int i = 0; i < 8; i++) {
       if (_Channels[i] >= 0) {
         _JSON_Short_Header += "ESP_ADC" + String(i);
@@ -127,7 +124,6 @@ void Set_Attenuation ( int Channel_Index, adc_attenuation_t Attenuation ) \n\
   void Get_JSON_Data() {
     JSON_Data += "\"ESP32_ADC\":[";
 
-    // unsigned long Start = millis() ;
     for (int i = 0; i < 8; i++) {
       if (_Channels[i] >= 0) {
         analogSetPinAttenuation(_Channels[i], _Attenuations[i]);
@@ -137,15 +133,8 @@ void Set_Attenuation ( int Channel_Index, adc_attenuation_t Attenuation ) \n\
 
         JSON_Short_Data += String(_ADC_Buffer[i]);
         JSON_Short_Data += "\t";
-
-        //          JSON_Short_Header += "ESP_ADC" + String ( i ) ;
-        //          JSON_Short_Header += "\t" ;
-
-        // Serial.print("ADC VALUE = " ) ;
-        // Serial.println ( _ADC_Buffer [i] );
       }
     }
-    // Serial.print ( millis() - Start ) ;
 
     JSON_Data.remove(JSON_Data.length() - 1);
     JSON_Data += "],";

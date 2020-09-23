@@ -52,11 +52,7 @@ public:
     // to get rid of the AdaFruit Logo
     OLED_Display.clearDisplay();
     OLED_Display.display();
-
     OLED_Display.setTextSize(this->_Size);
-    // OLED_Display.setRotation ( 90 ) ;
-    // OLED_Display.setFont(&FreeMonoBoldOblique12pt7b);
-    // OLED_Display.setTextWrap ( true ) ;
   }
 
   // **********************************************************************************************
@@ -110,9 +106,6 @@ public:
       Odd_Frame = !Odd_Frame;
 
       _Char_Time_Count += 1;
-      // if ( ( _Char_Time_Count % 3 ) == 0 ) {
-      //  Show ( String(Height), 0, 0 ) ;
-      //}
 
       OLED_Display.display();
     }

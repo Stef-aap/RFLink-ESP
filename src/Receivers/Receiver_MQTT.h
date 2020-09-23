@@ -63,7 +63,6 @@
 #include "Receiver_Base.h"
 
 #define Broker_Port 1883
-// WiFiClient espClient ;
 WiFiClient _MQTT_WifiClient;
 
 // ***********************************************************************************
@@ -72,7 +71,6 @@ class _Receiver_MQTT : public _Receiver_BaseClass {
 
 public:
   PubSubClient *MyMQTT;
-  // int          Broker_Index  = 0 ;
 
   // ***********************************************************************
   // Creator,
@@ -82,13 +80,10 @@ public:
     this->Constructor_Finish();
   }
 
-  //    _Receiver_MQTT ( String Topic = "MQTT_Receiver/Test", bool Make_Device_Active = true ) {  //, bool
-  //    Keep_Connection = false ){
   _Receiver_MQTT(String Topic = "MQTT_Receiver/Test", String User = "", String Password = "") {
     MQTT_Topic = Topic;
     this->_MQTT_User = User;
     this->_MQTT_PWD = Password;
-    //      this->Device_Active = Make_Device_Active ;
     this->Constructor_Finish();
   }
 
@@ -97,19 +92,8 @@ public:
   void Constructor_Finish() {
     MQTT_Topics_Append(MQTT_Topic);
 
-    //      _Keep_Connection = Keep_Connection ;
-    ////      _MQTT_WifiClient     = espClient ;
-
     Version_Name = "V" + String(Receiver_MQTT_h) + "  ======  Receiver_MQTT.h";
     Serial.println("CREATE    " + Version_Name);
-
-    /*
-      Help_Text =  "_Receiver_MQTT   MQTT ( Topic, Keep_Connection ) ;\n\
-_Receiver_MQTT   MQTT ( Topic ) ;\n\
-_Receiver_MQTT   MQTT () ;\n\
-Topic = " ;
-      Help_Text += String ( MQTT_Topic ) ;
-*/
     Help_Text = "Topic = " + MQTT_Topic;
 
     if (!this->Device_Active) return;
@@ -117,7 +101,6 @@ Topic = " ;
     High_Priority_Loop = 2;
 
     MyMQTT = new PubSubClient(_MQTT_WifiClient);
-    //      MyMQTT->setServer ( MQTT_Broker_IPs [ Broker_Index ].c_str(), Broker_Port ) ;
 
     MyMQTT->setServer(MQTT_Broker_IP.c_str(), Broker_Port);
     this->_MQTT_Broker_IPx = MQTT_Broker_IP;
@@ -127,22 +110,17 @@ Topic = " ;
     // Omdat het geen callback is maar een event, moet dit zo moeilijk
     // https://hobbytronics.com.pk/arduino-custom-library-and-pubsubclient-call-back/
     // *****************************************************
-    //#ifndef ESP32
-    //        MyMQTT->setCallback ( [this] (char* topic, byte* payload, unsigned int length) {
-    //        this->Receive_Callback(topic, payload, length); });
+
     MyMQTT->setCallback(_MQTT_Callback_Wrapper);
-    //((_Receiver_MQTT*)My_MQTT_Client)->MyMQTT->setCallback ( _MQTT_Callback_Wrapper ) ;
-    //#endif
+
     // *****************************************************
     // *****************************************************
 
-    // Serial.println ( "Trying to connect toe MQTT: " + Broker_IPs [ Broker_Index ] ) ;
     Serial.print("                                                          IP = ");
     Serial.print(WiFi.localIP());
     Serial.print("         Broker = ");
     Serial.println(MQTT_Broker_IP);
 
-    //_Subscription_Out = _Topic + "_" ;
     _Subscription_Out = MQTT_Topic + "_";
     _LWT = "\"$$Dead " + _MQTT_ID + "\"";
     _ALIVE = "\"$$Alive " + _MQTT_ID + "\"";
@@ -250,16 +228,8 @@ Topic = " ;
       return true; // SHOULD BE IMPROVED
     }
 
-    // Serial.println ( "No MQTT Connection: " + Broker_IPs [ Broker_Index ] ) ;
     Serial.println("No MQTT Connection to " + this->_MQTT_Broker_IPx);
 
-    // return true;
-    /* volgens mij ook niet nodig
-      if ( ReConnect ( _ALIVE ) ) {
-        Serial.println ( "Alive" ) ;
-        _State = 1 ;
-      }
-//*/
     return false;
   }
 
@@ -291,22 +261,9 @@ private:
   int _ReConnect_Count = 0;
   String _MQTT_Broker_IPx;
 
-  //    unsigned long _State_Start = 0        ;
-  //    int           _MQTT_Connect_Retries   ;
-  //    unsigned long _MQTT_Connect_Start     ;
-  //    unsigned long _Alive_Time             ;
-  //    bool          _Keep_Connection        ;
-
   // ***********************************************************************
   // ***********************************************************************
   bool ReConnect(String ToPublish = "") {
-    /*
-      #ifdef ESP32
-        if ( WiFi.status () != WL_CONNECTED ) return false ;
-      #else
-        if ( wifiMulti.run() != WL_CONNECTED ) return false ;
-      #endif
-//*/
 
     bool Result;
     if (this->_MQTT_User.length() > 0) {
@@ -316,9 +273,6 @@ private:
       Result = MyMQTT->connect(_MQTT_ID.c_str(), _Subscription_Out.c_str(), 1, 1, _LWT.c_str());
     }
 
-    // if ( MyMQTT->connect ( _MQTT_ID.c_str(), MQTT_User, MQTT_Pwd,
-    // if ( MyMQTT -> connect ( _MQTT_ID.c_str(),
-    //                        _Subscription_Out.c_str(), 1, 1, _LWT.c_str() )) {
     if (Result) {
       Set_Signal_LED(4, 100, 100);
       for (int i = 0; i < MAX_MQTT_TOPICS; i++) {
@@ -333,12 +287,9 @@ private:
         MyMQTT->publish(_Subscription_Out.c_str(), ToPublish.c_str());
       }
 
-      //        Set_Signal_LED ( 3, 300, 100 ) ;
-
       return true;
     }
 
-    //      Set_Signal_LED ( 3, 100, 100 ) ;
     Serial.println("try reconnect FIN, niet gelukt ");
 
     // **************************************

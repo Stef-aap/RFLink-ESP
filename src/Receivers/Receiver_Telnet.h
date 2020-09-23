@@ -6,9 +6,9 @@
 #include "Receiver_Base.h"
 
 #ifdef ESP8266
-#include <ESP8266WiFi.h>
+  #include <ESP8266WiFi.h>
 #elif defined ESP32
-#include <WiFi.h>
+  #include <WiFi.h>
 #endif
 
 // ***********************************************************************************
@@ -18,13 +18,6 @@
 // Definieer de Telnet Server en Client
 WiFiServer Telnet_Server(23);
 WiFiClient Telnet_Client;
-// bool MySerial_2_Telnet = false ;
-
-// ***********************************************************************************
-// DE TRUC  !!
-// ***********************************************************************************
-//#define Serial  Telnet_Client
-// ***********************************************************************************
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -96,19 +89,16 @@ public:
   // **************************************
   size_t write(uint8_t val) {
     Serial_Device.write(val);
-    // if ( MySerial_2_Telnet ) Telnet_Client.write ( val ) ;
     Telnet_Client.write(val);
     return 1;
   }
   // **************************************
   size_t write(const uint8_t *buffer, size_t size) {
     Serial_Device.write(buffer, size);
-    // if ( MySerial_2_Telnet ) Telnet_Client.write ( buffer, size ) ;
     Telnet_Client.write(buffer, size);
     return size;
   }
   // **************************************
-  // Serial_Device.write(str)
 
   // **************************************
   // all other methods can be created by the 3 methods above
@@ -124,7 +114,6 @@ public:
   int available(void) {
     int N_Char = 0;
     _Read_From_Serial = false;
-    // if ( MySerial_2_Telnet ) N_Char = Telnet_Client.available () ;
     N_Char = Telnet_Client.available();
     if (Serial_Device.available() >= N_Char) {
       N_Char = Serial_Device.available();
@@ -136,8 +125,7 @@ public:
   // **************************************
   int read(void) {
     if (available()) {
-      if (this->_Read_From_Serial)
-        return Serial_Device.read();
+      if (this->_Read_From_Serial) return Serial_Device.read();
       else
         return Telnet_Client.read();
     }

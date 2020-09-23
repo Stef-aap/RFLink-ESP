@@ -1,6 +1,6 @@
 
 #ifndef RFL_Protocol_EV1527_h
-#define RFL_Protocol_EV1527_h
+  #define RFL_Protocol_EV1527_h
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -19,7 +19,7 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   bool RF_Decode() {
-#define PulseCount 48
+  #define PulseCount 48
 
     // ****************************************************
     // Check the length of the sequence
@@ -51,21 +51,12 @@ public:
     //==================================================================================
     // Prevent repeating signals from showing up
     //==================================================================================
-    //      if ( BitStream == Last_BitStream  ) {
-    //             Count += 1 ;
-    //      } else Count  = 0 ;
 
     if ((BitStream != Last_BitStream) || (millis() > 700 + Last_Detection_Time)) {
       // not seen the RF packet recently
       Last_BitStream = BitStream;
     } else {
-      // already seen the RF packet recently
-      //         if ( ! Last_Floating ) {
-      //           if ( millis() > 700 + Last_Detection_Time ) {
-      //             Count = 0 ;                                   // <<< lijkt niet te werken
-      //           }
       return true;
-      //         }
     }
 
     String Device = Name;
@@ -95,41 +86,22 @@ public:
     // PT2262
     // ****************************************************
     if (Floating >= 6) {
-      //        Last_Floating = true ;
-      // Serial.printf ( "\nCount=%i\n", Count ) ;
-      //        if ( Count == 2 ) {
       Device = "PT2262";
       Switch = 1;
       String On_Off = "OFF";
       if ((BitStream & 0x03) != 0) On_Off = "ON";
-      // sprintf ( _RFLink_pbuffer, "20;%02X;%s;ID=%05X;SWITCH=01;CMD=%s;", PKSequenceNumber++, Device.c_str(), Id,
-      // On_Off.c_str() ) ;
       sprintf(_RFLink_pbuffer, "%s;ID=%05X;", Device.c_str(), Id);
       sprintf(_RFLink_pbuffer2, "SWITCH=01;CMD=%s;", On_Off.c_str());
-      //        }
-      //        else return true; //ok, but no output
     }
 
     // ****************************************************
     // EV1527
     // ****************************************************
     else {
-      //        Last_Floating = false ;
-      //        unsigned long Switch = BitStream & 0xF ;
-      // sprintf ( _RFLink_pbuffer, "20;%02X;%s;ID=%05X;SWITCH=%02X;CMD=ON;", PKSequenceNumber++, Device.c_str(), Id,
-      // Switch ) ;
       sprintf(_RFLink_pbuffer, "%s;ID=%05X;", Device.c_str(), Id);
       sprintf(_RFLink_pbuffer2, "SWITCH=%02X;CMD=ON;", Switch);
     }
 
-    /*
-      if ( Unknown_Device ( _RFLink_pbuffer ) ) return false ;
-      Serial.print   ( PreFix ) ;
-      Serial.print   ( _RFLink_pbuffer ) ;
-      Serial.println ( _RFLink_pbuffer2 ) ;
-      PKSequenceNumber += 1 ;
-      return true;
-      */
     return Send_Message(Device, Id, Switch, "ON");
   }
 
@@ -190,8 +162,6 @@ public:
 private:
   int _Receive_Pin;
   int _Transmit_Pin;
-  //    int  Count = 0 ;
-  //    bool Last_Floating ;
 };
 #endif
 

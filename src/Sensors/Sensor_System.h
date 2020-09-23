@@ -6,12 +6,6 @@
 #ifndef Sensor_System_h
 #define Sensor_System_h 0.2
 
-//#include "FS.h"
-
-//#ifdef ESP32
-//  #include  "SPIFFS.h"
-//#endif
-
 // ***********************************************************************************
 // ***********************************************************************************
 class _Sensor_System : public _Sensor_BaseClass {
@@ -38,17 +32,16 @@ public:
   void Get_JSON_Data() {
 #ifdef FileSystem_SPIFFS
     int Disk_Free;
-#ifdef ESP32
+  #ifdef ESP32
     Disk_Free = SPIFFS.totalBytes() - SPIFFS.usedBytes();
-#else
+  #else
     fs::FSInfo fs_info;
     SPIFFS.info(fs_info);
     Disk_Free = fs_info.totalBytes - fs_info.usedBytes;
-#endif
+  #endif
 
     int RSSI = WiFi.RSSI();
-    if (RSSI < 0)
-      _RSSI = RSSI;
+    if (RSSI < 0) _RSSI = RSSI;
     else
       RSSI = _RSSI;
 

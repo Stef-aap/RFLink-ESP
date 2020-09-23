@@ -131,17 +131,13 @@ private:
     wi = &Wire;
 
     // print header
-    // Serial.print ( F ( "TIME\tHEX\t" ) ) ;
     Serial.print("TIME\tHEX\t");
     for (uint8_t s = 0; s < speeds; s++) {
-      // Serial.print ( F ( "\t" ) ) ;
       Serial.print("\t");
       Serial.print(speed[s]);
     }
-    // Serial.println ( F ( "\t[KHz]" ) ) ;
     Serial.println("\t[KHz]");
     for (uint8_t s = 0; s < speeds + 4; s++) {
-      // Serial.print ( F ( "--------" ) ) ;
       Serial.print("--------");
     }
     Serial.println();
@@ -149,7 +145,6 @@ private:
     int Count = 0;
 
     for (uint8_t address = addressStart; address <= addressEnd; address++) {
-      // true bool printLine = printAll;
       bool printLine = true;
       bool found[speeds];
       bool fnd = false;
@@ -164,7 +159,6 @@ private:
         found[s] = (wi->endTransmission() == 0);
         fnd |= found[s];
         // give device 5 millis
-        // if ( fnd && delayFlag ) delay ( RESTORE_LATENCY ) ;
         if (fnd) delay(RESTORE_LATENCY);
       }
       if (fnd) count++;
@@ -191,9 +185,7 @@ private:
         Serial.print(F("\t"));
 
         for (uint8_t s = 0; s < speeds; s++) {
-          // Serial.print(F("\t"));
           Serial.print("\t");
-          // Serial.print(found[s] ? F("V") : F("."));
           Serial.print(found[s] ? "V" : ".");
         }
         Serial.println();

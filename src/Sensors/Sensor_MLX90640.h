@@ -41,8 +41,6 @@ SimpleKalmanFilter simpleKalmanFilter_T2(Uncertainty, Uncertainty, Process_Varia
 SimpleKalmanFilter simpleKalmanFilter_Td(1, 1, 0.0003);
 SimpleKalmanFilter simpleKalmanFilter_Td2(0.5, 0.5, 0.0003);
 
-// undefined reference to `_Sensor_MLX90640::mlx90640To'
-// undefined reference to `_Sensor_MLX90640::mlx90640_OUT'
 static float mlx90640To[768];
 static uint8_t mlx90640_OUT[768 + 20];
 
@@ -50,8 +48,7 @@ static uint8_t mlx90640_OUT[768 + 20];
 // ***********************************************************************************
 class _Sensor_MLX90640 : public _Sensor_BaseClass {
 public:
-  // IRTherm  *MLX ;
-// const byte MLX90640_address = 0x33; //Default 7-bit unshifted address of the MLX90640
+// const byte MLX90640_address = 0x33; // Default 7-bit unshifted address of the MLX90640
 #define TA_SHIFT 8 // Default shift for MLX90640 in open air
 
   paramsMLX90640 mlx90640;
@@ -67,9 +64,7 @@ public:
   float emissivity = 0.95;
   uint16_t mlx90640Frame[834];
   int status = -1;
-  // uint8_t  Gain          = 6 ;
   int RefreshRate = 2;
-  // bool     FTP_Transport = false ;
 
   // ***********************************************************************
   // Creators
@@ -129,7 +124,6 @@ public:
     // als nodig bewaar Photo and zend deze over MQTT
     // ***************************************************
     if (Frame_Available) {
-      // unsigned long _Single_Frame = millis();
       for (byte x = 0; x < 1; x++) { // Read SINGLE subpage
         status = MLX90640_GetFrameData(this->_I2C_Address, mlx90640Frame);
         if (status >= 0) {
@@ -138,7 +132,6 @@ public:
           float tr = Ta - TA_SHIFT; // Reflected temperature based on the sensor ambient temperature
           MLX90640_CalculateTo(mlx90640Frame, &mlx90640, emissivity, tr, mlx90640To);
         }
-        // Debugf ( "Single Frame %i\n", (millis() - _Single_Frame) ) ;
       }
       if (status >= 0) {
 
@@ -160,7 +153,6 @@ public:
         int Opp = Spot_N * Spot_N;
 
         Spot_T1 = 0;
-        // int x1 = 9 * 32 + 6 ;
         int x1 = (12 - N_2) * 32 + 8 - N_2;
         for (int row = 0; row < Spot_N; row++) {
           for (int col = 0; col < Spot_N; col++) {
@@ -169,7 +161,6 @@ public:
         }
 
         Spot_T2 = 0;
-        // int x2 = 10 * 32 - 11 ;
         int x2 = (12 - N_2) * 32 + 24 - N_2;
         for (int row = 0; row < Spot_N; row++) {
           for (int col = 0; col < Spot_N; col++) {
@@ -185,7 +176,6 @@ public:
         this->_Kalman_Td2 = simpleKalmanFilter_Td2.updateEstimate(Spot_T1 - Spot_T2);
 
         int V_Battery = adc1_get_raw((adc1_channel_t)ADC_VBatt);
-        //          byte Start_Bytes [12] = { 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF } ;
         Start_Bytes[2] = Gain;
         Start_Bytes[3] = (byte)round(V_Battery / 20);
 

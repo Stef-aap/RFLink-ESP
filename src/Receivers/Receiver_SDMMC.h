@@ -6,9 +6,6 @@
 
 #include "Hardware/SD_MMC_support.h"
 
-//#include "ESP32FtpServer.h"
-// FtpServer32 ftpSrv_SD_MMC ;
-
 // ***********************************************************************************
 // ***********************************************************************************
 class _Receiver_SDMMC : public _Receiver_BaseClass {
@@ -60,8 +57,7 @@ public:
     }
 
     Serial.print("SD_MMC Card Type: ");
-    if (cardType == CARD_MMC)
-      Serial.println("MMC");
+    if (cardType == CARD_MMC) Serial.println("MMC");
     else if (cardType == CARD_SD)
       Serial.println("SDSC");
     else if (cardType == CARD_SDHC)
@@ -74,9 +70,6 @@ public:
 
     int Result = SD_MMC_System.Begin(_Filename, _Max_File_Seconds, _Max_NFile);
     Serial.println("Mount SD_MMC-FileSytem (including FTP support NOT YET): " + String(Result));
-
-    // set ports in ESP8266FtpServer.h  (default 21, 50009 for PASV)
-    // ftpSrv.begin ( "esp8266", "esp8266" );    //username, password for ftp.
   }
 
   // **********************************************************************************************
@@ -124,20 +117,16 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  void loop() {
-    //      ftpSrv_SD_MMC.handleFTP();
-  }
+  void loop() {}
 
   // ***********************************************************************
   //   {"FTP":"ON"}   {"FTP":"OFF"}
   // ***********************************************************************
   void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
-    // void MQTT_Callback ( String Payload, JsonObject &root ) {
     Serial.println("FTPFTPFTPFTPFTP:::::::::::::::" + Payload);
     Serial.println("Loop Priority was : " + String(Loop_Priority));
     String FTP = root["FTP"];
-    if (FTP == "ON")
-      Loop_Priority = 1;
+    if (FTP == "ON") Loop_Priority = 1;
     else if (FTP == "OFF") {
       Loop_Priority = 0;
     }
@@ -159,7 +148,6 @@ public:
     } else if (LowerCase.startsWith("dir")) {
       Filename = Serial_Command.substring(4);
       SD_MMC_System.DirList_Print(Filename);
-      //        SD_MMC_System.DirList_Print ( SD_MMC, Filename ) ;
       return false;
     } else if (LowerCase.startsWith("copy ")) {
       Filename = Serial_Command.substring(5);

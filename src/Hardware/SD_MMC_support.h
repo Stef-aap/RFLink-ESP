@@ -127,46 +127,6 @@ public:
     return Result;
   }
 
-  /*    // **************************************************
-    // **************************************************
-    void Get_Ordered_DirList ( String Path = "/", String Ends = "", bool Reversed=false ) {
-      int i = 0 ;
-
-      // **************************************************
-      // ESP32
-      // **************************************************
-      #ifdef ESP32
-        fs::File dir = SD_MMC.open ( Path ) ;
-        fs::File file = dir.openNextFile () ;
-        while ( file && ( i < _FileList_Max_N ) ) {
-          String Filename = String( file.name() ).substring(1) ;
-          if ( Ends.length() == 0 || Filename.endsWith ( Ends ) ) {
-            _FileList[i] = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
-            i++ ;
-          }
-          file = dir.openNextFile () ;
-        }
-
-      // **************************************************
-      // ESP8266
-      // **************************************************
-      #else
-        Dir dir = SD_MMC.openDir ( Path ) ;
-        while ( dir.next() && ( i < _FileList_Max_N ) ) {
-          String Filename = String(dir.fileName()).substring(1) ;
-          if ( Ends.length() == 0 || Filename.endsWith ( Ends ) ) {
-            File file = dir.openFile ( "r" ) ;
-            _FileList[i] = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
-            i++ ;
-          }
-        }
-      #endif
-
-      _FileList_Len = i ;
-      MySort ( _FileList, _FileList_Len, Reversed ) ;
-    }
-
-*/
   // **************************************************
   // **************************************************
   void HTML_File_CheckList(String Path = "/", String Ends = "") {
@@ -192,7 +152,6 @@ public:
           FileExt = Filename.substring(x1 + 1);
           FileExt.toLowerCase();
           Result = "<tr><td>";
-          // if ( FileExt.endsWith ( "csv" ) ) {
           if (FileExt == "csv") {
             Result += F("<label><input type=\"checkbox\" name=\"");
             Result += Filename;
@@ -301,7 +260,6 @@ public:
 #else
     Dir dir = SD_MMC.openDir("/");
     while (dir.next()) {
-      //_Last_Filename = dir.Filename() ;
       _Last_Filename = dir.fileName();
     }
 #endif
@@ -391,7 +349,6 @@ public:
     Line_x = "###";
     while (file.available() && (Line_x.length() > 1)) {
       Line_x = file.readStringUntil('\n');
-      // Serial.println ( Line_x ) ;
       Splitter->newString(Line_x, '\t');
       String Datex = Splitter->getItemAtIndex(DT_i);
       int DTx = Datex.toInt();
@@ -405,58 +362,6 @@ public:
     return Delta_T;
   }
 
-  // **************************************************
-  // **************************************************
-  /*
-    int Get_Time_In_File_HANGT_TEVEEL_AF_VAN_NTP_SERVER ( String Filename ) {
-      fs::File file = SD_MMC.open ( Filename, "r" ) ;
-      String Line_0 ;
-      String Line_1 ;
-      String Line_x ;
-      if ( file ) {
-        if ( file.available() ) {
-          Line_0 = file.readStringUntil ( '\n' ) ;
-        }
-        if ( file.available() ) {
-          Line_1 = file.readStringUntil ( '\n' ) ;
-        }
-        while ( file.available() ){
-          Line_x = file.readStringUntil ( '\n' ) ;
-        }
-        file.close () ;
-
-        My_StringSplitter *Splitter = new My_StringSplitter ( Line_0, '\t' ) ;
-        int ItemCount = Splitter -> getItemCount () ;
-        int DT_i ;
-        for ( DT_i = 0; DT_i < ItemCount; DT_i++ ) {
-          String Item = Splitter -> getItemAtIndex ( DT_i ) ;
-          if ( Item == "DateTime" ) {
-            break ;
-          }
-        }
-
-        if ( DT_i < ItemCount ) {
-          Splitter -> newString ( Line_1, '\t' ) ;
-          String Date1 = Splitter -> getItemAtIndex ( DT_i ) ;
-          time_t DT1 = String_2_UnixTime ( Date1 ) ;
-
-          Splitter -> newString ( Line_x, '\t' ) ;
-          String Date2 = Splitter -> getItemAtIndex ( DT_i ) ;
-          time_t DT2 = String_2_UnixTime ( Date2 ) ;
-
-          Serial.print ( "Delta T in file = ") ;
-          Serial.println ( DT2-DT1 ) ;
-          return (int) (DT2-DT1) ;
-        }
-        else {
-          return 0 ;
-        }
-      }
-      else {
-        return 0 ;
-      }
-    }
-*/
   // **************************************************
   // **************************************************
   bool Exists(String Filename) {
@@ -486,9 +391,6 @@ public:
           Serial.print(file.readString());
         }
         file.close();
-        // if ( Delete_Files ) {
-        //  Delete ( Filename ) ;
-        //}
       }
       file = dir.openNextFile();
     }
@@ -595,30 +497,17 @@ public:
       // After a reset check how many seconds are already in the file
       // ************************************************************
       if (!_Initialized) {
-        // Serial.println ( "Before gettime" ) ;
         _Offset_Millis = 1000 * Get_Time_In_File(Filename);
-        // Serial.println ( "Agter gettime" ) ;
         if (_Offset_Millis > _Max_FileTime) {
           _Offset_Millis = _Max_FileTime;
         }
         _Initialized = true;
       }
-      /*
-Serial.print   ( "millis / Delta / maxfileTIME / Offset = ");
-Serial.print ( millis() ) ;
-Serial.print ( " / " );
-Serial.print ( _Max_FileTime - _Offset_Millis ) ;
-Serial.print ( " / " ) ;
-Serial.print ( _Max_FileTime ) ;
-Serial.print ( " / " );
-Serial.println ( _Offset_Millis ) ;
-*/
       if ((millis() - _File_Millis) > (_Max_FileTime - _Offset_Millis)) {
         NewFile = true;
       }
     }
 
-    // if ( ( millis() - _File_Millis ) > _Max_FileTime ) {
     if (NewFile) {
       _File_Millis = millis();
       if (_Last_File_Nr > _Max_NFile) {
@@ -630,7 +519,6 @@ Serial.println ( _Offset_Millis ) ;
       Serial.println("???????????????????" + _Get_Last_Filename());
     }
 
-    //_Get_Last_Filename () ;
     if (not SD_MMC.exists(Filename)) {
       Append_File(Filename, Header);
       _Offset_Millis = 0;

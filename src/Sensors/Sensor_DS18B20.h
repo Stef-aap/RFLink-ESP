@@ -147,11 +147,8 @@ public:
   bool Hardware_Test(int Test_Nr = 1) {
     _Hardware_Test += 1;
     if (_Hardware_Test > 50000) {
-      // External_Watchdog_Arm ( "Sensor_DS18B20, Get_JSON_Data" ) ;
-      // External_Watchdog_Check () ;
       delay(2000); // this will trigger the external hardware watchdog
     }
-    // External_Watchdog_Disarm () ;
     return true;
   }
   // ***********************************************************************
@@ -159,8 +156,6 @@ public:
   // ***********************************************************************
   void Get_JSON_Data() {
     Get_Temperatures(_OneWire_Temperature_Array);
-    // External_Watchdog_Disarm ( true ) ;
-    // Serial.println ( "Devieces N = " + String ( _OneWire_Nr_Devices ) ) ;
     for (byte Index = 0; Index < _OneWire_Nr_Devices; Index++) {
       JSON_Data += " \"DT";
       JSON_Data += _OneWire_Names[Index];
@@ -171,10 +166,8 @@ public:
       JSON_Short_Data += String(_OneWire_Temperature_Array[Index] / 1000.0, 1);
       JSON_Short_Data += "\t";
 
-      // External_Watchdog_Disarm ( true ) ;
       External_Watchdog_Toggle();
     }
-    // External_Watchdog_Disarm () ;
   }
 
   String Get_JSON_LuftData() { return _JSON_Sample; }
@@ -228,8 +221,6 @@ private:
         Name += String(addr[i], HEX);
         if (i < 7) {
           Serial.print(", ");
-        } else {
-          // Serial.println () ;
         }
       }
       if (OneWire::crc8(addr, 7) != addr[7]) {
@@ -243,7 +234,6 @@ private:
         Serial.println(Name);
         _OneWire_Nr_Devices += 1;
       }
-      // External_Watchdog_Disarm ( true ) ;
     }
     Settings.Set_Unstored_Changes();
   }
@@ -295,9 +285,6 @@ private:
     while (not _OneWire.read_bit()) {
       delay(1);
     }
-    // delay ( 1000 ) ;
-
-    // Serial.println ( "loop done");
 
     for (byte Index = 0; Index < _OneWire_Nr_Devices; Index++) {
       Device_Matrix_Get(addr, Index);
@@ -308,45 +295,11 @@ private:
 
       for (byte i = 0; i < 9; i++) { // we need 9 bytes
         data[i] = _OneWire.read();
-        // Serial.print ( data[i], HEX ) ;
-        // Serial.print ( "  /  " ) ;
       }
-      // Serial.println () ;
-      // Serial.print   ( OneWire::crc8 ( data, 8), HEX ) ;
-      // Serial.print ( "  /  " ) ;
-      // Serial.println ( data[8], HEX ) ;
-
-      // int Temperature = 256 * data[1] + data[0] ;
-      // int Fraction    = 625 * ( Temperature & 0xF ) ;
-      // Temperature = ( Temperature & 0x03F0 ) >> 4 ;
-      // Data [ Index ] = -2000 + 1000 * Temperature + Fraction / 10 ;
 
       short Temp_i = (data[1] << 8) | data[0];
-      // short Temp_i = ( ( data[1] ^ 0xFF ) << 8 ) | data[0] ;  // WEIRD WEIRD !!
-      // short Temp_i = ( ( data[1] & 0xFB ) << 8 ) | data[0] ;
       float Temp_f = 1000 * (float)(Temp_i) / 16;
-      // Serial.println ( data[1], HEX ) ;
-      // Data [ Index ] = -2000 + (int) Temp_f ;
-      // if ( Temp_f > 60000 ) {
-      //  Temp_f -= 64000 ;
-      //}
       Data[Index] = (int)Temp_f;
-
-      // Serial.println ( "Dallas " + String ( Index+1 ) + "    Temp = " + String ( Temp_f ) ) ;
-
-      /*
-        int16_t fpTemperature = ( ( (int16_t) data[1] ) << 11 )
-                                                | ( ( (int16_t) data[0] ) << 3  ) ;
-Serial.print ( "T = " ) ;
-Serial.print ( data[1], HEX ) ;
-Serial.print ( " " );
-Serial.print ( data[0], HEX ) ;
-Serial.print ( " " );
-Serial.println ( fpTemperature ) ;
-//*/
-
-      //	int16_t fpTemperature = (((int16_t) scratchPad[TEMP_MSB]) << 11)
-      //			| (((int16_t) scratchPad[TEMP_LSB]) << 3);
     }
   }
 
@@ -377,9 +330,4 @@ RS: { "TimeStamp":279621, "DT28c6cf5500000027":-32.25 }
 FC  /  FD  /  7F  /  FF  /  3F  /  FF  /  4  /  10  /  B7  /
 RS: { "TimeStamp":289621, "DT28c6cf5500000027":-32.25 }
 F8  /  FD  /  7F  /  FF  /  3F  /  FF  /  8  /  10  /  EF  /
-
-
-
-
-
 */

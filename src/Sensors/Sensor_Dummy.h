@@ -32,7 +32,6 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void setup() {
-    // Serial.print   ( "SETUP of _Sensor_Dummy,  ID = ") ;
     _Saw_Tooth = 0; // random ( 10000 ) ;
   }
 
@@ -55,32 +54,12 @@ public:
     JSON_Short_Data += "\t";
     JSON_Short_Data += String(Noise);
     JSON_Short_Data += "\t";
-
-    /*
-      if ( ( this->_Display_X >= 0 ) && ( this-> _Display_Y>=0 ) ) {
-        float TMuur   = 19.12 ;
-        float TRuimte = 19.68 ;
-        float Watt    = 34 ;
-        float TDelta  = TRuimte - TMuur ;
-        //_Character_Display->Show ( String ( Watt   , 1 ), 0, 0 ) ;
-        //_Character_Display->Show ( String ( TDelta , 2 ), 0, 1 ) ;
-        //_Character_Display->Show ( String ( TMuur  , 1 ), 0, 2 ) ;
-        //_Character_Display->Show ( String ( TRuimte, 1 ), 0, 3 ) ;
-
-        //_Character_Display->Show ( "2.8 " , 6, 0 ) ;
-        //_Character_Display->Show ( "R"    , 9, 0 ) ;
-        //_Character_Display->Show ( "IN  " , 6, 1 ) ;   //  In  / UIT
-        //_Character_Display->Show ( "0.13", 6, 2 ) ;   // 0.04 / 0.10 / 0.13
-        //_Character_Display->Show ( "Vloe", 6, 3 ) ;   // Vloe / Wand / Top
-      }
-      */
   }
 
   // ***********************************************************************
 private:
   // ***********************************************************************
   unsigned int _Saw_Tooth = 0;
-  // unsigned long Sample_Time_Last  ;
   int _Display_X;
   int _Display_Y;
 };

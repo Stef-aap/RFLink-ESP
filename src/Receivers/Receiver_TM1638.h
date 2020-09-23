@@ -23,9 +23,6 @@
 #include "Receiver_Base.h"
 #include <TM1638plus.h>
 
-//    String _TM1638_Regel [8] = { "noSIGNAL", "        ", "        ", "        ", "        ", "        ", "        ", "
-//    " } ; word   _TM1638_Dots  [8] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } ;
-
 // ***********************************************************************************
 // ***********************************************************************************
 class _Receiver_TM1638 : public _Receiver_BaseClass {
@@ -45,7 +42,6 @@ public:
     _Clock_Pin = Clock_Pin;
     _Strobe_Pin = Strobe_Pin;
     _Intensity = Intensity;
-    // Serial.println ( "V" + String ( Receiver_TM1638_h ) + "   Receiver_TM1638.h" ) ;
     this->Constructor_Finish();
   }
 
@@ -121,8 +117,6 @@ public:
   // ***********************************************************************
   virtual bool Send_Data(String JSON_Message) {
     Serial.println(JSON_Message);
-    // this -> setDisplayToString ( "AA.pje  . " ) ;
-    // this -> setDisplayToString ( "AApje   ", 0x46 ) ;
     return true;
   }
 
@@ -158,7 +152,6 @@ public:
   // ***********************************************************************
   void Do_Button_Action() {
     if (_Buttons_Old != _Buttons_Previous) {
-      // Serial.println ( "TM1638 Buttons Changed" );
       _Buttons_Previous = _Buttons_Old;
       switch (_Buttons_Old) {
         case 0x01: {
@@ -204,13 +197,11 @@ public:
 
         case 0x81: {
           if (_Intensity < 7) _Intensity += 1;
-          // this -> setupDisplay ( true, _Intensity ) ;
           _Display_Module->brightness(_Intensity);
         } break;
 
         case 0x41: {
           if (_Intensity > 0) _Intensity -= 1;
-          // this -> setupDisplay ( true, _Intensity ) ;
           _Display_Module->brightness(_Intensity);
         } break;
 
@@ -269,18 +260,12 @@ public:
       _Sample_Time_Last += _Sample_Time_ms;
       _Loop_Count += 1;
 #define Delay_Intro 3
-      // this -> setDisplayToString ( "AApje   ", 0xFF ) ;
 
       if (_TM1638_Regel[_Current_Line] != _Current_Regel) {
         _Current_Regel = _TM1638_Regel[_Current_Line];
         _Update_Line(_Current_Line);
       }
 
-      /*
-if ( _State != 5 ) {
-  Serial.println ( "TMTMTMTMT STate = " + String (_State) ) ;
-}
-//*/
       switch (_State) {
         case 1: {
           if ((_Loop_Count % Delay_Intro) == 0) {
@@ -301,7 +286,6 @@ if ( _State != 5 ) {
         case 3: {
           if ((_Loop_Count % Delay_Intro) == 0) {
             this->setDisplayToString(_TM1638_Regel[0], _TM1638_Dots[0]);
-            // this -> setLEDs ( 0x01 );
             _MySetLeds(0x01);
             _State = 5;
           }
@@ -323,7 +307,6 @@ if ( _State != 5 ) {
               _LED_Change = 0;
             } else {
               this->setLEDs(_LED);
-              // Debugf ( "Set LEDS back %i", _LED ) ;
             }
           }
         } break;
@@ -332,26 +315,8 @@ if ( _State != 5 ) {
         // scroll through te alfabet, when ready go to State=5
         // ***********************************
         case 61: {
-          /*
-              if ( ( _Loop_Count % 7 ) == 0 ) {
-                const int N = sizeof ( FONT_DEFAULT ) ;
-                _Scroll_Line = _Scroll_Line.substring ( 1 ) + String ( (char)_Font_Count) ; //FONT_DEFAULT [ _Font_Count
-  ] ; Serial.print ( N ) ; Serial.println ( _Scroll_Line ) ; _Font_Count += 1 ; if ( _Font_Count >= 127 ) { _State = 5 ;
-                }
-                _Scroll_Dots = _Scroll_Dots << 1 ;
-                if ( _Scroll_Dots > 0x80 ) {
-                  _Scroll_Dots = 0x01 ;
-                }
-                this -> setDisplayToString ( _Scroll_Line ) ; //, _Scroll_Dots ) ;
-                //_Scroll_LED
-              }
-  //*/
         } break;
-
-          //          default :
-          // do nothing
       }
-      // Debug ( "Loop of Receiver_TM1638" ) ;
     }
   }
 
@@ -464,167 +429,6 @@ private:
   void _MySetLeds(word NewLeds) {
     _LED = NewLeds;
     this->setLEDs(_LED);
-    // Serial.println ( "LEDs : " + String ( _LED ) ) ;
   }
 };
 #endif
-
-/*
-
-String Aap= " !\"#$%&'()*+,-./0123456789:;=
-
-const byte FONT_DEFAULT[] = {
-  0b00000000, // (32)  <space>
-  0b10000110, // (33) !
-  0b00100010, // (34) "
-  0b01111110, // (35) #
-  0b01101101, // (36) $
-  0b00000000, // (37) %
-  0b00000000, // (38) &
-  0b00000010, // (39) '
-  0b00110000, // (40) (
-  0b00000110, // (41) )
-  0b01100011, // (42) *
-  0b00000000, // (43) +
-  0b00000100, // (44) ,
-  0b01000000, // (45) -
-  0b10000000, // (46) .
-  0b01010010, // (47) /
-  0b00111111, // (48) 0
-  0b00000110, // (49) 1
-  0b01011011, // (50) 2
-  0b01001111, // (51) 3
-  0b01100110, // (52) 4
-  0b01101101, // (53) 5
-  0b01111101, // (54) 6
-  0b00100111, // (55) 7
-  0b01111111, // (56) 8
-  0b01101111, // (57) 9
-  0b00000000, // (58) :
-  0b00000000, // (59) ;
-  0b00000000, // (60) <
-  0b01001000, // (61) =
-  0b00000000, // (62) >
-  0b01010011, // (63) ?
-  0b01011111, // (64) @
-  0b01110111, // (65) A
-  0b01111111, // (66) B
-  0b00111001, // (67) C
-  0b00111111, // (68) D
-  0b01111001, // (69) E
-  0b01110001, // (70) F
-  0b00111101, // (71) G
-  0b01110110, // (72) H
-  0b00000110, // (73) I
-  0b00011111, // (74) J
-  0b01101001, // (75) K
-  0b00111000, // (76) L
-  0b00010101, // (77) M
-  0b00110111, // (78) N
-  0b00111111, // (79) O
-  0b01110011, // (80) P
-  0b01100111, // (81) Q
-  0b00110001, // (82) R
-  0b01101101, // (83) S
-  0b01111000, // (84) T
-  0b00111110, // (85) U
-  0b00101010, // (86) V
-  0b00011101, // (87) W
-  0b01110110, // (88) X
-  0b01101110, // (89) Y
-  0b01011011, // (90) Z
-  0b00111001, // (91) [
-  0b01100100, // (92) \ (this can't be the last char on a line, even in comment or it'll concat)
-  0b00001111, // (93) ]
-  0b00000000, // (94) ^
-  0b00001000, // (95) _
-  0b00100000, // (96) `
-  0b01011111, // (97) a
-  0b01111100, // (98) b
-  0b01011000, // (99) c
-  0b01011110, // (100)  d
-  0b01111011, // (101)  e
-  0b00110001, // (102)  f
-  0b01101111, // (103)  g
-  0b01110100, // (104)  h
-  0b00000100, // (105)  i
-  0b00001110, // (106)  j
-  0b01110101, // (107)  k
-  0b00110000, // (108)  l
-  0b01010101, // (109)  m
-  0b01010100, // (110)  n
-  0b01011100, // (111)  o
-  0b01110011, // (112)  p
-  0b01100111, // (113)  q
-  0b01010000, // (114)  r
-  0b01101101, // (115)  s
-  0b01111000, // (116)  t
-  0b00011100, // (117)  u
-  0b00101010, // (118)  v
-  0b00011101, // (119)  w
-  0b01110110, // (120)  x
-  0b01101110, // (121)  y
-  0b01000111, // (122)  z
-  0b01000110, // (123)  {
-  0b00000110, // (124)  |
-  0b01110000, // (125)  }
-  0b00000001, // (126)  ~
-};
-
-
-class TM1638plus  {
-
-public:
-    // Constructor
-    // Init the module
-    TM1638plus(uint8_t strobe, uint8_t clock, uint8_t data);
-    // Methods
-    // Send a command to module
-    void sendCommand(uint8_t value);
-
-    // Reset module
-    void reset(void);
-
-    //Sets the brightness level on a scale of brightness = 0 to 7.
-    //0 is not turned off, it's just the lowest brightness.
-    //If user wishes to change the default brightness at start-up change.
-     //The DEFAULT_BRIGHTNESS define in header file.
-    void brightness(uint8_t brightness);
-
-    //Read buttons returns a byte with value of buttons 1-8 b7b6b5b4b3b2b1b0
-    // 1 pressed, zero not pressed.
-    //User may have to debounce buttons depending on application.
-    //See [URL LINK](https://github.com/gavinlyonsrepo/Arduino_Clock_3)
-    // for de-bonce example.
-    uint8_t readButtons(void);
-
-    // Set an LED, pass it LED position 0-7 and value 0 or 1
-    void setLED(uint8_t position, uint8_t value);
-
-    // Send Text to Seven segments, passed char array pointer
-    // dots are removed from string and dot on preceding digit switched on
-    // "abc.def" will be shown as "abcdef" with c decimal point turned on.
-    void displayText(const char *text);
-
-    // Send ASCII value to seven segment, pass position 0-7 and ASCII value byte
-    void displayASCII(uint8_t position, uint8_t ascii);
-
-    // Same as displayASCII function but turns on dot/decimal point  as well
-    void displayASCIIwDot(uint8_t position, uint8_t ascii) ;
-
-    // Send HEX value to seven segment, pass position 0-7 and hex value(DEC) 0-15
-    void displayHex(uint8_t position, uint8_t hex);
-
-    // Send seven segment value to seven segment
-    //  pass position 0-7 byte of data corresponding to segments (dp)gfedcba
-    // i.e 0b01000001 will set g and a on.
-    void display7Seg(uint8_t position, uint8_t value);
-
-private:
-        uint8_t _STROBE_IO;
-        uint8_t _DATA_IO;
-        uint8_t _CLOCK_IO;
-
-};
-
-*/

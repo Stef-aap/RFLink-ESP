@@ -155,37 +155,3 @@ void loop() {
   Receivers.loop();
 }
 #endif
-
-// ***********************************************************************************
-// upload binaries:
-// ***********************************************************************************
-/*
-python /home/stef/.arduino15/packages/esp32/tools/esptool_py/2.6.1/esptool.py
---chip esp32
---port /dev/ttyUSB0
---baud 921600
---before default_reset
---after hard_reset write_flash -z
---flash_mode dio
---flash_freq 80m
---flash_size detect
-0xe000
-/home/stef/.arduino15/packages/esp32/hardware/esp32/1.0.4/tools/partitions/boot_app0.bin
-0x1000
-/home/stef/.arduino15/packages/esp32/hardware/esp32/1.0.4/tools/sdk/bin/bootloader_qio_80m.bin
-0x10000
-/tmp/arduino_build_841764/RFLink_ESPb.ino.bin
-0x8000
-/tmp/arduino_build_841764/RFLink_ESPb.ino.partitions.bin
-
-====> ESP8266
-/home/stef/.arduino15/packages/esp8266/tools/python3/3.7.2-post1/python3
-/home/stef/.arduino15/packages/esp8266/hardware/esp8266/2.6.3/tools/upload.py
---chip esp8266
---port /dev/ttyUSB1
---baud 921600
---before default_reset
---after hard_reset
-write_flash 0x0 /tmp/arduino_build_130546/RFLink_ESP_02.ino.bin
-
-/*/

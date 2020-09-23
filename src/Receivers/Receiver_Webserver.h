@@ -39,10 +39,8 @@ String WebServer_Root_Page = "/index.html";
 bool Load_File(fs::FS &Drive, String path) {
   String dataType = "text/plain";
   Serial.println("load from Path = " + path);
-  if (path.endsWith("/")) path += WebServer_Root_Page.substring(1);
-  // else if ( path.endsWith ( "/index.html" ) ) path.replace ( "/index.html", WebServer_Root_Page ) ;
 
-  // EXISTS TOEVOEGEN
+  if (path.endsWith("/")) path += WebServer_Root_Page.substring(1);
 
   if (path.endsWith(".src")) path = path.substring(0, path.lastIndexOf("."));
   else if (path.endsWith(".h"))
@@ -114,7 +112,6 @@ void Handle_Files_Selected() {
   String Temp;
   String CBXs;
   for (uint8_t i = 0; i < My_Webserver.args(); i++) {
-    // yield();
     int pos = My_Webserver.argName(i).indexOf('&');
     String Filename = My_Webserver.argName(i).substring(0, pos);
     Serial.println("======++++" + My_Webserver.argName(i) + "pp " + Filename);
@@ -133,7 +130,6 @@ void Handle_Files_Selected() {
         }
         int DT_i;
         for (DT_i = 1; DT_i < ItemCount; DT_i++) {
-          // yield();
           String Item = Splitter->getItemAtIndex(DT_i);
           Temp = String(FPSTR(HTML_Dygraph_Signal_Select));
           Temp.replace("XXX_Label", Item);
@@ -182,7 +178,6 @@ void Handle_Files_Selected_SD() {
           Temp.replace("XXX_Label", Item);
           Temp.replace("XXX", String(DT_i - 1));
           CBXs += Temp;
-          // Serial.println ( "UUUUUUUUUUUUUUUU : " + String(DT_i) + Temp ) ;
         }
       }
     }
@@ -194,7 +189,6 @@ void Handle_Files_Selected_SD() {
     Line += Temp;
   }
   Line += "</body></html>";
-  // Serial.println ( Line ) ;
 #ifdef ESP32
   SD_MMC_System.Store_File("/Select_Signals.html", Line);
 #endif
@@ -213,9 +207,7 @@ void Handle_Modifed_Settings() {
     message += " NAME:" + My_Webserver.argName(i) + "\r\n VALUE:" + My_Webserver.arg(i) + "\r\n";
   }
 
-  // My_Webserver.send ( 404, "text/html", "<html><H2>Gewijzigde Instellingen zijn opgeslagen.</H2></html>" ) ;
   My_Webserver.send(404, "text/html", FPSTR(HTML_Settings_Done));
-  // loadFromSpiffs ( "/Settings.html" ) ;
   Serial.println(message);
 
   // **************************************************************
@@ -228,18 +220,11 @@ void Handle_Modifed_Settings() {
   for (JsonPair KeyValue : DocumentRoot) {
     String Key = String(KeyValue.key().c_str());
     if (Key.startsWith("Sensor_") || Key.startsWith("Receiver_")) {
-      //_My_Settings_Buffer [ Key ] = false ;
       JsonVariant Value = KeyValue.value();
-      // Serial.println ( "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ-" + Key + "-ZZ-" + My_Webserver.arg ( Key ) +
-      // "-Z-" +Value.as<String>() + "-" ) ;
       if ((My_Webserver.arg(Key) == "on") && (!Value.as<bool>())) {
-        // Serial.println ( "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " + Key + "  //  " + My_Webserver.arg ( Key ) )
-        // ;
         _My_Settings_Buffer[Key] = true;
         Restart_Needed = true;
       } else if ((My_Webserver.arg(Key) == "") && (Value.as<bool>())) {
-        // Serial.println ( "RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR " + Key + "  //  " + My_Webserver.arg ( Key ) )
-        // ;
         _My_Settings_Buffer[Key] = false;
         Restart_Needed = true;
       }
@@ -276,7 +261,7 @@ void Send_index_html() {
   if (Build_Info.length() > 0) My_Webserver.sendContent_P(HTML_Sensor_StartPagina_Begin_BuildInfo);
   My_Webserver.sendContent_P(HTML_Sensor_StartPagina_Begin_Values);
 
-  File_System.HTML_File_CheckList("/"); //, ".csv" ) ;
+  File_System.HTML_File_CheckList("/");
 
 #ifdef Receiver_SDfat_h
   ((_Receiver_SDfat *)_p_Receiver_SDfat)->HTML_File_CheckList("/", ".csv", true);
@@ -334,11 +319,7 @@ void Handle_Values() {
 //   maar dat vinden we helemaal niet erg.
 // LET OP: ER VERSCHIJNT NIET ALS ER EEN FOUT IN HET JSON BERICHT ZIT
 // ***********************************************************************
-void Update_Values() {
-  // Serial.print ( ":::::::::::::::::");
-  // Serial.println ( JSON_Data ) ;
-  My_Webserver.send(200, "application/json", JSON_Data);
-}
+void Update_Values() { My_Webserver.send(200, "application/json", JSON_Data); }
 
 // ***********************************************************************
 // ***********************************************************************
@@ -361,10 +342,6 @@ void handleWebRequests() {
 
   // *******************************************************
   // *******************************************************
-  // if ( Page == "/Values_Page.php" ) {
-  //  Handle_Values () ;
-  //  return ;
-  //}
   if (Page == "/Settings_Page.php") {
     Handle_Modifed_Settings();
     return;
@@ -398,10 +375,8 @@ void handleWebRequests() {
     Serial.println("Format SPIFFS ");
     return;
   }
-// *******************************************************
 
 // *******************************************************
-// loadFromSpiffs(server.uri()) GEEFT ALTIJD TRUE TERUG !!
 // *******************************************************
 #ifdef ESP32
   // SD_MMC files always start with $, which must be removed
@@ -460,7 +435,6 @@ If \"index.html\" doesn't exists, but \"index.h\" does the latter will be used i
       WebServer_Root_Page = "/index.h";
     }
     My_Webserver.on("/", handleRoot);
-    // My_Webserver.on         ( "/Values_Page.php", Handle_Values ) ;
     My_Webserver.on("/Values.html", Handle_Values);
     My_Webserver.on("/Build_Info.html", Show_Build_Info);
     My_Webserver.on("/Xsensors", Update_Values);

@@ -31,7 +31,6 @@ class _Sensor_SDS011 : public _Sensor_BaseClass {
 
 public:
   HardwareSerial *_Serial_SDS011;
-  // SoftwareSerial *_Serial_SDS011 ;
 
   // ***********************************************************************
   // Creator,
@@ -51,11 +50,6 @@ public:
   void setup() {
     _Serial_SDS011 = &Serial_Device;
     _Serial_SDS011->begin(9600);
-
-    //      _Debug_Over_Serial = false ;
-    //      _Serial_SDS011 -> flush () ;
-    //      _Serial_SDS011 -> swap () ;
-    //_Serial_SDS011 -> write ( _SDS_Continuous_cmd, sizeof ( _SDS_Continuous_cmd ) );
     _Serial_SDS011->write(_SDS_Stop_cmd, sizeof(_SDS_Stop_cmd));
     _Serial_SDS011->flush();
   }
@@ -70,8 +64,6 @@ public:
     // *******************************
     if (_State == 0) {
       if (Now - _Last_Loop_Time > 120000) {
-        //        if ( _Start_New_Measurement ) {
-        // Debug ( "Start new measurement") ;
         // ***************************************************************************
         // this command starts the sensor (i.e. the laserdiode and the ventilator) and
         // while the sensor is working, it will send continuously the measured data
@@ -87,7 +79,6 @@ public:
     // *******************************
     else if (_State == 1) {
       if (Now - _Last_Loop_Time > 15000) {
-        // Debug ( "warmed up ") ;
         _State = 2;
         _Last_Loop_Time = Now;
         _NSample = 0;
@@ -125,13 +116,10 @@ public:
           _Sum_PM_10 += PM_10;
           _NSample += 1;
 
-          //_Max_PM_2_5 = max ( _Max_PM_2_5, PM_2_5 ) ;  WERKT NIET
-          //_Max_PM_2_5 = _max ( _Max_PM_2_5, PM_2_5 ) ;  WERKT OOK
           _Max_PM_2_5 = std::max(_Max_PM_2_5, PM_2_5);
           _Min_PM_2_5 = std::min(_Min_PM_2_5, PM_2_5);
           _Max_PM_10 = std::max(_Max_PM_10, PM_10);
           _Min_PM_10 = std::min(_Min_PM_10, PM_10);
-          // Debugf ( "Next Measurement %i   %i   %i", _NSample, _Sum_PM_2_5, _Sum_PM_10 ) ;
         } else {
           _Missed_Sample += 1;
           if (_Missed_Sample > 10) {
@@ -140,7 +128,6 @@ public:
             _fPM_2_5_Hist = 0;
             _fPM_10_Hist = 0;
           }
-          // Debug ( "SDS011 Missed Sample: "  + String ( _Missed_Sample ) ) ;
         }
 
         // ***************************************
@@ -151,7 +138,6 @@ public:
           // stop the SDS011 sensor
           // **********************
           _Serial_SDS011->write(_SDS_Stop_cmd, sizeof(_SDS_Stop_cmd));
-          // Debug ( "StoPPPP measurement") ;
 
           _NSample -= 2;
           _fPM_2_5 = 0.1 * (_Sum_PM_2_5 - _Min_PM_2_5 - _Max_PM_2_5) / _NSample;
@@ -166,7 +152,6 @@ public:
           sprintf(msg, "{\"value_type\":\"SDS_P1\",\"value\":\"%.2f\"},{\"value_type\":\"SDS_P2\",\"value\":\"%.2f\"},",
                   _fPM_10, _fPM_2_5);
           _Luftdaten_String = String(msg);
-          // Debug ( "Luftdaten: " + _JSON_String ) ;
 
           _Last_Loop_Time = Now;
           _State = 0;
@@ -190,14 +175,6 @@ public:
     JSON_Short_Data += "\t";
     JSON_Short_Data += String(_fPM_10_Hist, 1);
     JSON_Short_Data += "\t";
-
-    //     _Start_New_Measurement = true ;
-
-    /*     if ( _NSample == 0 ) {
-        return ;
-      }
-      JSON_Data += _JSON_String ;
-*/
   }
 
   // ***********************************************************************
@@ -208,7 +185,6 @@ public:
   // ***********************************************************************
 private:
   // ***********************************************************************
-  // bool          _Start_New_Measurement = false ;
   unsigned long _Last_Loop_Time = -120000;
   int _NSample = 0;
   int _State = 0;
@@ -223,7 +199,6 @@ private:
   float _fPM_10;
   float _fPM_2_5_Hist = 0;
   float _fPM_10_Hist = 0;
-  // String        _JSON_String ;
   String _Luftdaten_String;
   uint8_t _Data[20];
   int _Data_Len = 0;
@@ -260,15 +235,11 @@ private:
 
     while (_Serial_SDS011->available() > 0) {
       char kar = _Serial_SDS011->read();
-      // Serial.print ( String ( (int) kar )  + " //  " ) ;
-      // Serial.print ( String ( kar,HEX )  + " //  " + String (Answer_Len) + " -- " ) ;
-      // ***************************************
-      // ***************************************
+
       switch (Answer_Len) {
         case 0:
           if (kar == 0xAA) {
             Answer_Len += 1;
-            // Debugf ( ">>>>>>>>>>>>>>>>>> 0xAA   %i", _Serial_SDS011 -> available() ) ;
           } else {
             Debugf(">>>>>>>>>>>>>>>>>> NNNN  %i    %i", kar, _Serial_SDS011->available());
             while (_Serial_SDS011->available() > 0) {
@@ -281,7 +252,6 @@ private:
         case 1:
           if (((Cmd2 == 0x04) && (kar == 0xC0)) || ((Cmd2 != 0x04) && (kar == 0xC5))) {
             Answer_Len += 1;
-            // Debugf ( ">>>>>>>>>>>>>>>>>> 0xBB   %i", _Serial_  -> available() ) ;
           } else {
             Answer_Len = 0;
           }
@@ -305,7 +275,6 @@ private:
           // ****************************************
           Answer_Len += 1;
           CheckSum = kar;
-          // Debugf ( ">>>>>>>>>>>>>>>>>> 0xCC   %i", _Serial_SDS011 -> available() ) ;
           break;
 
         case 8:
@@ -323,11 +292,6 @@ private:
         case 9:
           if (kar == 0xAB) {
             _Data_Len = Answer_Len - 2;
-            // Debugf ( ">>>>>>>>>>>>>>>>>> 0xFF   %i   %i", _Data_Len, _Serial_SDS011 -> available() ) ;
-            // Debugf ( ">>>>>>   %i, %i, %i, %i, %i, %i, %i, %i, %i, %i", _Data[0], _Data[1], _Data[2], _Data[3],
-            // _Data[4],
-            //                                                            _Data[5], _Data[6], _Data[7], _Data[8],
-            //                                                            _Data[9] ) ;
             while (_Serial_SDS011->available() > 0) {
               char kar = _Serial_SDS011->read();
             }
@@ -348,19 +312,16 @@ private:
         while (_Serial_SDS011->available() > 0) {
           char kar = _Serial_SDS011->read();
         }
-        // Debugf ( "MISSING,   N = %i", Answer_Len ) ;
         return false;
       }
 
       if (Answer_Len >= 3) {
         _Data[Answer_Len - 3] = kar;
       }
-      // Serial.println () ;
     }
     // *****************************************************
     // No more data from sensor, and no good answer received
     // *****************************************************
-    // Debugf ( "MISSING-end,   N = %i", Answer_Len ) ;
     _Data_Len = 0;
     return false;
   }

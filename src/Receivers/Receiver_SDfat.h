@@ -18,44 +18,7 @@
 //
 // Inmiddels overgestapt op de Adafruit forl op SDfat
 //  en op de volgende manier het conflicht opgelost
-/*
-there is a define for this to be used before header call
 
-#define FS_NO_GLOBALS
-#include <FS.h>
-
-then you must add namespace fs for SPIFFS objects like
-fs::File currentfile = SPIFFS.open("/myfile.txt", "r");
-fs::DIR
-fs:FSINFO
-etc
-
-but for SD no need :
-File textfile = SD.open("/myfile.txt", FILE_READ);
-*/
-
-// ToDo: add timestamp
-/*  // create a new file with default timestamps
-  if (!file.open("stamp.txt", O_WRONLY | O_CREAT)) {
-    error("open stamp.txt failed");
-  }
-  // set creation date time
-  if (!file.timestamp(T_CREATE, 2014, 11, 10, 1, 2, 3)) {
-    error("set create time failed");
-  }
-  // set write/modification date time
-  if (!file.timestamp(T_WRITE, 2014, 11, 11, 4, 5, 6)) {
-    error("set write time failed");
-  }
-  // set access date
-  if (!file.timestamp(T_ACCESS, 2014, 11, 12, 7, 8, 9)) {
-    error("set access time failed");
-  }
-  cout << F("\nTimes after timestamp() calls\n");
-  printTimestamps(file);
-
-  file.close();
-*/
 // ***********************************************************************************
 // ***********************************************************************************
 
@@ -77,20 +40,12 @@ void MySort(String String_List[], int Len, bool Reversed) {
     for (int i = Start; i < Len; i++) {
       if ((!Reversed && (String_List[i] < String_List[Start - 1])) ||
           (Reversed && (String_List[i] > String_List[Start - 1]))) {
-        //      if ( String_List [i] < String_List [Start-1] ) {
         Temp = String_List[i];
         String_List[i] = String_List[Start - 1];
         String_List[Start - 1] = Temp;
       }
     }
   }
-
-  /*
-  for ( int i2=0; i2<Len; i2++ ) {
-    Serial.println ( "Sorted_List [" + String (i2) + "] : " + String_List [i2] ) ;
-  }
-  Serial.println ( "Soretd-Soretd-Soretd-Soretd-Soretd-Soretd-");
-  //*/
 }
 
 // Receiver_SDfat ********************************************************************
@@ -143,7 +98,6 @@ public:
       _Card_Present = true;
     } else {
       Serial.println("SD-Card failed, or not present");
-      // SDcard.initErrorHalt();
       _Card_Present = false;
     }
 
@@ -294,19 +248,8 @@ public:
     //******************************************
     else if (LowerCase.startsWith("dir")) {
       //******************************************
-      // this -> Get_CWD () ;
       Filename = Serial_Command.substring(4);
       if (Filename.length() == 0) Filename = "/";
-
-      /*
-        // IK WEET NIET HOE IK DE HUIDIGE CWD INHOUD OPVRAG !!
-        String Path ;
-        if ( Filename.length() == 0 ) {
-          SDcard.vwd()->getName (  _SDcard_Line, sizeof(_SDcard_Line) ) ;
-          Path = _SDcard_Line ;
-          Serial.println ( "Path = " + Path ) ;
-        } else Path = Filename ;
-        */
 
       this->Dir2();
       return false;
@@ -315,7 +258,6 @@ public:
     //******************************************
     else if (LowerCase.startsWith("cd")) {
       //******************************************
-      // this -> Get_CWD () ;
       String Path = Serial_Command.substring(3);
       Serial.println(Path);
 
@@ -331,7 +273,6 @@ public:
     //******************************************
     else if (LowerCase.startsWith("md")) {
       //******************************************
-      // this -> Get_CWD () ;
       String Path = Serial_Command.substring(3);
       this->MakeDir(Path);
       Serial.print("============================= MD --> " + Path);
@@ -343,8 +284,6 @@ public:
       //******************************************
       Filename = Serial_Command.substring(5);
       this->Dump(Filename);
-      // SdFile SDfile ( Filename.c_str(), O_RDONLY ) ;
-      // SDfile.dmpFile ( &Serial, 0, 100 ) ;
     }
 
     //******************************************
@@ -353,22 +292,12 @@ public:
       String Path = Serial_Command.substring(8);
       if (Path.length() == 0) Path = "/";
       SDcard.chdir(Path.c_str());
-      // vwd= "working Directory"
       while (SDfile.openNext(SDcard.vwd(), O_READ)) {
         if (SDfile.isFile()) {
           SDfile.getName(_SDcard_Line, sizeof(_SDcard_Line));
           String Filename = _SDcard_Line;
           SDfile.close();
           this->Dump(Filename);
-
-          /*
-            SDfile.printModifyDateTime ( &Serial ) ;
-            Serial.print ( '\t' ) ;
-            SDfile.printFileSize ( &Serial ) ;
-            Serial.print ( "\t\t" ) ;
-            SDfile.printName ( &Serial ) ;
-            Serial.println () ;
-            */
         } else
           SDfile.close();
       }
@@ -421,57 +350,6 @@ public:
       SDfile.println(Data);
       SDfile.close();
     }
-  }
-
-  // Receiver_SDfat ********************************************************
-  // ***********************************************************************
-  void HTML_File_CheckList(String Path = "/", String Ends = "") {
-    /* moet worden heschreven zonder sort !! zie FS_support
-      if ( !_Card_Present ) return ;
-
-      String Filename ;
-      String FileExt  ;
-      String Line     ;
-      String Result   ;
-
-      this -> Get_Ordered_DirList ( Path, Ends, Reversed ) ;
-      Serial.println ( _FileList_Len );
-
-      My_Webserver.sendContent ( F("<h4>Data Files on SD-card</h4>\n") ) ;
-      My_Webserver.sendContent ( F("<form action=\"/Files_Selected_SD.php\" method=\"get\">\n") ) ;
-      My_StringSplitter *Splitter = new My_StringSplitter ( "", '\t' ) ;
-      for ( int i=0; i<_FileList_Len; i++ ) {
-        Line = _FileList [i] ;
-        Splitter -> newString ( Line, '&' ) ;
-        Filename = Splitter -> getItemAtIndex ( 0 ) ;
-        Splitter -> newString ( Filename, '.' ) ;
-        FileExt  = Splitter -> getItemAtIndex ( -1 ) ;   //eigenlijk wil ik hier index=-1 !! de laatset
-
-        FileExt.toLowerCase() ;
-        if ( FileExt == "csv" ) {
-          Result = F("<label><input type=\"checkbox\" name=\"") ;
-          Result += Line ;
-          Result += "\">" ;
-          Result += Line ;
-          Result += "</label>" ;
-        }
-        else {
-          Result = "&emsp;" + Line ;
-        }
-
-        Result += "&emsp;&emsp;<a href=\"" ;
-        Result += Filename ;
-        Result += F("\" download>Download</a><br>\n") ;
-
-        if ( ( i % 10 ) == 9 ) {
-          Result += "<br>" ;
-        }
-
-        My_Webserver.sendContent ( Result.c_str() ) ;
-      }
-      My_Webserver.sendContent ( F("<br><input type=\"submit\" value=\"Show Graph(s)\">\n\
-</form>\n") ) ;
-//*/
   }
 
   // Receiver_SDfat ********************************************************
@@ -552,8 +430,6 @@ delALL YES      // TODO Delete ALL bestanden";
   // **************************************************
   // **************************************************
   bool Delete(String Filename) {
-    // Serial.println ( "===== Delete " + Filename ) ;
-    // SdFile SDfile ( Filename.c_str(), O_RDWR ) ;
     SDfile.open(Filename.c_str(), O_RDWR);
     if (SDfile.isOpen()) {
       bool Result = SDfile.remove();
@@ -567,43 +443,6 @@ delALL YES      // TODO Delete ALL bestanden";
     }
     Serial.println("Removing File, doesn't exists " + Filename);
   }
-
-  // Receiver_SDfat ********************************************************
-  // ***********************************************************************
-  /*
-    void Get_Ordered_DirList ( String Path = "/", String Ends = "", bool Reversed=false ) {
-      if ( !_Card_Present ) return ;
-
-      SDcard.chdir ( Path.c_str() ) ;
-      int i = 0 ;
-      while ( SDfile.openNext ( SDcard.vwd(), O_READ ) && ( i < _FileList_Max_N ) ) {
-        if ( SDfile.isFile () ) {
-          String Line ;
-          SDfile.getName (  _SDcard_Line, sizeof(_SDcard_Line) ) ;
-          SDfile.close () ;
-
-          Line += String ( _SDcard_Line ) ;
-          Line += "&emsp;&emsp;[" + String ( SDfile.fileSize() ) + "]" ;
-
-          dir_t dir;
-          if ( SDfile.dirEntry ( &dir ) ) {
-          uint16_t FileDate = dir.lastWriteDate ;
-          char CharLine [30] ;
-          sprintf ( CharLine, "&emsp;&emsp;%04d-%02d-%02d %02d:%02d:%02d",
-                              FAT_YEAR(FileDate), FAT_MONTH(FileDate), FAT_DAY(FileDate),
-                              FAT_HOUR(FileDate), FAT_MINUTE(FileDate), FAT_SECOND(FileDate) ) ;
-          Line += String ( CharLine ) ;
-          }
-
-          _FileList[i] = Line ;
-          i++ ;
-        }
-        else SDfile.close();
-      }
-      _FileList_Len = i ;
-      MySort ( _FileList, _FileList_Len, Reversed ) ;
-    }
-*/
 
   // Receiver_SDfat ********************************************************
   // ***********************************************************************
@@ -628,10 +467,6 @@ delALL YES      // TODO Delete ALL bestanden";
   // ***********************************************************************
   void MakeDir(String NewPath) {
     if (!_Card_Present) return;
-
-    // String Path = "/" ;
-    // SDcard.chdir ( Path, true ) ;
-    // vwd= "working Directory"
     SDfile.mkdir(SDcard.vwd(), NewPath.c_str(), true);
   }
 
@@ -672,9 +507,7 @@ delALL YES      // TODO Delete ALL bestanden";
       if (SDfile.isFile()) {
         SDfile.getName(_SDcard_Line, sizeof(_SDcard_Line));
         Filename = _SDcard_Line;
-        // Serial.println ( "found file: " + Filename ) ;
         if (Filename.startsWith(this->_Data_Filename_Prefix)) {
-          // Serial.println ( "   found file: " + this->_Data_Filename_Prefix ) ;
           int FileNr = Parse_FileNr(Filename);
           if (FileNr > Last_FileNr) Last_FileNr = FileNr;
         }

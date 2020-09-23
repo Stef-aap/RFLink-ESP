@@ -69,18 +69,13 @@ public:
     //   1110 0000  =  0xE0   => 0x02
     // ****************************************************
     byte Chime = BitStream & 0xFF;
-    if (Chime == 0x1C)
-      Chime = 1;
+    if (Chime == 0x1C) Chime = 1;
     else if (Chime == 0xE0)
       Chime = 2;
     else if (Chime != 3)
       return false;
 
     BitStream = (BitStream >> 16) & 0xFFFFFFFF;
-    /*
-      sprintf ( _RFLink_pbuffer, "20;%02X;Door_Chime;ID=%04X;SWITCH=1;CMD=ON;CHIME=%02X;", PKSequenceNumber++,
-      BitStream, Chime ) ; Serial.println  (  _RFLink_pbuffer ) ; return true;
-      */
     return Send_Message("Door_Chime", BitStream, 1, "ON", "CHIME=" + String(Chime));
   }
 

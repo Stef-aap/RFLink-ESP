@@ -67,7 +67,6 @@ boolean FetchSignal(int Receive_Pin) {
     // ************************************************************
     // als het nivo laag is, wacht tot het einde van dit laag nivo
     // ************************************************************
-    //    while ( ( digitalRead ( PIN_RF_RX_DATA ) == Start_Level ) ) ;
     while ((digitalRead(Receive_Pin) == Start_Level) && (millis() < Start_Time))
       ;
 
@@ -79,7 +78,6 @@ boolean FetchSignal(int Receive_Pin) {
     //   maar vanwege de herhalende sequences zullen we toch regelmatig de juiste waarde meten
     // ************************************************************
     FETCH_Pulse_Plus_1 = micros();
-    //    while ( ( digitalRead ( Receive_Pin ) != Start_Level ) ) ;
     while ((digitalRead(Receive_Pin) != Start_Level) && (millis() < Start_Time))
       ;
 
@@ -87,7 +85,6 @@ boolean FetchSignal(int Receive_Pin) {
     // Wacht tot het einde van de laag periode
     // ************************************************************
     LastPulse = micros();
-    //    while ( ( digitalRead ( Receive_Pin ) == Start_Level ) ) ;
     while ((digitalRead(Receive_Pin) == Start_Level) && (millis() < Start_Time))
       ;
     PulseLength = micros() - LastPulse;
@@ -97,7 +94,6 @@ boolean FetchSignal(int Receive_Pin) {
     // Berg dan ook de positieve en negatieve startpuls op
     // ************************************************************
     if (PulseLength > 5000) {
-      // Serial.println ( PulseLength ) ;
       RawSignal.Pulses[RawCodeLength++] = LastPulse - FETCH_Pulse_Plus_1;
       RawSignal.Pulses[RawCodeLength++] = PulseLength;
       Started = true;
@@ -151,7 +147,6 @@ boolean FetchSignal(int Receive_Pin) {
     // stop als er een lange puls is gevonden of als het buffer vol is
     // ************************************************************
   } while ((RawCodeLength < RAW_BUFFER_SIZE) && (numloops < maxloops));
-  // Serial.println ( RawCodeLength ) ;
 
   // ************************************************************
   // We hebben nu het einde van een signaal bereikt

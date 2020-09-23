@@ -56,8 +56,6 @@ public:
       New_Value_Int = My_Webserver.arg(i).toInt();
 
       if (My_Webserver.argName(i) == "Watchdog GPIO") {
-        // Serial.println ( "JJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJJ  " + String ( New_Value_Int ) + " JJJJJ " +
-        // String(Watchdog_Pin)) ;
         if (New_Value_Int != Watchdog_Pin) {
           _My_Settings_Buffer["Watchdog GPIO"] = New_Value_Int;
           Restart = true;

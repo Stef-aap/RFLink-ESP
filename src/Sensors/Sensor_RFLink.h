@@ -23,9 +23,6 @@ String Unknown_Device_ID = "";
 int Learning_Mode = 0; // always start in production mode
 char PreFix[20];
 
-//#define Home_Automation  "MQTT"
-//#define Home_Automation  "RS232"
-
 // ****************************************************************************
 // used in Raw signal
 //
@@ -75,17 +72,12 @@ public:
   void Constructor_Finish() {
     Version_Name = "V" + String(Sensor_RFLink_h) + "   Sensor_RFLink.h";
     Serial.println("CREATE    " + Version_Name);
-    // this -> _JSON_Long_Header  = "Date\tTime\t" ;
-    // this -> _JSON_Short_Header = "Date\tTime\t" ;
 
     My_StringSplitter *Splitter = new My_StringSplitter(MQTT_Topic, '/');
     String First_Part = Splitter->getItemAtIndex(0);
 
     this->MQTT_Callback_Topic = First_Part + "/from_HA/"; // MQTT_Topic_Rec ;
     _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/";
-    // Serial.println ( "xaaa" + MQTT_Topic ) ;
-    // Serial.println ( "xbbb" + MQTT_Callback_Topic ) ;
-    // Serial.println ( "xccc" + _RFLink_MQTT_Topic_Send ) ;
 
     Help_Text = "    >>>>>>> ToDO Help tekst";
   }
@@ -103,9 +95,6 @@ public:
     RFL_Protocols.Add(new _RFL_Protocol_EV1527(this->_Receive_Pin, this->_Transmit_Pin));
     RFL_Protocols.Add(new _RFL_Protocol_Paget_Door_Chime(this->_Receive_Pin, this->_Transmit_Pin));
     RFL_Protocols.setup();
-    // ************************************************************************
-    // Serial.printf ( "20;%02X;Nodo RadioFrequencyLink - MiRa V%s\r\n",
-    //                PKSequenceNumber++, String(_Main_Version) );
 
     RawSignal.Time = millis();
 
@@ -114,9 +103,6 @@ public:
 
     this->MQTT_Callback_Topic = First_Part + "/from_HA/"; // MQTT_Topic_Rec ;
     _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/";
-    // Serial.println ( "aaa" + MQTT_Topic ) ;
-    // Serial.println ( "bbb" + MQTT_Callback_Topic ) ;
-    // Serial.println ( "ccc" + _RFLink_MQTT_Topic_Send ) ;
 
     RFLink_File.Begin();
   }
@@ -162,11 +148,9 @@ public:
   void loop() {
     if (FetchSignal(this->_Receive_Pin)) {
       RFL_Protocols.Decode();
-      //        Line = "MQTT-Receive  Topic=" + Topic + "   Payload=" +  Payload + " - Converted: " + Line ;
     }
 
     if ((millis() - this->_Heartbeat_Last_Time) > 60000) {
-      // String Topic   = MQTT_Topic_Send + "Heartbeat" ;
       String Topic = _RFLink_MQTT_Topic_Send + "Heartbeat";
 
       String Payload;
@@ -175,7 +159,6 @@ public:
       Payload += ", \"RSSI\":";
       Payload += String(WiFi.RSSI());
       Payload += "}";
-      // Serial.println ( "333" + Topic ) ;
       My_MQTT_Client->Publish_Without_(Topic, Payload);
       this->_Heartbeat_Last_Time = millis();
     }
@@ -198,15 +181,14 @@ public:
     // On Restart, Send Email
     // ***********************************
     if (this->First_Time_After_Restart_Email && (WiFi.status() == WL_CONNECTED)) {
-      // Serial.println ( "(((((((((((((((((((((((((((((((((((((((((" );
       this->First_Time_After_Restart_Email = false;
       String Email_Subject = (String)_Main_Name + " Warning: Device Restarted";
       Send_Email("", Email_Subject, "", false);
     }
+
     // ***********************************
     // On restart, Send Special MQTT message
     // ***********************************
-    //((_Receiver_MQTT*)_p_Receiver_Email) -> Send_Email ( Mail_To, Subject, Body, HTML_Format ) ;
     if (this->First_Time_After_Restart_MQTT && My_MQTT_Client->Connected()) {
       String Topic = _RFLink_MQTT_Topic_Send + "Restarted";
       String Payload;
@@ -233,7 +215,6 @@ public:
     // from:   ha/from_HA/ev1527_005df     S02_ON
     // to:     10;EV1527;005DF;2;ON;
     // ************************************************
-    // Serial.println ( "....CallBack:  " + Topic ) ;
     if (Topic.startsWith(this->MQTT_Callback_Topic) && not(Topic.endsWith("_"))) {
       Received_MQTT_Topic = Topic;
       Received_MQTT_Payload = Payload;
@@ -250,37 +231,17 @@ public:
       Payload.replace("_", ";");
       Line += Payload + ";";
 
-      // if ( Learning_Mode > 0 ) {
       Serial.print("Sensor_RFLink, MQTT Received Topic: ");
       Serial.print(Topic);
       Serial.print("  Payload: " + Payload);
       Serial.println("    Converted: " + Line);
-      //}
 
       Line_2_File = "MQTT-Receive  Topic=" + Topic + "   Payload=" + Payload + " - Converted: " + Line;
       RFLink_File.Log_Line(Line_2_File);
 
-      // Line.toCharArray ( InputBuffer_Serial, sizeof ( InputBuffer_Serial ) ) ;
-      // Process_Serial () ;
       Handle_Serial_Command(Line);
     }
   }
-  /*
-    // ***********************************************************************
-    //   {"FTP":"ON"}   {"FTP":"OFF"}
-    // ***********************************************************************
-    void MQTT_Callback ( String Payload, DynamicJsonDocument root ) {
-    //void MQTT_Callback ( String Payload, JsonObject &root ) {
-      Serial.println ( "FTPFTPFTPFTPFTP:::::::::::::::" + Payload ) ;
-      Serial.println ( "Loop Priority was : " + String ( Loop_Priority ) ) ;
-      String FTP = root [ "FTP" ] ;
-      if ( FTP == "ON" )
-        Loop_Priority = 1 ;
-      else if ( FTP == "OFF" ) {
-        Loop_Priority = 0 ;
-      }
-    }
-*/
 
   // _Sensor_RFLink ********************************************************
   // ***********************************************************************
@@ -324,20 +285,11 @@ public:
         RFLink_File.Print_Devices();
       }
       return true;
-      //      Unknown_Device_ID = Randomize_Device_ID ( Unknown_Device_ID ) ;
-      //      if ( Unknown_Device_ID.length() > 0 ) {
-      //        Serial.println (">>>");
-      //        Serial.println ( Unknown_Device_ID ) ;
-      //        Serial.println ("<<<");
-      //        //RFLink_File.Add_Device ( Unknown_Device_ID ) ;
-      //        //RFLink_File.Print_Devices () ;
-      //      }
     }
 
     // *********************************************
     // 10;   // COMMAND
     // *********************************************
-    // else if ( strncmp ( InputBuffer_Serial, "10;", 3 ) == 0 ) {
     else if (LowerCase.startsWith("10;")) {
 
       // *********************************************
@@ -349,7 +301,7 @@ public:
       }
 
       // *********************************************
-      //   PING
+      // PING
       // Very Important, because this is used by Domoticz
       //    to see if the RFLink is working properly
       // *********************************************
@@ -361,7 +313,6 @@ public:
       // *********************************************
       // REBOOT
       // *********************************************
-      // else if ( strcasecmp ( InputBuffer_Serial+3, "REBOOT;" ) == 0 ) {
       else if (LowerCase.startsWith("reboot;", 3)) {
         ESP.restart();
       }
@@ -370,7 +321,6 @@ public:
       // VERSION
       // *********************************************
       else if (strcasecmp(InputBuffer_Serial + 3, "VERSION;") == 0) {
-        // Serial.printf ( "20;%02X;VER=%s;REV=%02x;BUILD=%02x;\r\n", PKSequenceNumber++, Version, Revision, Build ) ;
         Serial.printf("20;%02X;VER;", PKSequenceNumber++);
         Serial.print(_Main_Version, 1);
         Serial.println(";");
@@ -383,8 +333,6 @@ public:
       else if (strncasecmp(InputBuffer_Serial + 3, "DEBUG=", 6) == 0) {
         byte kar = InputBuffer_Serial[9];
         Learning_Mode = kar - 0x30;
-        // sprintf ( InputBuffer_Serial, "20;%02X;DEBUG=%i;", PKSequenceNumber++, Learning_Mode ) ;
-        // Serial.println ( InputBuffer_Serial ) ;
         Line_2_File = "\r\n=====  Change Learning Mode to : " + String(Learning_Mode);
         RFLink_File.Log_Line(Line_2_File);
 
@@ -410,19 +358,6 @@ public:
           RFL_Protocols.Home_Command(_Learning_Mode_9_Cmd2);
           Serial.println("LM-8, send " + _Learning_Mode_9_Cmd2);
         }
-
-        // *********************************************
-        // *********************************************
-        else if (Learning_Mode == 9) {
-          /*
-            while ( true ) {
-              RFL_Protocols.Home_Command ( "10;EV1527;005DF;01;ON;" ) ;
-              delay ( 3000 ) ;
-              RFL_Protocols.Home_Command ( "10;EV1527;005DF;02;ON;" ) ;
-              delay ( 3000 ) ;
-            }
-            */
-        }
       }
 
       // *********************************************
@@ -445,19 +380,10 @@ public:
       else {
         // 10;EV1527;0005df;2;ON
         if (RFL_Protocols.Home_Command(InputBuffer_Serial)) {
-          //           if ( Home_Automation == "MQTT" ) {
           Received_MQTT_Topic.replace("from_HA", "from_RFLink");
-          // Serial.println ( "222" + Received_MQTT_Topic ) ;
           My_MQTT_Client->Publish_Without_(Received_MQTT_Topic, Received_MQTT_Payload);
-          /*           }
-            //else if ( Home_Automation == "RS232" ) {
-            else {
-              Serial.printf ( "20;%02X;OK;\r\n", PKSequenceNumber++ ) ;
-            }
-/*/
         }
       }
-      // Serial.println ( "return TRUE on 10;");
       return true;
     }
 
@@ -485,10 +411,6 @@ public:
       int x2 = Command.indexOf(";", x1 + 1);
       String ARG = Command.substring(x1 + 1, x2);
       String Rest = Command.substring(x1 + 1);
-
-      // Serial.println ("cmd19" );
-      // Serial.println ( CMD ) ;
-      // Serial.println ( ARG ) ;
 
       if (CMD.equalsIgnoreCase("DIR")) {
         File_System.DirList_Print("/");
@@ -549,10 +471,10 @@ private:
 
   bool _Learning_Mode_9_State;
   unsigned long _Learning_Mode_9_LastTime = 0;
-  // String        _Learning_Mode_9_Cmd1     = "10;EV1527;005DF;01;ON;" ;
-  // String        _Learning_Mode_9_Cmd2     = "10;EV1527;005DF;02;ON;" ;
-  // String        _Learning_Mode_9_Cmd1     = "10;NEWKAKU;2508A7C;0A;ON;" ;
-  // String        _Learning_Mode_9_Cmd2     = "10;NEWKAKU;2508A7C;0A;OFF;" ;
+  // String _Learning_Mode_9_Cmd1 = "10;EV1527;005DF;01;ON;";
+  // String _Learning_Mode_9_Cmd2 = "10;EV1527;005DF;02;ON;";
+  // String _Learning_Mode_9_Cmd1 = "10;NEWKAKU;2508A7C;0A;ON;";
+  // String _Learning_Mode_9_Cmd2 = "10;NEWKAKU;2508A7C;0A;OFF;";
   String _Learning_Mode_9_Cmd1 = "10;NEWKAKU;2508A7C;0B;ON;";
   String _Learning_Mode_9_Cmd2 = "10;NEWKAKU;2508A7C;0B;OFF;";
   // "10;KAKU;02508A7C;0A;ON;"

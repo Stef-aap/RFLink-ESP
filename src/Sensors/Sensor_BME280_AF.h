@@ -91,10 +91,8 @@ public:
     bool Restart = false;
     int New_Value_Int;
 
-    // Serial.printf ( "T_Comepbest1   %i\n", _T_Compensation ) ;
     int I2C_Address = Settings.Read_Int("BME280 I2C Address");
     _T_Compensation = Settings.Read_Int("BME280 Temp Compensation");
-    // Serial.printf ( "T_Comepbest2   %i\n", _T_Compensation ) ;
 
     for (int i = 0; i < My_Webserver.args(); i++) {
       New_Value_Int = My_Webserver.arg(i).toInt();
@@ -108,7 +106,6 @@ public:
         if (New_Value_Int != _T_Compensation) {
           _My_Settings_Buffer["BME280 Temp Compensation"] = New_Value_Int;
           _T_Compensation = New_Value_Int;
-          // Serial.printf ( "T_Comepbest3   %i\n", _T_Compensation ) ;
           Restart = false;
         }
       }
@@ -132,7 +129,6 @@ public:
   // Get all the sampled data as a JSON string
   // ***********************************************************************
   void Get_JSON_Data() {
-    // Serial.printf ( "T_Comepbest   %i\n", _T_Compensation ) ;
     float Temperature = _BME.readTemperature() + _T_Compensation;
     int Pressure = (int)(_BME.readPressure() / 100);
     int Humidity = (int)_BME.readHumidity();

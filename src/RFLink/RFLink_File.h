@@ -10,7 +10,6 @@
 // This class is explictly NOT derived from _FS_Class,
 // because an instance of _FS_Class will always exist already and therfor can be used.
 // ***********************************************************************************
-// class _RFLink_File : public _FS_class {
 class _RFLink_File {
 
 public:
@@ -18,18 +17,13 @@ public:
 
   // **************************************************
   // **************************************************
-  _RFLink_File(String Filename = "/RFLink.txt") {
-    //_DEBUG_Global_String += "\r\n+ _RFLink_File.creator" ;
-    _Filename = Filename;
-  }
+  _RFLink_File(String Filename = "/RFLink.txt") { _Filename = Filename; }
 
   // **************************************************
   // **************************************************
   bool Begin() {
-    //_DEBUG_Global_String += "\r\n+ _RFLink_File.Begin" ;
     // for logging use max 5 files of length 100000
     File_System.Begin(this->_Log_Filename, -100000, 5);
-    // File_System.Begin ( this->_Log_Filename, -5000, 5 ) ;  // for test use smaller file
     _Read_Device_File();
   }
 
@@ -92,7 +86,6 @@ private:
   // **************************************************
   // **************************************************
   bool _Write_Device_File(String Line) {
-    //      File file = SPIFFS.open ( _Filename, FILE_WRITE ) ;
     fs::File file = SPIFFS.open(_Filename, "w");
     file.print(Line);
     file.close();
@@ -102,7 +95,6 @@ private:
   // **************************************************
   // **************************************************
   void _Read_Device_File() {
-    //      File file = SPIFFS.open ( _Filename, FILE_READ ) ;
     fs::File file = SPIFFS.open(_Filename, "r");
     Known_Devices = "";
     if (file) {

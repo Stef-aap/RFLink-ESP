@@ -40,17 +40,9 @@ bool Unknown_Device(String Device) {
   }
 
   if (pos < 0) {
-    if (Learning_Mode == 0)
-      return true;
+    if (Learning_Mode == 0) return true;
     else {
       if (strcasecmp(_RFLink_pbuffer, Unknown_Device_ID.c_str()) != 0) {
-        /*
-        Serial.print   ( "Unknown Device: 12;" ) ;
-        Serial.print   ( _RFLink_pbuffer ) ;
-        Serial.print   ( "   ") ;
-        Serial.println ( millis() );
-        Unknown_Device_ID = String ( _RFLink_pbuffer ) ;
-*/
         Unknown_Device_ID = String(_RFLink_pbuffer);
         Line_2_File = "Unknown Device: 12;" + Unknown_Device_ID + "   ";
         Line_2_File += String(millis());
@@ -65,12 +57,12 @@ bool Unknown_Device(String Device) {
 // ***********************************************************************************
 /*
 20;16;EV1527;ID=005DF;SWITCH=01;CMD=ON;
-20;03;EV1527;ID=005DF;SWITCH=2;CMD=ON;    << switch is iets anders geworden, maar lijkt me geen probleem
+20;03;EV1527;ID=005DF;SWITCH=2;CMD=ON;    << switch has become something else, but doesn't seem like a problem
 
 20;17;NewKaku;ID=2508A7C;SWITCH=B;CMD=OFF;
 
 20;18;PT2262;ID=755D5;SWITCH=01;CMD=ON;
-20;0D;PT2262;ID=755D5;SWITCH=1;CMD=ON;    << switch is iets anders geworden, maar lijkt me geen probleem
+20;0D;PT2262;ID=755D5;SWITCH=1;CMD=ON;    << switch has become something else, but doesn't seem like a problem
 
 20;19;Door_Chime;ID=AAAA;SWITCH=1;CMD=ON;CHIME=02;
 20;02;Door_Chime;ID=AAAA;SWITCH=1;CMD=ON;CHIME=02;
@@ -86,9 +78,6 @@ bool Send_Message(String Name, unsigned long Id, unsigned long Switch, String On
   // Send an MQTT Message
   //      ha/from_HA/ev1527_005df     S02
   // **********************************************************
-  //  if ( Home_Automation == "MQTT" ) {
-  // String Topic = "ha/from_RFLink/" + Name + "_" ;
-  // String Topic = MQTT_Topic_Send + Name + "_" ;
   String Topic = _RFLink_MQTT_Topic_Send + Name + "_";
   sprintf(_RFLink_pbuffer, "%0X", Id);
   Topic += String(_RFLink_pbuffer);
@@ -101,39 +90,12 @@ bool Send_Message(String Name, unsigned long Id, unsigned long Switch, String On
     Payload += "_" + Extra;
   }
 
-  // Serial.println ( "MQTT Send     Topic: " + Topic + "   Payload: " + Payload ) ;
   Serial.println("111" + Topic);
   My_MQTT_Client->Publish_Without_(Topic, Payload);
 
   Line_2_File = "MQTT-Send  Topic=" + Topic + "   Payload=" + Payload;
   RFLink_File.Log_Line(Line_2_File);
 
-  /*
-  }
-  // **********************************************************
-  // Send Serial Message
-  // **********************************************************
-  else {
-    //sprintf ( _RFLink_pbuffer, "%s;ID=%05X;", Name.c_str(), Id ) ;
-
-    Serial.print   ( PreFix ) ;
-    Serial.print   ( _RFLink_pbuffer ) ;
-    sprintf ( _RFLink_pbuffer2, "SWITCH=%0X;CMD=%s;", Switch, On_Off.c_str() ) ;
-    Serial.print ( _RFLink_pbuffer2 ) ;
-    if ( Extra.length() > 0 ) {
-      Serial.print ( Extra + ";" ) ;
-    }
-    Serial.println () ;
-
-//Line = "MQTT-Receive  Topic=" + Topic + " Payload=" +  Payload + " - Converted: " + Line ;
-Line_2_File = "MQTT-Send    " + String ( PreFix ) + String ( _RFLink_pbuffer ) + String ( _RFLink_pbuffer2 )  ;
-if ( Extra.length() > 0 )  Line_2_File += Extra + ';' ;
-RFLink_File.Log_Line ( Line_2_File ) ;
-
-
-    PKSequenceNumber += 1 ;
-  }
-  /*/
   return true;
 }
 

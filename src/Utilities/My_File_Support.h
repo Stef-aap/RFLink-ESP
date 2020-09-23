@@ -12,14 +12,9 @@ int Parse_FileNr(String Filename) {
 
   int x1 = Filename.indexOf('_');
   int x2 = Filename.indexOf('.');
-  // Serial.println ( "x1 : x2" ) ;
-  // Serial.println ( x1 ) ;
-  // Serial.println ( x2 ) ;
   if ((x1 > 0) && (x2 > x1)) {
     String Part = Filename.substring(x1 + 1, x2);
     File_Nr = Part.toInt();
-    // Serial.println ( Part );
-    // Serial.println ( File_Nr) ;
   }
   return File_Nr;
 };

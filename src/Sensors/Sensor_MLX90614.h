@@ -7,8 +7,8 @@
 #ifndef Sensor_MLX90614_h
 #define Sensor_MLX90614_h 0.2
 
-#include "Sensor_Base.h"
 #include "Hardware/Stef_SparkFunMLX90614.h"
+#include "Sensor_Base.h"
 #include <SimpleKalmanFilter.h>
 #include <Wire.h>
 
@@ -34,7 +34,6 @@ public:
     this->MLX->begin(this->_I2C_Address);
     MLX->setUnit(TEMP_C);
 
-    // delay ( 200 ) ;
     // EERST MAAR EESN EVEN DUMPEE GOED MAKEN
 
     float Emissivity = MLX->readEmissivity();
@@ -45,69 +44,22 @@ public:
     int IIR = MLX->readIIR();
     Serial.println("Config : " + String(Config) + "     FILTERS:    FIR = " + String(FIR) +
                    "       IIR = " + String(IIR));
-
-    /*
-      if ( this -> _I2C_Address == 0x5B ) {
-        delay ( 20 );
-if ( Emissivity < 0.9 ) {
-        MLX -> setEmissivity ( 1.0 ) ;
-        float Emissivity = MLX -> readEmissivity();
-        Serial.println ( "MLX90614 at " + String ( this -> _I2C_Address ) + "     Emissivity = " + String ( Emissivity,
-2 ) ) ;
-
-        //MLX -> setIIR ( 7 ) ;
-        Config = MLX -> readConfig () ;
-        FIR    = MLX -> readFIR () ;
-        IIR    = MLX -> readIIR () ;
-        Serial.println ( "Config : " + String ( Config ) + "     FILTERS:    FIR = " + String ( FIR ) + "       IIR = "
-+ String ( IIR ) ) ;
-}
-      }
-      */
   }
 
   // ***********************************************************************
   // De eerste 20 msec is de sensor niet aanspreekbaar
   // ***********************************************************************
   void loop() {
-    // if ( true ) {   //( ( millis() - _Last_Time ) > 200 ) {
     if ((millis() - _Last_Time) > 100) {
       if (MLX->read()) {
-        // Serial.println ( "------");
         float TMuur = MLX->object();
         float TRuimte = MLX->ambient();
 
-        // this->_TMuur_Filt   = ( 1 - this->_alfa        ) * this->_TMuur_Filt   + this->_alfa        * TMuur ;
         this->_TRuimte_Filt = (1 - this->_alfa_Ruimte) * this->_TRuimte_Filt + this->_alfa_Ruimte * TRuimte;
 
         this->_TMuur_Kalman = Muur_Kalman->updateEstimate(TMuur);
         this->_TMuur_Filt = Muur_Kalman2->updateEstimate(TMuur);
         this->_TRuimte_Kalman = Ruimte_Kalman->updateEstimate(TRuimte);
-
-        /*
-          // ***********************
-          // Houd de 5 grootste bij
-          // ***********************
-          for ( int i=0; i<5; i++ ) {
-            if ( TMuur >= this -> _Largest [i] ) {
-              for ( int ii=0; ii<(5-i); ii++ ) {
-                this -> _Largest[5-ii] = this -> _Largest[4-ii] ;
-              }
-              this -> _Largest[i] = TMuur ;
-              break ;
-            }
-          }
-
-          for ( int i=0; i<5; i++ ) {
-            if ( TMuur <= this -> _Smallest [i] ) {
-              for ( int ii=0; ii<(5-i); ii++ ) {
-                this -> _Smallest[5-ii] = this -> _Smallest[4-ii] ;
-              }
-              this -> _Smallest[i] = TMuur ;
-              break ;
-            }
-          }
-          */
 
         this->_T_Object += TMuur;
         this->_T_Ambient += TRuimte;
@@ -124,23 +76,6 @@ if ( Emissivity < 0.9 ) {
     if (this->_N_Measure > 10) {
       float TRuimte = this->_T_Ambient / this->_N_Measure;
       float TMuur = this->_T_Object / this->_N_Measure;
-
-      // *******************************************
-      // Remove the 5 largest and 5 smallest samples
-      // *******************************************
-      /*
-        float TMuur2 = this -> _T_Object ;
-        //Serial.print ( TMuur2 ) ;
-        //Serial.print ( "////" ) ;
-        for ( int i=0; i<5; i++) {
-          TMuur2 -= this -> _Largest [i] ;
-          TMuur2 -= this -> _Smallest[i] ;
-          //Serial.print ( this->_Smallest[i] ) ;
-          //Serial.print ( "/" ) ;
-        }
-        //Serial.println ( TMuur2 ) ;
-        TMuur2 /= ( this -> _N_Measure - 10 ) ;
-        */
 
       JSON_Data += " \"T_Lucht_" + String(this->_I2C_Address) + "\":";
       JSON_Data += TRuimte;
@@ -162,29 +97,12 @@ if ( Emissivity < 0.9 ) {
       Serial.print("I2C = ");
       Serial.print(this->_I2C_Address);
       Serial.print(this->_TMuur_Filt);
-      /*
-        Serial.print ( "\tAmbient = " ) ;
-        Serial.print ( TRuimte ) ;
-        Serial.print ( "*C\tObject = " ) ;
-        Serial.print ( TMuur ) ;
-        Serial.print ( "*C\tMuur2 = " ) ;
-        Serial.print ( _TMuur_Filt ) ;
-        Serial.print ( "*C\tDelta = " ) ;
-        Serial.print ( TRuimte-TMuur ) ;
-        Serial.print ( "*C\tN = " ) ;
-        Serial.print ( this -> _N_Measure ) ;
-        */
       Serial.println();
-
       Serial.println();
 
       this->_T_Ambient = 0;
       this->_T_Object = 0;
       this->_N_Measure = 0;
-      // for ( int i=0; i<5; i++ ) {
-      //  this -> _Smallest [i] = 1000 ;
-      //  this -> _Largest  [i] = 0 ;
-      //}
     }
   }
 

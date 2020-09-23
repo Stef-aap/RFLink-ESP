@@ -61,11 +61,6 @@ public:
     if (!_Card_Present) {
       return false;
     }
-    /* from MMC
-      Serial.println ( "SD_MMC: " + JSON_Short_Data ) ;
-      SD_MMC_System.Create_CSV_File_Nr ( _Filename, JSON_Short_Header + "\n" ) ;
-      SD_MMC_System.Append_File ( _Filename, JSON_Short_Data + "\n" ) ;
-      */
 
     //******************************************************
     // open the file. note that only one file can be open at a time,
@@ -79,10 +74,9 @@ public:
     // neemt zo'n 18 msec in beslag
     //******************************************************
     if (DataFile) {
-      //       DataFile.println ( "pappapa" ) ; //JSON_Message );
 
 #define BUFFER_SIZE 200
-      const char *a = JSON_Message.c_str(); // dataString_SD->c_str();
+      const char *a = JSON_Message.c_str();
       int i;
       for (i = 0; (i + BUFFER_SIZE) < JSON_Message.length(); i += BUFFER_SIZE) {
         DataFile.write(a + i, BUFFER_SIZE);
@@ -119,7 +113,6 @@ public:
     } else if (LowerCase.startsWith("dir")) {
       Filename = Serial_Command.substring(4);
       File_System.DirList_Print(Filename);
-      //        File_System.DirList_Print ( SPIFFS, Filename ) ;
       return false;
     } else if (LowerCase.startsWith("copy ")) {
       Filename = Serial_Command.substring(5);
@@ -148,7 +141,7 @@ public:
   // ***********************************************************************
 private:
   // ***********************************************************************
-  String _Data_Filename; //= "LOG_2_SDcard.txt" ;
+  String _Data_Filename;
   int _SD_Card_CS;
   bool _Card_Present = false;
 

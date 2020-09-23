@@ -207,28 +207,8 @@ int IRTherm::readIIR(void) {
 }
 // **************************************************************************
 // **************************************************************************
-int IRTherm::setFIR(uint8_t value) {
-  int error = 0;
-  /*
-  uint16_t data = 0;
-  uint16_t val = value & 0x0007;
+int IRTherm::setFIR(uint8_t value) { return 0; }
 
-  error = MLX90614_SMBusRead(slaveAddr, 0x25, &data);
-
-  if (error == 0 && val > 0x0003)
-  {
-      val = val << 8;
-      data = data & 0xF8FF;
-      data = data + val;
-      error = MLX90614_SMBusWrite(slaveAddr, 0x25, 0);
-      if(error == 0)
-      {
-          error = MLX90614_SMBusWrite(slaveAddr, 0x25, data);
-      }
-  }
-  */
-  return error;
-}
 // **************************************************************************
 // **************************************************************************
 int IRTherm::setIIR(uint8_t IIR) {
@@ -248,20 +228,7 @@ int IRTherm::setIIR(uint8_t IIR) {
 
 // **************************************************************************
 // **************************************************************************
-int IRTherm::DumpEE(uint16_t *eeData) {
-  int error = 0;
-  /*
-     char address = 0x20;
-     uint16_t *p = eeData;
-
-     while (address < 0x40 && error == 0) {
-        error = MLX90614_SMBusRead(slaveAddr, address, p);
-        address = address + 1;
-        p = p + 1;
-     }
-*/
-  return error;
-}
+int IRTherm::DumpEE(uint16_t *eeData) { return 0; }
 
 uint8_t IRTherm::readAddress(void) {
   int16_t tempAdd;
@@ -415,14 +382,12 @@ uint8_t IRTherm::writeEEPROM(byte reg, int16_t data) {
   // Clear out EEPROM first:
   if (I2CWriteWord(reg, 0) != 0) return 0; // If the write failed, return 0
   delay(5);                                // Delay tErase
-  // delay(20); // Delay tErase
   Serial.println("WRITE 0000000000000000000000000");
 
   uint8_t i2cRet = I2CWriteWord(reg, data);
   delay(5); // Delay tWrite
 
-  if (i2cRet == 0)
-    return 1;
+  if (i2cRet == 0) return 1;
   else
     return 0;
 }

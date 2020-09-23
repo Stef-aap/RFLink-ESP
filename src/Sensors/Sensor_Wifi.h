@@ -25,7 +25,6 @@
 #else
   #include <ESP8266WiFi.h>
   #include <ESP8266WiFiMulti.h>
-//  #include <ESP8266mDNS.h>
 ESP8266WiFiMulti wifiMulti;
 #endif
 
@@ -83,8 +82,6 @@ public:
     Serial.print("      MAC = " + _Mac);
     Serial.println("      AP-sssid = " + _AP_ssid);
 
-    // if      ( this -> _Wifi_Options == WIFI_OPTIONS_CONFIG  ) this -> _Setup_User_Config () ;
-    // else
     if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE) this->_Setup_Multi_Wifi();
     else
       this->_Setup_Single_Wifi();
@@ -140,9 +137,7 @@ public:
   // ***********************************************************************
   void _Setup_Single_Wifi() {
     WiFi.mode(WIFI_STA);
-
     WiFi.begin(_Wifi_Name.c_str(), _Wifi_PWD.c_str());
-    // WiFi.begin ( _Wifi_Name, _Wifi_PWD ) ;
 
     Serial.println("..... Trying to connect to " + String(_Wifi_Name));
     int Max_Count = 20;
@@ -173,9 +168,6 @@ public:
     WiFi.setHostname(_AP_ssid.c_str());
 #else
     WiFi.hostname(_AP_ssid);
-      // Is dit nodig ?
-      // kost bijna 3000 bytes ram !!!
-      // MDNS.begin ( _AP_ssid.c_str()  ) ;    //String(_AP_ssid) ) ;  //mag niet hier ??
 #endif
     if (Max_Count <= 0) {
       this->_Create_SoftAP();
@@ -220,7 +212,6 @@ public:
 
 #ifdef ESP32
     WiFi.begin(_Wifi_Name.c_str(), _Wifi_PWD.c_str());
-    // WiFi.begin ( _Wifi_Name, _Wifi_PWD ) ;
     while (WiFi.status() != WL_CONNECTED) {
 #else
     while (wifiMulti.run() != WL_CONNECTED) {
@@ -245,8 +236,6 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void loop() {
-    // if      ( this -> _Wifi_Options == WIFI_OPTIONS_CONFIG  ) this -> _Loop_User_Config () ;
-    // else
     if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE) this->_Loop_Multi_Wifi();
     else
       this->_Loop_Single_Wifi();
@@ -271,12 +260,10 @@ public:
         _MultiWifi_Start = millis();
       }
       _MultiWifi_Retries += 1;
-      // Serial.print ( "
       if ((millis() - _MultiWifi_Start) > 5000) {
         Serial.println();
         Serial.println(F("ESP will be RESET by MultiWifi_Loop"));
         delay(2000); // will cause a hardware timer reset
-        // delay ( 500 ) ;
         ESP.restart();
       }
     }
@@ -313,10 +300,7 @@ private:
     // ********************
     Serial.println(F("..... Setting soft-AP configuration ..... "));
     IPAddress local_IP(192, 168, 6, 84);
-    // IPAddress gateway   ( 192, 168,   6, 84 ) ;
     IPAddress subnet(255, 255, 255, 0);
-    //      WiFi.softAPConfig   ( local_IP, gateway, subnet ) ;
-    // WiFi.mode ( WIFI_AP_STA ) ;
     WiFi.mode(WIFI_AP);
     WiFi.softAP(_AP_ssid.c_str());
 
@@ -325,8 +309,6 @@ private:
     // *****************************************************
     delay(100);
     WiFi.softAPConfig(local_IP, local_IP, subnet);
-
-    // WiFi.softAP ( _AP_ssid, _AP_pwd ) ;
     Serial.println("      AP = " + _AP_ssid + "   Password = " + _AP_pwd.substring(1) +
                    "    IP = " + local_IP.toString());
     Serial.println(WiFi.softAPIP().toString());

@@ -11,9 +11,9 @@
 #define TM1638plus_h
 
 #if (ARDUINO >= 100)
-#include "Arduino.h"
+  #include "Arduino.h"
 #else
-#include "WProgram.h"
+  #include "WProgram.h"
 #endif
 
 #define ACTIVATE_TM 0x8F        // Start up

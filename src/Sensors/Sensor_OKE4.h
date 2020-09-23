@@ -10,8 +10,6 @@ class _Sensor_OKE4 : public _Sensor_BaseClass {
 public:
   SoftwareSerial *mySerial;
 
-  // int Converter_IDs [2] = { 3, 7 } ;
-  // int N_Converters      =  2 ;
   int Converter_IDs[2] = {0};
   int N_Converters = 1;
 
@@ -40,7 +38,6 @@ public:
       // wait till next sample time
       // ******************************
       case 0:
-        //          if ( ( millis () - _Time_Last_Sample ) > 10*1000 ) {
         if ((millis() - _Time_Wait) > _Message_Time) {
           _Time_Last_Sample = millis();
           _Converter = 0;
@@ -62,7 +59,6 @@ public:
       // wait _Message_Time msec, then read the current converter
       // ******************************
       case 2:
-        // delay ( 500 ) ;   // verlaagd van +1000 naar -100, -200, -300, -400, +500
         if ((millis() - _Time_Wait) > _Message_Time) {
           _Energy = OKE4_Read(); // _ID ) ;
           _Time_Wait = millis();
@@ -104,7 +100,7 @@ public:
       // ******************************
       case 6:
         if ((millis() - _Time_Wait) > _Message_Time) {
-          _Current = OKE4_Read(); // _ID ) ;
+          _Current = OKE4_Read();
 
           _Converter += 1;
           if (_Converter < N_Converters) {
@@ -116,7 +112,6 @@ public:
 
       // ******************************
       case 7:
-        // Serial.printf ( "ID=%i data read", _ID ) ;
         Serial.printf("ID, N_Power, Energy, Voltage, Current = %i, %i, %i, %i, %i\n", _ID, _N_Power, _Energy, _Voltage,
                       _Current);
         _Sum_Power += _Voltage * _Current;
@@ -154,7 +149,6 @@ public:
     OKE4_Write_Command(ID_Old, "RESET");
     Serial.printf("Changed ID %i -> %i", ID_Old, ID_New);
     delay(1000);
-    // Clear Read buffer
     OKE4_Read();
     Serial.println("aaapapapappa");
   }
@@ -164,7 +158,6 @@ public:
   bool Read_SX(uint8_t ID) {
     for (int i = 0; i < 9; i++) {
       String Line = "S" + String(i) + "?";
-      // Serial.println ( Line ) ;
       OKE4_Write_Command(ID, Line);
       delay(500);
       OKE4_Read_String();
@@ -221,7 +214,6 @@ private:
     for (int i = 0; i < Cmd.length(); i++) {
       mySerial->write(Cmd[i]);
       Checksum += Cmd[i];
-      // Serial.print ( Cmd[i] ) ;
     }
 
     // ************************************
@@ -245,26 +237,23 @@ private:
     delay(5);
     digitalWrite(DIR, LOW);
 
-    mySerial->flush(); /// ADDDDED
+    mySerial->flush(); /// Added
     Serial.printf("CMD=%s", Cmd.c_str());
   }
 
   // ***********************************************************************
   // Reads response from the OKE4-100, stops when no new data available
   // ***********************************************************************
-  int OKE4_Read() { // uint8_t ID ) {
+  int OKE4_Read() {
     int Result = 0;
     int N = 0;
     int Checksum = 0;
     bool IsNumber = false;
 
-    // Serial.printf ( " N=%i  ", mySerial->available() ) ;
     while (mySerial->available() && (N < 11)) {
-      // Serial.printf ( " N=%i  ", mySerial.available() ) ;
       N += 1;
       byte Data = mySerial->read() & 0x7F;
       Checksum += Data;
-      // Serial.print ( Data | 0x80, HEX ) ;
 
       if ((Data == 0x20) || (N >= 11)) {
         IsNumber = false;
@@ -272,9 +261,6 @@ private:
 
       if (IsNumber) {
         Result = 16 * Result + ASCII_2_Hex(Data);
-        // Serial.print ( Data, HEX ) ;
-        // Serial.print ( "==") ;
-        // Serial.println ( Result ) ;
       }
 
       if (Data == '=') {
@@ -284,11 +270,8 @@ private:
 
     Checksum = Checksum & 0xFF;
     if (Checksum != 0xFF) {
-      // Serial.print ( "Check" ) ;
-      // Serial.println ( Checksum ) ;
       Result = -1;
     }
-    // printf ( "ppp=%i\n", Result ) ;
 
     while (mySerial->available()) {
       byte Data = mySerial->read();
@@ -305,29 +288,18 @@ private:
     int Checksum = 0;
     String Response = "";
 
-    // Serial.printf ( " N=%i  ", mySerial->available() ) ;
     while (mySerial->available() && (N < 11)) {
-      // Serial.printf ( " N=%i  ", mySerial.available() ) ;
       N += 1;
       byte Data = mySerial->read() & 0x7F;
       Checksum += Data;
-      // Serial.print ( Data | 0x80, HEX ) ;
 
       if (N > 4) {
         Response += (char)Data;
-        // Serial.print ( Data, HEX ) ;
-        // Serial.print ( "==") ;
         Serial.println(Response);
       }
     }
 
     Checksum = Checksum & 0xFF;
-    if (Checksum != 0xFF) {
-      // Serial.print ( "Check" ) ;
-      // Serial.println ( Checksum ) ;
-      // Result = -1 ;
-    }
-    // printf ( "ppp=%i\n", Result ) ;
 
     while (mySerial->available()) {
       byte Data = mySerial->read();
@@ -351,7 +323,6 @@ private:
   void Find_Converters() {
     int Result = 0;
     for (int ID = 0; ID < 3; ID++) {
-      //        Result  = OKE4_Response ( ID, "E?" ) ;
       OKE4_Write_Command(ID, "E?");
       delay(_Message_Time); // verlaagd van +1000 naar -100, -200, -300, -400, +500
       Result = OKE4_Read(); // ID ) ;

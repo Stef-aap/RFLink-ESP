@@ -70,18 +70,13 @@ public:
     // **********************************************************************
     // Bewust naar constructor verplaatst, zodat filesysteem direct bruikbaar
     // **********************************************************************
-    //_DEBUG_Global_String += "\r\n+ _FS_Class.creator" ;
 #ifdef ESP32
-      // fff        this->_Opened = SPIFFS.begin ( true ) ;  // format if no filesystem yet
-      // SPIFFS.format () ;
-      // delay(1000);
 #else
     if (!SPIFFS.begin()) {
       SPIFFS.format();
     }
     this->_Opened = SPIFFS.begin();
 #endif
-    // SPIFFS.format () ;
     if (this->_Opened) Serial.println("SPIFFS succesfull opened");
     else
       Serial.println("ERROR: SPIFFS could not be opened !!!! ");
@@ -90,13 +85,11 @@ public:
   // **************************************************
   // **************************************************
   bool Begin(String Filename = "", long Max_File_Time = 24 * 60 * 60, int Max_NFile = 10) {
-    //_DEBUG_Global_String += "\r\n+ _FS_Class.Begin" ;
+
 #ifdef ESP32
     if (!this->_Opened) {
       this->_Opened = SPIFFS.begin(true); // format if no filesystem yet
     }
-    // Serial.println ( "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ" ) ;
-    // Serial.println ( this->_Opened ) ;
     if (this->_Opened) {
       if (_Parse_Filename(Filename)) {
         String Last_File_Pre = _Temp_Last_File_Pre;
@@ -195,10 +188,6 @@ public:
   }
 
   void DirList_Print(String Path = "/") {
-    //    void DirList_Print ( fs::FS &Drive, String Path = "/" ) {
-    // if ( Drive == SD_MMC ) {
-    // Serial.println ( "&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&  FS_SUPPOYU" ) ;
-
     Serial.println("=====  Files in SPIFFS  =====  " + Path);
     int Count = 0;
 
@@ -270,7 +259,6 @@ public:
         FileExt = Filename.substring(x1 + 1);
         FileExt.toLowerCase();
         Result = "<tr><td>";
-        // if ( FileExt.endsWith ( "csv" ) ) {
         if (FileExt == "csv") {
           Result += F("<label><input type=\"checkbox\" name=\"");
           Result += Filename;
@@ -300,16 +288,11 @@ public:
         Result = "";
         fs::File file = dir.openFile("r");
         Filename = String(dir.fileName()).substring(1);
-        // Line     = Filename + "&emsp;[" + String ( file.size() ) + "]" ;
-        // Line     = Filename + "</td><td>" + String ( file.size() ) + "</td><td>" ;
 
         int x1 = Filename.indexOf('.');
         FileExt = Filename.substring(x1 + 1);
         FileExt.toLowerCase();
-        // Serial.println ( x1 ) ;
-        // Serial.println ( FileExt  );
         Result = "<tr><td>";
-        // if ( FileExt.endsWith ( "csv" ) ) {
         if (FileExt == "csv") {
           Result += F("<label><input type=\"checkbox\" name=\"");
           Result += Filename;
@@ -347,8 +330,6 @@ public:
       _Last_File_Post = ".bin";
     }
 
-    // if ( _Last_File_Nr < 10 ) _Last_Filename = _Last_File_Pre + "0" + String ( _Last_File_Nr ) + _Last_File_Post ;
-    // else _Last_Filename = _Last_File_Pre + String ( _Last_File_Nr ) + _Last_File_Post ;
     _Last_Filename = _Last_File_Pre + String(_Last_File_Nr) + _Last_File_Post;
 
     return _Last_Filename;
@@ -409,7 +390,6 @@ public:
 #else
     fs::Dir dir = SPIFFS.openDir("/");
     while (dir.next()) {
-      //_Last_Filename = dir.Filename() ;
       _Last_Filename = dir.fileName();
     }
 #endif
@@ -528,58 +508,6 @@ public:
 
   // **************************************************
   // **************************************************
-  /*
-      int Get_Time_In_File_HANGT_TEVEEL_AF_VAN_NTP_SERVER ( String Filename ) {
-        File file = SPIFFS.open ( Filename, "r" ) ;
-        String Line_0 ;
-        String Line_1 ;
-        String Line_x ;
-        if ( file ) {
-          if ( file.available() ) {
-            Line_0 = file.readStringUntil ( '\n' ) ;
-          }
-          if ( file.available() ) {
-            Line_1 = file.readStringUntil ( '\n' ) ;
-          }
-          while ( file.available() ){
-            Line_x = file.readStringUntil ( '\n' ) ;
-          }
-          file.close () ;
-
-          My_StringSplitter *Splitter = new My_StringSplitter ( Line_0, '\t' ) ;
-          int ItemCount = Splitter -> getItemCount () ;
-          int DT_i ;
-          for ( DT_i = 0; DT_i < ItemCount; DT_i++ ) {
-            String Item = Splitter -> getItemAtIndex ( DT_i ) ;
-            if ( Item == "DateTime" ) {
-              break ;
-            }
-          }
-
-          if ( DT_i < ItemCount ) {
-            Splitter -> newString ( Line_1, '\t' ) ;
-            String Date1 = Splitter -> getItemAtIndex ( DT_i ) ;
-            time_t DT1 = String_2_UnixTime ( Date1 ) ;
-
-            Splitter -> newString ( Line_x, '\t' ) ;
-            String Date2 = Splitter -> getItemAtIndex ( DT_i ) ;
-            time_t DT2 = String_2_UnixTime ( Date2 ) ;
-
-            Serial.print ( "Delta T in file = ") ;
-            Serial.println ( DT2-DT1 ) ;
-            return (int) (DT2-DT1) ;
-          }
-          else {
-            return 0 ;
-          }
-        }
-        else {
-          return 0 ;
-        }
-      }
-  */
-  // **************************************************
-  // **************************************************
   bool Exists(String Filename) {
     fs::File file = SPIFFS.open(Filename, "r");
     if (file) {
@@ -607,9 +535,6 @@ public:
           Serial.print(file.readString());
         }
         file.close();
-        // if ( Delete_Files ) {
-        //  Delete ( Filename ) ;
-        //}
       }
       file = dir.openNextFile();
     }
@@ -618,10 +543,8 @@ public:
 // ESP8266
 // **************************************************
 #else
-    // String Result ;
     fs::Dir dir = SPIFFS.openDir("");
     while (dir.next()) {
-      // Result += dir.fileName() + "\n" ;
       fs::File file = dir.openFile("r");
       if (file) {
         Serial.print("===== Contents of ");
@@ -713,33 +636,18 @@ public:
       // After a reset check how many seconds are already in the file
       // ************************************************************
       if (!_Initialized) {
-        // Serial.println ( "Before gettime" ) ;
         _Offset_Seconds = millis() / 1000 + 10 + Get_Time_In_File(Filename);
-        // Serial.println ( "Agter gettime" ) ;
         if (_Offset_Seconds > _Max_FileTime) {
           NewFile = true;
         }
         _Initialized = true;
       }
-      /*
-      Serial.print   ( "millis / Delta / maxfileTIME / Offset = ");
-      Serial.print ( millis() ) ;
-      Serial.print ( " / " );
-      Serial.print ( _Max_FileTime - _Offset_Seconds ) ;
-      Serial.print ( " / " ) ;
-      Serial.print ( _Max_FileTime ) ;
-      Serial.print ( " / " );
-      Serial.println ( _Offset_Seconds ) ;
-      //*/
-      // if ( ( millis() - _File_Millis ) > ( _Max_FileTime - _Offset_Seconds ) ) {
       if ((millis() / 1000 + _Offset_Seconds) > _Max_FileTime) {
         NewFile = true;
       }
     }
 
-    // if ( ( millis() - _File_Millis ) > _Max_FileTime ) {
     if (NewFile) {
-      //_File_Millis = millis() ;
       if (_Last_File_Nr > _Max_NFile) {
         String File_To_Remove = _Last_File_Pre + String(_Last_File_Nr - _Max_NFile) + _Last_File_Post;
         SPIFFS.remove(File_To_Remove);
@@ -749,7 +657,6 @@ public:
       Serial.println("???????????????????" + _Get_Last_Filename());
     }
 
-    //_Get_Last_Filename () ;
     if (not SPIFFS.exists(Filename)) {
       Append_File(Filename, Header);
       _Offset_Seconds = -(millis() / 1000);
@@ -769,9 +676,7 @@ private:
   String _Temp_Last_File_Post = "";
   int _Temp_Last_File_Nr = 0;
 
-  // unsigned long _File_Millis   = 0 ;
   bool _Initialized = false;
-  // int           _Offset_Millis = 0 ;
 
   unsigned long _Max_FileTime;
   long _Max_FileSize;

@@ -41,15 +41,13 @@ public:
     digitalWrite(_SonOff_LED, _LED_State);
     _Button_Previous = digitalRead(_SonOff_Button);
 
-    // if ( MyMQTT->connected() ) {  // TE MOEILIJK VOOR NU
-    // eigenlijk will je die blink2 pas laten komen als MQTT is connected
     _LED_Notification(2);
   }
 
   // ***********************************************************************
   // ***********************************************************************
   void loop() {
-    if (true) { //_Button_Enabled ) {
+    if (true) {
       // ***************************************************
       // read the button and invert it, to get postive logic
       // ***************************************************
@@ -105,15 +103,6 @@ public:
       // Button change
       // ************************************
       else {
-        // **************
-        // for debugging
-        // **************
-        /*
-if ( ! Button ) {
-  Serial.println ( "BUTTON CHANGE :   Button=" +String ( Button) + "   Count=" + String (_Button_Counter) + " Time_Off="
-+ String ( Now - _Button_Time_Off ) + "   Time_On=" + String ( Now - _Button_Time_On )   ) ;
-}//*/
-        // **************
         if (Button) {
           _Button_Time_On = Now;
           _Button_Counter += 1;
@@ -126,24 +115,12 @@ if ( ! Button ) {
   }
 
   // ***********************************************************************
-  // huis/verdieping0/ergens/SonOff_2
-  //   {"S1" : "ON", "LED" : 1, "Button" = 1 }
+  // huis/verdieping0/ergens/SonOff_2 {"S1" : "ON", "LED" : 1, "Button" = 1 }
   // S1     = relay state
   // LED    = 0,  LED will always be OFF
   // Button = 0, Button presses will have no action
   // ***********************************************************************
   void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
-    // void MQTT_Callback ( char* topic, byte* payload, unsigned int length ) {
-    // CHANGED BUT NOT TESTED
-
-    // String Line = "" ;
-    // for ( int i = 0; i < length; i++ ) {
-    //  Line += (char) payload[i]  ;
-    //}
-    // Serial.println ( "MQTT : " + Line ) ;
-    // DynamicJsonBuffer jsonBuffer ( 300 ) ;
-    // JsonObject&  root = jsonBuffer.parseObject ( Line ) ;
-
     String Switch_1 = root["S1"];
     if (Switch_1.length() > 0) {
       if (Switch_1 == "ON") {
@@ -183,15 +160,6 @@ if ( ! Button ) {
   // Get all the sampled data as a JSON string
   // ***********************************************************************
   void Get_JSON_Data() {
-    /*
-      if ( _Relay_State ) {
-        JSON_Data += "\"S1\":\"ON\"," ;
-      }
-      else {
-        JSON_Data += "\"S1\":\"OFF\"," ;
-      }
-/*/
-
     JSON_Data += " \"S1\":";
     if (_Relay_State) {
       JSON_Data += "\"ON\",";

@@ -18,27 +18,13 @@ struct RawSignalStruct { // Raw signal variabelen places in a struct
                                    // (halves RAM usage) First pulse is located in element 1. Element 0 is used for
                                    // special purposes, like signalling the use of a specific plugin
 } RawSignal = {0, 0, 0, 0, 0L};
-//} RawSignal={0,0,0,0,0,0L};
 
 unsigned long Last_BitStream = 0L; // holds the bitstream value for some plugins to identify RF repeats
 unsigned long Last_Detection_Time = 0L;
 
 // ***********************************************************************************
 // ***********************************************************************************
-unsigned long HexString_2_Long(String HexString) {
-  return (strtoul(HexString.c_str(), NULL, HEX));
-  //  unsigned long Value = 0 ;
-  //  int           Nibble ;
-  //  for ( int i = 0; i < HexString.length(); i++ ) {
-  //    Nibble = int ( HexString.charAt(i) ) ;
-  //    if ( Nibble >= 48 && Nibble <= 57  ) Nibble = map ( Nibble, 48, 57,  0,  9  ) ;
-  //    if ( Nibble >= 65 && Nibble <= 70  ) Nibble = map ( Nibble, 65, 70,  10, 15 ) ;
-  //    if ( Nibble >= 97 && Nibble <= 102 ) Nibble = map ( Nibble, 97, 102, 10, 15 ) ;
-  //    Nibble = constrain ( Nibble, 0, 15 );
-  //    Value = ( Value * 16 ) + Nibble ;
-  //  }
-  //  return Value;
-}
+unsigned long HexString_2_Long(String HexString) { return (strtoul(HexString.c_str(), NULL, HEX)); }
 
 // ****************************************************************************
 // Here all available Protocols are included
@@ -82,11 +68,6 @@ public:
   // ***********************************************************************
   void setup() {
     // ***************************************
-    // Add the last ( Cleaning Up)  Protocol
-    // ***************************************
-    // Add ( new _RFL_Protocol_Finish () ) ;
-
-    // ***************************************
     // Run setup for each protocol
     // ***************************************
     Serial.println();
@@ -97,11 +78,7 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  void loop() {
-    // for ( auto RFL_Protocol:_RFL_Protocol_List ){
-    //  RFL_Protocol->loop () ;
-    //}
-  }
+  void loop() {}
 
   // ***********************************************************************
   // ***********************************************************************
@@ -132,7 +109,6 @@ public:
     x1 = x2 + 1;
     x2 = CommandLine.indexOf(";", x1);
     String Switch_String = CommandLine.substring(x1, x2);
-    // int Switch = Switch_String.toInt () ;
     int Switch = (int)HexString_2_Long(Switch_String);
 
     // *********************************************
@@ -141,16 +117,6 @@ public:
     x1 = x2 + 1;
     x2 = CommandLine.indexOf(";", x1);
     String On_Off = CommandLine.substring(x1, x2);
-
-    /*
-      Serial.println ( "CommandLine = " + CommandLine ) ;
-      Serial.println ( "Device      = " + Device ) ;
-      Serial.print   ( "ID          = 0x" ) ;
-      Serial.println ( ID, HEX ) ;
-      Serial.print   ( "Switch      = " ) ;
-      Serial.println ( Switch ) ;
-      Serial.println ( "Action=" + On_Off ) ;
-      //*/
 
     for (auto RFL_Protocol : _RFL_Protocol_List) {
       if (RFL_Protocol->Home_Command(Device, ID, Switch, On_Off)) {
@@ -184,7 +150,6 @@ public:
     // *****************************************************************
     else if (Learning_Mode == 1) {
       for (auto RFL_Protocol : _RFL_Protocol_List) {
-        // Serial.println ( RFL_Protocol->Name ) ;
         if (RFL_Protocol->RF_Decode()) {
           // ****************************************************
           // do some housekeeping
@@ -206,21 +171,6 @@ public:
           if (RFL_Protocol->Name != "Start") {
           }
           if ((RFL_Protocol->Name != "Start") && (RFL_Protocol->Name != "Finish")) {
-            /*
-              Serial.print   ( "LM="              ) ;
-              Serial.print   ( Learning_Mode      ) ;
-              Serial.print   ( "    Protocol="    ) ;
-              Serial.print   ( RFL_Protocol->Name ) ;
-              Serial.print   ( "    Len="         ) ;
-              Serial.print   ( S_Len              ) ;
-
-              Serial.print   ( "    Min="         ) ;
-              Serial.print   ( RawSignal.Min      ) ;
-              Serial.print   ( "   Max="          ) ;
-              Serial.print   ( RawSignal.Max      ) ;
-              Serial.print   ( "   Mean="         ) ;
-              Serial.println ( RawSignal.Mean     ) ;
-*/
             Line_2_File = "LM-";
             Line_2_File += String(Learning_Mode);
             Line_2_File += " :   Protocol=";

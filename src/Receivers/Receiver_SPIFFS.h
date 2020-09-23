@@ -13,7 +13,7 @@
 
 #include "Clients/FS_support.h"
 
-//#define FTP_DEBUG   JAAAAAAA
+//#define FTP_DEBUG
 //#include <ESP8266FtpServer.h>
 #ifdef YES_INCLUDE_FTPSERVER
   #include "Clients/My_FtpServer.h"
@@ -40,7 +40,6 @@ LIST -a
 ftpdataserver client....
 client disconnected
 Ftp server waiting for connection on port 21
-
 */
 
 // ***********************************************************************************
@@ -86,7 +85,6 @@ public:
     bool Result = File_System.Begin(_Filename, _Max_File_Seconds, _Max_NFile);
     Serial.println("Mount SPI-FileSytem (including FTP support): " + String(Result));
 
-// set ports in ESP8266FtpServer.h  (default 21, 50009 for PASV)
 #ifdef YES_INCLUDE_FTPSERVER
     ftpSrv.begin("esp8266", "esp8266"); // username, password for ftp.
 #endif
@@ -145,7 +143,6 @@ public:
   //   {"FTP":"ON"}   {"FTP":"OFF"}
   // ***********************************************************************
   void MQTT_Callback(String Payload, DynamicJsonDocument root) {
-    // void MQTT_Callback ( String Payload, JsonObject &root ) {
     Serial.println("FTPFTPFTPFTPFTP:::::::::::::::" + Payload);
     Serial.println("Loop Priority was : " + String(Loop_Priority));
     String FTP = root["FTP"];
@@ -171,7 +168,6 @@ public:
     } else if (LowerCase.startsWith("dir")) {
       Filename = Serial_Command.substring(4);
       File_System.DirList_Print(Filename);
-      //        File_System.DirList_Print ( SPIFFS, Filename ) ;
       return false;
     } else if (LowerCase.startsWith("dump ")) {
       Filename = Serial_Command.substring(5);
@@ -195,11 +191,7 @@ public:
   // ***********************************************************************
   bool Send_Data(String JSON_Message) {
     if (this->_Filename.length() > 0) {
-      // Serial.println ( "CSV: " + JSON_Message ) ;
       File_System.Create_CSV_File_Nr(_Filename, JSON_Short_Header + "\n");
-      // JSON_Short_Data = String ( millis()/1000 + File_System._Offset_Seconds ) + "\t" + JSON_Short_Data ;
-      // Serial.println ( "SPIFFS: " + JSON_Short_Data ) ;
-      // File_System.Append_File ( _Filename, JSON_Short_Data + "\n" ) ;
       File_System.Append_File(_Filename,
                               String(millis() / 1000 + File_System._Offset_Seconds) + "\t" + JSON_Short_Data + "\n");
     }

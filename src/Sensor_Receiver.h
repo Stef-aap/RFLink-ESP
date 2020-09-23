@@ -152,8 +152,6 @@ String _DEBUG_Global_String = "";
 #define BI "/B_Info.txt"
 
 #define FileSystem_SPIFFS
-//#define FileSystem_SDMMC
-//#define FileSystem_SDcard
 
 #include "Utilities/My_StringSplitter.h"
 
@@ -171,14 +169,11 @@ String _DEBUG_Global_String = "";
 
 #ifdef ESP32
   #include <WebServer.h>
-//#include <ESPmDNS.h>
 WebServer My_Webserver(80);
 #else
-  //#include <ESP8266WiFi.h>
   #include <ESP8266WebServer.h>
-//#include <FS.h>   //Include File System Headers
-//  ESP8266WebServer.h - Dead simple web-server.
-//  Supports only one simultaneous client, knows how to handle GET and POST.
+// ESP8266WebServer.h - Dead simple web-server.
+// Supports only one simultaneous client, knows how to handle GET and POST.
 // error: expected constructor, destructor, or type conversion before 'My_Webserver'
 ESP8266WebServer My_Webserver(80);
 #endif
@@ -201,26 +196,6 @@ HardwareSerial Serial_Device(0); // UART_NUM_0 ) ;
   #include <Preferences.h>
 Preferences My_Prefs;
 #endif
-/*
-        int8_t getChar(const char* key, int8_t defaultValue = 0);
-        uint8_t getUChar(const char* key, uint8_t defaultValue = 0);
-        int16_t getShort(const char* key, int16_t defaultValue = 0);
-        uint16_t getUShort(const char* key, uint16_t defaultValue = 0);
-        int32_t getInt(const char* key, int32_t defaultValue = 0);
-        uint32_t getUInt(const char* key, uint32_t defaultValue = 0);
-        int32_t getLong(const char* key, int32_t defaultValue = 0);
-        uint32_t getULong(const char* key, uint32_t defaultValue = 0);
-        int64_t getLong64(const char* key, int64_t defaultValue = 0);
-        uint64_t getULong64(const char* key, uint64_t defaultValue = 0);
-        float_t getFloat(const char* key, float_t defaultValue = NAN);
-        double_t getDouble(const char* key, double_t defaultValue = NAN);
-        bool getBool(const char* key, bool defaultValue = false);
-        size_t getString(const char* key, char* value, size_t maxLen);
-        String getString(const char* key, String defaultValue = String());
-  size_t getBytesLength(const char* key);
-        size_t getBytes(const char* key, void * buf, size_t maxLen);
-        size_t freeEntries();
-*/
 
 // ****************************************************************************
 // GENERAL GLOBALS
@@ -242,7 +217,6 @@ bool Settings_By_WebInterface = false;
 // ****************************************************************************
 void _MQTT_Callback_Wrapper(char *topic, byte *payload, unsigned int length);
 void Store_Modified_Settings_From_Webserver(bool Restart_Needed);
-// void Settings_Factory () ;
 void Set_Signal_LED(int N, int On, int Off);
 void Update_All_Headers();
 void Send_Email(String Mail_To, String Subject, String Body, bool HTML_Format);
@@ -256,7 +230,6 @@ void Print_Heap(int ID = -1) {
   Serial.print(ESP.getFreeHeap());
 #ifdef ESP8266
   Serial.print("            Fragmentation = ");
-  //    Serial.print  ( ESP.getHeapFragmentation() ) ;
   Serial.println(" %");
 #else
   Serial.println();
@@ -275,8 +248,6 @@ void Print_Heap(int ID = -1) {
   #define MAX_MQTT_TOPICS 5
 String MQTT_Topics[] = {"", "", "", "", ""};
 void MQTT_Topics_Append(String Topic) {
-
-  // if ( Topic == MQTT_Topic ) return ;
 
   // *********************************
   // test if Topic already in list
@@ -318,30 +289,12 @@ String _TM1638_Regel[8] = {"noSIGNAL", "        ", "        ", "        ",
                            "        ", "        ", "        ", "        "};
 word _TM1638_Dots[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 #endif
-// ****************************************************************************
-
-/*
-#ifndef Redirect_Serial_h
-  // Nodig als geen Redirect Serial, om te kunnen compileren
-  // MOET EIGFENLIJK GEWOON NAAR SERIAL WIJZEN
-  HardwareSerial Serial_Device ( 0 ) ;  //UART_NUM_0 ) ;
-#endif
-
-
-#ifdef YES_INCLUDE_RECEIVER_TELNET
-  #include "Receivers/Receiver_Telnet.h"
-#endif
-*/
 
 // ********************************************
 // ********************************************
 #define WIFI_TX_POWER 82
 
-//#include "Sensors/Sensor_Watchdog.h"
-
 bool Allow_Wifi_Not_Found = false;
-//#include "Wifi_MyLib.h"
-// ********************************************
 
 // stond helemaal bovenaan
 #ifndef ESP32
@@ -352,20 +305,11 @@ bool Allow_Wifi_Not_Found = false;
 #include <vector>
 
 #include "Receivers/Receiver_Base.h"
-//#include "Domoticz.h"
 
 // ****************************************************************************
 // ****************************************************************************
 bool FTP_Server_SD_MMC = false;
-//#include "ESP32FtpServer.h"
-// FtpServer32 ftpSrv_SD_MMC ;
-
 bool FTP_Server_SPIFFS = false;
-//#include <ESP8266FtpServer.h>
-// FtpServer ftpSrv_SPIFFS ;
-// ****************************************************************************
-// C:\Users\Mattijs\AppData\Local\Temp\arduino_build_332778\libraries\ESP32_FTPServer_Modified\ESP32FtpServer.cpp.o:(.bss.dataServer+0x0):
-// first defined here collect2.exe: error: ld returned 1 exit status
 
 // ****************************************************************************
 // ****************************************************************************
@@ -384,14 +328,11 @@ String JSON_Data;
 String JSON_Short_Data;
 String JSON_Short_Header;
 String JSON_Long_Header;
-// bool   _Header_Not_Printed = true ;
-// int    Loop_Time = 10000 ;
 int Signal_LED = -1;
 bool Signal_LED_Invert = false;
 
 // ****************************************************************************
 // ****************************************************************************
-// bool   _External_Watchdog_Has_Feed  = true ;  // wordt false if program hangs somewhere
 int _External_Watchdog_Pin = -1;
 bool _External_Watchdog_Pin_State = LOW;
 
@@ -421,8 +362,6 @@ String MQTT_Broker_IP = "";
 String MQTT_Broker_IP2 = "";
 #endif
 String MQTT_Topic;
-// String MQTT_Topic_Send  = "" ;
-// String MQTT_Topic_Rec   = "" ;
 
 // ****************************************************************************
 // ****************************************************************************
@@ -478,14 +417,12 @@ void Debugf(char *fmt, ...) {
 // _Serial_Command = 3   commando doorlopen door Sensors en receivers of true in een van beide lussen
 // ***********************************************************************
 #define _SERIAL_MAX_SIZE 40
-// bool          _Serial_Command      = false ;
 int _Serial_Command = 0;
 int _SerialInByteCounter = 0;                   // number of bytes counter
 byte _SerialInByte;                             // incoming character value
 char _InputBuffer_Serial[_SERIAL_MAX_SIZE + 1]; // Buffer for Serial data
 String _InputBuffer_Serial_String;
 bool _Get_Serial_Commands() {
-  // if ( _Serial_Command ) return true ;
   if ((_Serial_Command == 1) || (_Serial_Command == 2)) return true;
   if (_Serial_Command > 2) {
     _SerialInByteCounter = 0;
@@ -495,7 +432,6 @@ bool _Get_Serial_Commands() {
   // *********************************************
   // Collect serial bytes until "\n" is detected
   // *********************************************
-  // while ( Serial.available () && !_Serial_Command ) {
   while (Serial.available()) {
     _SerialInByte = Serial.read();
 
@@ -505,7 +441,6 @@ bool _Get_Serial_Commands() {
     if (_SerialInByte == '\n') { // new line character
       _InputBuffer_Serial[_SerialInByteCounter] = 0;
       _InputBuffer_Serial_String = String(_InputBuffer_Serial);
-      //_Serial_Command = true ;
       _Serial_Command = 1;
       return true;
     } else if (isprint(_SerialInByte)) {
@@ -532,13 +467,7 @@ void Create_HTML_Values_Page() {
   // Now create webpage for current values
   // *******************************************************************************
 #ifdef FileSystem_SPIFFS
-  // Serial.print ( F("CSV-Header:\t") ) ;
-  // Serial.println ( JSON_Short_Header ) ;
-  // Serial.print ( F("Long-Header:\t") ) ;
-  // Serial.println ( JSON_Long_Header ) ;
   fs::File HTML_File = SPIFFS.open(F("/Values.html"), "w");
-  //    fs::File HTML_File = SPIFFS.open ( "/Values.html", "w" ) ;
-  // HTML_File.print ( String ( HTML_Values_Pagina_Begin ) ) ;
   HTML_File.print(FPSTR(HTML_Values_Pagina_Begin));
   HTML_File.println(F("<table style=\"width:40%\">"));
   HTML_File.println(F("<tr> <td><b>Parameter</b></td> <td><b>Value</b></td> </tr>"));
@@ -560,12 +489,10 @@ void Create_HTML_Values_Page() {
 #endif
 }
 
-//#include "ext_def.h"
 unsigned long LuftDaten_Sample_Count = 0;
 #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
   #include "Clients/LuftDaten.h"
 #endif
-//#include "Quirks.h"
 
 // ****************************************************************************
 // Here all available sensors are included
@@ -686,7 +613,6 @@ unsigned long LuftDaten_Sample_Count = 0;
 
 // ****************************************************************************
 // ****************************************************************************
-//_Sensor_OKE4  *_Sensor_OKE4 ;
 _Sensor_BaseClass *Sensor_OKE4;
 
 // *************************************************************************
@@ -701,11 +627,7 @@ public:
   // Sensors ***************************************************************
   // ***********************************************************************
   _Sensor_BaseClass *Add(_Sensor_BaseClass *Sensor) {
-    // void Add ( _Sensor_BaseClass* Sensor ) {
-    // Serial.println ( "********************* Add Sensor &&&&&&&&&&&&&&&&&" ) ;
-    // Serial.println ( _Sensor_List.size() ) ;
     _Sensor_List.push_back(Sensor);
-    // Serial.println ( _Sensor_List.size() ) ;
 
     if (Sensor_OKE4_Available) {
       Serial.print(F("OKE4 sensor found"));
@@ -749,10 +671,6 @@ public:
       Serial.println(Sensor->Version_Name);
       Sensor->Print_Help();
 
-      // String Line = "SETUP Sensor [" + String ( Debug_Counter ) + "] = " ;
-      // Line += Sensor -> Version_Name ;
-      // Serial.println ( Line ) ;
-
       Sensor->setup();
       Debug_Counter += 1;
 
@@ -767,20 +685,8 @@ public:
         Serial.println("SENSOR   MQTT CALLBACK  = " + Sensor->MQTT_Callback_Topic);
       }
 #endif
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
-
-    /*
-      for ( auto Sensor:_Sensor_List ){
-        JSON_Short_Header += Sensor -> _JSON_Short_Header ;
-        JSON_Long_Header  += Sensor -> _JSON_Long_Header ;
-        Serial.print ( F("\n==========  ") ) ;
-        Serial.println ( Sensor -> Version_Name ) ;
-        Sensor -> Print_Help () ;
-        External_Watchdog_Toggle () ;
-      }
-      */
 
     JSON_Short_Header.remove(JSON_Short_Header.length() - 1);
     JSON_Long_Header.remove(JSON_Long_Header.length() - 1);
@@ -791,8 +697,6 @@ public:
     MQTT_Topics_Print(F("Sensors"));
 #endif
 
-    // My_MQTT_Client     = Receiver ;
-    //_MQTT_Client_Available = true ;
     Serial.println("=======================  SETUP  SENSORS  DONE  ==================================");
   }
 
@@ -891,19 +795,16 @@ public:
   // ***********************************************************************
   void loop() {
     this->_Do_Signal_LED();
-    // delay ( 2 ) ;
     if (Loop_Priority > 0) return;
 
     for (auto Sensor : _Sensor_List) {
       Sensor->loop();
-      // My_Webserver.handleClient () ;
       yield();
       External_Watchdog_Toggle();
     }
 
     if (Loop_Priority == 0) {
       if (_Get_Serial_Commands()) {
-        // Serial.println ( "Sensor handle serial" ) ;
         bool Done = false;
         for (auto Sensor : _Sensor_List) {
           if (Sensor->Handle_Serial_Command(_InputBuffer_Serial_String)) {
@@ -937,10 +838,8 @@ public:
   void Send_IR(unsigned long Data) {
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Send_IR,  Sensor=" + String ( Debug_Counter ) ) ;
       Sensor->Send_IR(Data);
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
   }
@@ -951,10 +850,8 @@ public:
     Serial.println(F("=======================  My_Numbers  ======================="));
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Print,  Sensor=" + String ( Debug_Counter ) ) ;
       Serial.println("Something");
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
   }
@@ -963,17 +860,12 @@ public:
   // ***********************************************************************
   void Get_JSON_Data() {
     JSON_Data = "{";
-    // JSON_Data = "{\"Seconds\":" ;
-    // JSON_Data += String ( millis()/1000 + ) +"\t" ;
-    // JSON_Short_Data = String ( millis()/1000 ) + "\t" ;
     JSON_Short_Data = "";
 
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Get_JSON_Data,  Sensor="  + String ( Debug_Counter ) ) ;
       Sensor->Get_JSON_Data();
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
     if (JSON_Data.length() > 3) {
@@ -986,18 +878,6 @@ public:
       JSON_Short_Data.remove(JSON_Short_Data.length() - 1);
     } else
       JSON_Short_Data = "";
-
-    /*
-      if ( JSON_Short_Header.length() > 1 ) {
-        JSON_Short_Header.remove ( JSON_Short_Header.length() - 1 ) ;
-        if ( _Header_Not_Printed ) {
-          _Header_Not_Printed = false ;
-          Serial.print ( "CSV-Header:\t" ) ;
-          Serial.println ( JSON_Short_Header ) ;
-        }
-      }
-      else JSON_Short_Header = "" ;
-*/
   }
 
 #ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
@@ -1007,11 +887,8 @@ public:
     JSON_LuftData = LuftDaten_First_Part;
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Get_JSON_LuftData,  Sensor="  + String ( Debug_Counter ) )
-      // ;
       JSON_LuftData += Sensor->Get_JSON_LuftData();
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
 
@@ -1029,37 +906,16 @@ public:
     for (auto Sensor : _Sensor_List) {
       N_Samples = Sensor->Get_JSON_Length();
     }
-    // return _Sensor_List::front->Get_JSON_Length () ;
     return N_Samples;
   }
-
-  /*
-    bool Send_2_Domoticz () {
-      bool OK = true ;
-      for ( auto Sensor:_Sensor_List ){
-        bool Result = Sensor->Send_2_Domoticz () ;
-        if ( ! Result ) {
-          OK = false ;
-        }
-      }
-      return OK ;
-    }
-*/
 
   // Sensors ***************************************************************
   // ***********************************************************************
   void Hardware_Test(int Test_Nr = 1) {
-    // Serial.println ( Test_Nr ) ;
-    //_Sensor_List.operator[0] -> Hardware_Test () ;  //Iest_Nr ) ;
-    //_Sensor_List.begin() -> Hardware_Test ( Iest_Nr ) ;
-    //_Sensor_List.begin() -> Hardware_Test ( ) ;
-    //_Sensor_List.begin().Hardware_Test ( ) ;
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Sensors, Hardware_Test,  Sensor="  + String ( Debug_Counter ) ) ;
       Sensor->Hardware_Test(Test_Nr);
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
       break;
     }
@@ -1068,14 +924,11 @@ public:
   // Sensors ***************************************************************
   // ***********************************************************************
 private:
-  //      bool          _Signal_LED       = false ;
   int _Signal_LED_State = 0;
   int _Signal_LED_N = 0;
   int _Signal_LED_ON = 0;
   int _Signal_LED_OFF = 0;
   unsigned long _Signal_LED_start;
-
-  //      std::vector <_Sensor_BaseClass*> _Sensor_List ;
 };
 
 // ****************************************************************************
@@ -1114,9 +967,7 @@ private:
 void Settings_Factory() {
   fs::File Source = SPIFFS.open(F("/Factory.h"), "r");
   fs::File Dest = SPIFFS.open(F("/Settings.h"), "w");
-// BUFFERSIZE verlaagd van 512 naar 100
 #define _Settings_Factory_BufSize 100
-  // static uint8_t buf [ _Settings_Factory_BufSize ] ;
   uint8_t buf[_Settings_Factory_BufSize];
   while (Source.read(buf, _Settings_Factory_BufSize)) {
     Dest.write(buf, _Settings_Factory_BufSize);
@@ -1168,7 +1019,6 @@ void Settings_Factory() {
 class _Receivers {
 public:
   std::vector<_Receiver_BaseClass *> _Receiver_List;
-  //    #define _SERIAL_MAX_SIZE 40
 
   // Receivers *************************************************************
   // ***********************************************************************
@@ -1184,14 +1034,9 @@ public:
   // Receivers *************************************************************
   // ***********************************************************************
   _Receiver_BaseClass *Add(_Receiver_BaseClass *Receiver) {
-    // void Add ( _Receiver_BaseClass* Receiver ) {
-    // Serial.println ( F("********************* Add Sensor &&&&&&&&&&&&&&&&&") ) ;
-    // Serial.println ( _Sensor_List.size() ) ;
     _Receiver_List.push_back(Receiver);
-    // Serial.println ( _Sensor_List.size() ) ;
 
     if (_Debug_MQTT_Available) {
-      // if ( WiFi.localIP()[0] > 0 ) {
       Serial.println(F("MQTT client found, added for debugging"));
       My_MQTT_Client = Receiver;
       _Debug_Over_MQTT = true;
@@ -1226,13 +1071,8 @@ public:
     }
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, setup ,  Receiver="  + String ( Debug_Counter ) ) ;
       Receiver->setup();
       Debug_Counter += 1;
-
-      // String Line = "SETUP Receiver [" + String ( Debug_Counter ) + "] = " ;
-      // Line += Receiver -> Version_Name ;
-      // Serial.println ( Line ) ;
       Serial.print(F("\n======  SETUP  ======  "));
       Serial.println(Receiver->Version_Name);
       Receiver->Print_Help();
@@ -1245,7 +1085,6 @@ public:
         Serial.println("RECEIVER MQTT CALLBACK  = " + Receiver->MQTT_Callback_Topic);
       }
 #endif
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
 
@@ -1258,8 +1097,8 @@ public:
     Serial.println(F("===============  ESP 32 parameters ====================== "));
     Serial.println("       CPU FREQUENCY        = " + String(ESP.getCpuFreqMHz()) + " MHz");
     Serial.println("       SDK Version          = " + String(ESP.getSdkVersion()));
-    //        Serial.println ( "       SketchSize           = " + String ( ESP.getSketchSize() ) ) ;
-    //        Serial.println ( "       Free Sketch Space    = " + String ( ESP.getFreeSketchSpace() ) ) ;
+    // Serial.println ( "       SketchSize           = " + String ( ESP.getSketchSize() ) ) ;
+    // Serial.println ( "       Free Sketch Space    = " + String ( ESP.getFreeSketchSpace() ) ) ;
     Serial.println("       Flash Chip Size      = " + String(ESP.getFlashChipSize()));
     Serial.println("       Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
     Serial.print(F("       IP Address           = "));
@@ -1268,8 +1107,8 @@ public:
 #else
     Serial.println(F("===============  ESP 8266 parameters ====================== "));
     Serial.println("       CPU FREQUENCY        = " + String(ESP.getCpuFreqMHz()) + " MHz");
-    //        Serial.println ( "       Heap Fragmentation   = " + String ( ESP.getHeapFragmentation() ) + " %" ) ;
-    //        Serial.println ( "       Max Allocatable RAM  = " + String ( ESP.getMaxFreeBlockSize() ) ) ;
+    // Serial.println ( "       Heap Fragmentation   = " + String ( ESP.getHeapFragmentation() ) + " %" ) ;
+    // Serial.println ( "       Max Allocatable RAM  = " + String ( ESP.getMaxFreeBlockSize() ) ) ;
     Serial.println("       Core Version         = " + String(ESP.getCoreVersion()));
     Serial.println("       SDK Version          = " + String(ESP.getSdkVersion()));
     Serial.println("       SketchSize           = " + String(ESP.getSketchSize()));
@@ -1284,7 +1123,6 @@ public:
 
     Serial.println("=======================  SETUP  RECEIVERS  DONE  ==================================");
 
-    // this ->
     Create_HTML_Values_Page();
 
     if (_DEBUG_Global_String.length() > 0) {
@@ -1331,16 +1169,11 @@ public:
   // Receivers *************************************************************
   // ***********************************************************************
   void loop() {
-    // delay ( 2 ) ;
-    // if      ( FTP_Server_SD_MMC ) ftpSrv_SD_MMC.handleFTP();
-    // else if ( FTP_Server_SPIFFS ) ftpSrv_SPIFFS.handleFTP();
-
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
       if (Receiver->High_Priority_Loop >= Loop_Priority) {
         Receiver->loop();
       }
-      // My_Webserver.handleClient () ;
       yield();
       External_Watchdog_Toggle();
     }
@@ -1348,11 +1181,7 @@ public:
     if (Loop_Priority == 0) {
       if (_Get_Serial_Commands()) {
         bool Done = false;
-        //          Serial.println ( "? of help // Toon alle beschikbare commando's\n\
-//    Seriële Commando's zijn Case-Ongevoelig" ) ;
-        // Serial.println ( "Receiver handle serial" ) ;
         for (auto Receiver : _Receiver_List) {
-          // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, loop2,  Receiver="  + String ( Debug_Counter ) ) ;
           if (Receiver->Handle_Serial_Command(_InputBuffer_Serial_String)) {
             Done = true;
             break;
@@ -1361,7 +1190,6 @@ public:
           yield();
           External_Watchdog_Toggle();
         }
-        //          _Serial_Command = false ;
         if (Done) _Serial_Command = 3;
         else
           _Serial_Command += 1;
@@ -1376,10 +1204,8 @@ public:
     Serial.println(F("=======================  My_Numbers  ======================="));
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, Print,  Receiver="  + String ( Debug_Counter ) ) ;
       Serial.println(F("Something Else"));
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
   }
@@ -1387,26 +1213,16 @@ public:
   // Receivers *************************************************************
   // ***********************************************************************
   bool Send_Data(String JSON_Message) {
-    // Set_Signal_LED ( 5, 10, 10 ) ;
     if (JSON_Message.length() < 3) return false;
     bool Result_OK = true;
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      // Serial.println ( "Send Data RECEIVER = " + String ( Debug_Counter ) ) ;
-      // External_Watchdog_Arm ( "Sensor_Receiver, Receivers, Send_Data  Receiver=" + String ( Debug_Counter ) ) ;
       if (!Receiver->Send_Data(JSON_Message)) {
         Result_OK = false;
       }
       Debug_Counter += 1;
-      // External_Watchdog_Check () ;
       External_Watchdog_Toggle();
     }
-
-    /*
-      if (  WiFi.status () == WL_CONNECTED ) Set_Signal_LED ( 1, 1  , 1   ) ;
-      else                                   Set_Signal_LED ( 1, 300, 100 ) ;
-      //*/
-
     return Result_OK;
   }
 
@@ -1446,7 +1262,6 @@ void Set_Signal_LED(int N = 5, int On = 50, int Off = 400) {
 // ********************************************************************************
 // ********************************************************************************
 void Store_Modified_Settings_From_Webserver(bool Restart_Needed) {
-  //  bool Restart_Needed = false ;
 
   // *******************************************************
   // Algemene settings controleren op veranderinegn
@@ -1510,10 +1325,8 @@ void Store_Modified_Settings_From_Webserver(bool Restart_Needed) {
     }
   }
 
-  // File_System.Dump ( _My_Settings_Filename ) ;
   Settings.Store_Settings();
   Settings.Create_WebPage();
-  // File_System.Dump ( _My_Settings_Filename ) ;
 
   if (Restart_Needed) {
     Serial.println(F("*****  Restart Needed  *****  Restart Needed  *****  Restart Needed  *****  Restart Needed  "
@@ -1542,10 +1355,8 @@ void Restart_Email(String MailTo, String Subject, String Body, bool HTML_Format 
 // ********************************************************************************
 // ********************************************************************************
 void Send_Email(String Mail_To, String Subject, String Body, bool HTML_Format = false) {
-  // Serial.println ( "PPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP" + Subject ) ;
 #ifndef NOT_INCLUDE_RECEIVER_EMAIL
   if (_p_Receiver_Email != NULL) {
-    // Serial.println ( "(((((((((((((((((((((((((((((((((((((((((" );
     ((_Receiver_Email *)_p_Receiver_Email)->Send_Email(Mail_To, Subject, Body, HTML_Format);
   }
 #endif
@@ -1557,15 +1368,10 @@ unsigned long _Loop_Last_Time = 0;
 // ***********************************************************************************
 void Settings_Setup() {
   Settings_By_WebInterface = true;
-  // ESP.wdtDisable();   // disable software watchdog
-  // ESP.wdtEnable(1000) ;
 
-  // ************************************************************
-  // ************************************************************
-  //#ifndef Serial_2_Telnet
   Serial.begin(115200);
-  //#endif
   Settings.Setup();
+
   // ************************************************************
   // ************************************************************
 
@@ -1575,7 +1381,6 @@ void Settings_Setup() {
   #endif
 #endif
 
-  //??int Baudrate = Settings.Get_Set_Default_Int ( F("RS232 Baudrate"), 115200 ) ;
   int Baudrate = Settings.Get_Set_Default_Int("RS232 Baudrate", 115200);
   Serial_Setup(Baudrate);
 
@@ -1583,8 +1388,6 @@ void Settings_Setup() {
   My_Prefs.begin("My_Prefs", false); // not readonly
   uint8_t Reboot_Options = My_Prefs.getChar("Reboot_Options", 0);
   Serial.println("                   Reboot Options : " + String(Reboot_Options));
-    // Reboot_Options += 1 ;
-    // My_Prefs.putChar ( F("Reboot_Options"), Reboot_Options ) ;
 #endif
 
   _Loop_Send_Time = Settings.Get_Set_Default_Int(F("Sample Period[ms]"), 10000);
@@ -1596,12 +1399,10 @@ void Settings_Setup() {
   _My_Settings_Buffer[F("Sensor_Wifi")] = true;
   Sensors.Add(new _Sensor_Wifi(F("FS")));
   // het idee was om hier te zorgen dat wifi er snel is, zodat telnet alles kan weergeven
-  // Sensors.setup();
 
 #ifdef YES_INCLUDE_RECEIVER_TELNET
   _My_Settings_Buffer[F("Receiver_Telnet")] = true;
   Receivers.Add(new _Receiver_Telnet());
-// Receivers.setup();
 #else
   _My_Settings_Buffer.remove(F("Receiver_Telnet"));
 #endif
@@ -1624,18 +1425,15 @@ void Settings_Setup() {
   FTP_Server_SPIFFS = false;
   if (Settings.Read_Bool(F("FTP on SD-card"))) {
     _My_Settings_Buffer[F("FTP on SPIFFS")] = false;
-    // ftpSrv_SD_MMC.begin ( F("esp8266"), F("esp8266") ) ;    //username, password for ftp.
     FTP_Server_SD_MMC = true;
   } else if (Settings.Read_Bool(F("FTP on SPIFFS"))) {
     _My_Settings_Buffer[F("FTP on SD-card")] = false;
-    //    ftpSrv_SPIFFS.begin ( F("esp8266"), F("esp8266") ) ;    //username, password for ftp.
     FTP_Server_SPIFFS = true;
   }
 
   // ************************************************************
   // Create Sensors (en als niet nodig, zorg in ieder geval dat ie in de settings file staat )
   // ************************************************************
-  // Settings.Create_Sensors () ;
   if (Settings.Read_Bool(F("Sensor_Watchdog"))) Sensors.Add(new _Sensor_Watchdog());
   else
     _My_Settings_Buffer[F("Sensor_Watchdog")] = false;
@@ -1877,8 +1675,6 @@ void Settings_Setup() {
 // ***********************************************************************************
 bool Recording_Stopped = false;
 void Settings_Loop() {
-  // Receivers.loop () ;
-  // return ;
 
   // ***********************************************************
   // call all loop methods
@@ -1899,7 +1695,6 @@ void Settings_Loop() {
     if (Recording) {
       Sensors.Get_JSON_Data();
       Receivers.Send_Data(JSON_Data);
-      // Set_Signal_LED ( 1, 10, 10 ) ;
     } else
       Serial.println(F("Recording Stopped "));
   }
@@ -1911,19 +1706,13 @@ void Settings_Loop() {
 #ifndef NOT_INCLUDE_RECEIVER_MQTT
 void _MQTT_Callback_Wrapper(char *topic, byte *payload, unsigned int length) {
   String Topic = String(topic);
-  // Serial.println ( "MQTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT: " + Topic ) ;
   String Payload = "";
   for (int i = 0; i < length; i++) {
     Payload += (char)payload[i];
   }
 
-  // DynamicJsonBuffer jsonBuffer ( 600 ) ;
-  DynamicJsonDocument jsonBuffer(600); // ArduinoJson V6
-  // JsonObject&  root = jsonBuffer.parseObject ( Payload ) ;
+  DynamicJsonDocument jsonBuffer(600);  // ArduinoJson V6
   deserializeJson(jsonBuffer, Payload); // ArduinoJson V6
-
-  // int Value ;
-  // Value = root [ "P1" ] ;
 
   for (auto Sensor : Sensors._Sensor_List) {
     if ((Topic == Sensor->MQTT_Callback_Topic) ||
@@ -1941,5 +1730,4 @@ void _MQTT_Callback_Wrapper(char *topic, byte *payload, unsigned int length) {
 }
 #endif
 
-// Serial.println ( F("end of Sensor_Receiver.h reached") ) ;
 #endif

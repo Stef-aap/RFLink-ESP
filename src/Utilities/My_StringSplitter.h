@@ -44,7 +44,6 @@ public:
     int current = 0;
     while (second.indexOf(d) > -1) {
       if (current >= (count - 1)) {
-        // current++;
         break;
       }
       for (int i = 0; i < second.length(); i++) {
@@ -56,10 +55,7 @@ public:
         }
       }
     }
-    // current = (current < MAX - 1) ? current : MAX;
     if (second.length() > 0) op[current] = second;
-    // else
-    //  --count;
   }
 
   // ***********************************************************************

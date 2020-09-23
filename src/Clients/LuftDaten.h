@@ -71,17 +71,9 @@ void Complete_JSON_String(signed long Loop_Sample_Count) {
   // **********************
   // remove the final comma
   // **********************
-  // if ( JSON_Data [ JSON_Data.length() - 1 ] == "," ) {   //ERROR: ISO C++ forbids comparison between pointer and
-  // integer [-fpermissive]
   if (JSON_LuftData.lastIndexOf(',') == (JSON_LuftData.length() - 1)) {
     JSON_LuftData.remove(JSON_LuftData.length() - 1);
   }
-
-  // JSON_LuftData += ",{\"value_type\":\"SSID\",\"value\":\"" ;
-  // JSON_LuftData += WiFi.SSID() ;
-  // JSON_LuftData += "\"}" ;
-  //
-  // JSON_LuftData += "]}";
 
   JSON_LuftData += "],\"SSID\":\"";
   JSON_LuftData += WiFi.SSID();
@@ -96,12 +88,8 @@ void Complete_JSON_String(signed long Loop_Sample_Count) {
 void sendData(const String &data, const int pin, const char *host, const int httpPort, const char *url,
               const char *basic_auth_string, const String &contentType) {
   Debug(String(host) + data);
-  // return ;
 
 #if defined(ESP8266)
-
-  // debug_out(F("Start connecting to "), DEBUG_MIN_INFO, 0);
-  // debug_out(host, DEBUG_MIN_INFO, 1);
 
   String request_head = F("POST ");
   request_head += String(url);
@@ -132,15 +120,9 @@ void sendData(const String &data, const int pin, const char *host, const int htt
     client_s.setTimeout(20000);
 
     if (!client_s.connect(host, httpPort)) {
-      //        debug_out(F("connection 1 failed"), DEBUG_ERROR, 1);
       Debug("connection 1 failed");
       return;
     }
-
-    // debug_out(F("Requesting URL: "), DEBUG_MIN_INFO, 0);
-    // debug_out(url, DEBUG_MIN_INFO, 1);
-    // debug_out(esp_chipid, DEBUG_MIN_INFO, 1);
-    // debug_out(data, DEBUG_MIN_INFO, 1);
 
     // send request to the server
 
@@ -155,11 +137,9 @@ void sendData(const String &data, const int pin, const char *host, const int htt
     while (client_s.available()) {
       char c = client_s.read();
       Line += String(c);
-      //        debug_out(String(c), DEBUG_MAX_INFO, 0);
       Debug(Line);
     }
 
-    //      debug_out(F("\nclosing connection\n------\n\n"), DEBUG_MIN_INFO, 1);
   } else {
 
     WiFiClient client;
@@ -168,15 +148,9 @@ void sendData(const String &data, const int pin, const char *host, const int htt
     client.setTimeout(20000);
 
     if (!client.connect(host, httpPort)) {
-      //        debug_out(F("connection 2 failed"), DEBUG_ERROR, 1);
       Debug("connection 2 failed");
       return;
     }
-
-    //      debug_out(F("Requesting URL: "), DEBUG_MIN_INFO, 0);
-    //      debug_out(url, DEBUG_MIN_INFO, 1);
-    //      debug_out(esp_chipid, DEBUG_MIN_INFO, 1);
-    //      debug_out(data, DEBUG_MIN_INFO, 1);
 
     client.print(request_head);
 
@@ -187,14 +161,8 @@ void sendData(const String &data, const int pin, const char *host, const int htt
     // Read reply from server and print them
     while (client.available()) {
       char c = client.read();
-      //        debug_out(String(c), DEBUG_MAX_INFO, 0);
     }
-
-    //      debug_out(F("\nclosing connection\n------\n\n"), DEBUG_MIN_INFO, 1);
   }
-
-  //    debug_out(F("End connecting to "), DEBUG_MIN_INFO, 0);
-  //    debug_out(host, DEBUG_MIN_INFO, 1);
 
   wdt_reset(); // nodemcu is alive
   yield();
@@ -219,14 +187,6 @@ bool _Send_LuftData() {
 
   sendData(Temp, SDS_API_PIN, host_dusti, httpPort_dusti, url_dusti, "", FPSTR(TXT_CONTENT_TYPE_JSON));
   return true;
-  /*
-{ "software_version": "NRZ-2017-100",
-  "sensordatavalues": [ {"value_type":"SDS_P1","value":"31.34"},
-                        {"value_type":"SDS_P2","value":"17.61"},
-                        {"value_type":"samples","value":"5112893"},
-                        {"value_type":"signal","value":"-64"}],
-  "SSID":"MiRa_Home_Router"}
-*/
 }
 
 // ***********************************************************************

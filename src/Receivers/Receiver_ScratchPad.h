@@ -25,7 +25,6 @@ In normaal gebruik moet deze Reeceiver dus altijd zijn uitgeschakeld.";
   void setup() {
     _Serial_SDS011 = &Serial_Device;
     _Serial_SDS011->begin(115200);
-    // Serial_Device.begin ( 115200 ) ;
   }
 
   // **********************************************************************************************
@@ -43,7 +42,6 @@ In normaal gebruik moet deze Reeceiver dus altijd zijn uitgeschakeld.";
   // ***********************************************************************
   // ***********************************************************************
   bool Send_Data(String JSON_Message) {
-    // Serial_Device.println ( "test new hradwer serial " ) ;
     _Serial_SDS011->println("en via een pointer");
     Serial.println(">>>>>>>>>>>>>>>>>>>>>> TEST OF SCRATCHPAD <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
     return true;
@@ -52,13 +50,5 @@ In normaal gebruik moet deze Reeceiver dus altijd zijn uitgeschakeld.";
   // ***********************************************************************
   // ***********************************************************************
   void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {}
-
-  // ***********************************************************************
-  // deze wordt alleen aangemaakt voor het debuggen
-  // ***********************************************************************
-  //    virtual bool Publish ( String Topic, String Payload ) {
-  //    }
-  //    virtual bool connected () {
-  //    }
 };
 #endif

@@ -17,7 +17,6 @@ public:
   _RFL_Protocol_KAKU(int Receive_Pin, int Transmit_Pin) {
     this->_Receive_Pin = Receive_Pin;
     this->_Transmit_Pin = Transmit_Pin;
-    // Name = "KAKU" ;
     Name = "NewKaku";
     NAME = Name;
     NAME.toUpperCase();
@@ -83,24 +82,12 @@ public:
     int Switch = BitStream & 0x0F;
     unsigned long Id = BitStream >> 5;
 
-    /*
-      sprintf ( _RFLink_pbuffer, "%s;ID=%05X;", Name.c_str(), Id ) ;
-      if ( Unknown_Device ( _RFLink_pbuffer ) ) return false ;
-
-      Serial.print   ( PreFix ) ;
-      Serial.print   ( _RFLink_pbuffer ) ;
-      sprintf ( _RFLink_pbuffer2, "SWITCH=%0X;CMD=%s;", Switch, On_Off.c_str() ) ;
-      Serial.println ( _RFLink_pbuffer2 ) ;
-      PKSequenceNumber += 1 ;
-      return true;
-      */
     return Send_Message(Name, Id, Switch, On_Off);
   }
 
   // ***********************************************************************************
   // ***********************************************************************************
   bool Home_Command(String Device, unsigned long ID, int Switch, String On) {
-    // if ( Device !=  Name.toUpperCase () ) return false ;
     if (Device.compareTo(NAME)) return false;
 
     unsigned long Data = (ID << 5) | Switch;

@@ -22,10 +22,6 @@
 class _Sensor_BME280_SF : public _Sensor_BaseClass {
 
 public:
-  //    String Help_Text = "#define Sensor_BME280_SF  <Address>\n\
-    <Address> the real I2C address or\n\
-              1 for 0x76 (default), 2 for 0x77" ;
-
   // ***********************************************************************
   // Creator,
   // My_Number should be either 1 ... 2  (I2C Address = 0x75 + My_Number)

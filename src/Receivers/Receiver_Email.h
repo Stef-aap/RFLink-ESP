@@ -43,10 +43,7 @@ public:
 
   // _Receiver_Email  ******************************************************
   // ***********************************************************************
-  void setup() {
-    // Serial.print   ( "SETUP of _Send_BaseClass,  ID = " ) ;
-    // External_Watchdog_Disarm () ;
-  }
+  void setup() {}
 
   // _Receiver_Email  ******************************************************
   // ***********************************************************************
@@ -136,15 +133,7 @@ public:
 // _Receiver_Email  ******************************************************
 // ***********************************************************************
 #ifdef ESP32
-  void Mail_Callback(SendStatus msg) {
-    Serial.println(msg.info());
-    // Don know how to connect this method ????
-    /*
-        if (msg.success()) {
-          Serial.println("----------------");
-        }
-        /*/
-  }
+  void Mail_Callback(SendStatus msg) { Serial.println(msg.info()); }
 #endif
 
   // _Receiver_Email  ******************************************************
@@ -152,13 +141,6 @@ public:
   void Send_Email(String MailTo, String Subject, String Body, bool HTML_Format = false) {
 #ifdef ESP32
     if (WiFi.status() == WL_CONNECTED) {
-      /*
-Serial.println ( "Server : " + this->_SMTP_Server ) ;
-Serial.println ( "Account: " + this->_SMTP_User   ) ;
-Serial.println ( this->_SMTP_PWD );
-Serial.println ( "Port   : " + (String) this->_SMTP_Port   ) ;
-Serial.println ( "MailTo: " + MailTo ) ;
-//*/
       Mail_Client.setLogin(this->_SMTP_Server, this->_SMTP_Port, this->_SMTP_User, this->_SMTP_PWD);
       Mail_Client.setSTARTTLS(true);
       Mail_Client.setSender(_Main_Name, this->_SMTP_User);
@@ -168,7 +150,6 @@ Serial.println ( "MailTo: " + MailTo ) ;
       if (MailTo.length() > 0) Mail_Client.addRecipient(MailTo);
       else
         Mail_Client.addRecipient(this->_SMTP_User);
-      // Mail_Client.setSendCallback ( Receiver_Email_Callback ) ;
 
       if (MailClient.sendMail(Mail_Client)) {
         Serial.println("Email send: " + Subject);
@@ -178,18 +159,6 @@ Serial.println ( "MailTo: " + MailTo ) ;
 
       Mail_Client.empty();
     }
-
-// ESP 8266  *********************************************************
-#else
-      // WERKT NIET OM ONBEKENDE REDEN !!!!
-      /*
-          _Email_Client_Class  My_Mail_Client ( this->_SMTP_Server, this->_SMTP_Port,
-                                                this->_SMTP_User, this->_SMTP_PWD ) ;
-          bool Result ;
-          Result = My_Mail_Client.Send_Mail ( MailTo, Subject, Body, HTML_Format )  ;
-          if ( Result ) Serial.println ( "Email Succeeded" ) ;
-          else          Serial.println ( "Email Failed"    ) ;
-          */
 #endif
   }
   // ***********************************************************************

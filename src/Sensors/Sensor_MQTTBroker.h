@@ -64,8 +64,6 @@ public:
     String Data;
     for (JsonPair KeyValue : Root) {
       String Key = String(KeyValue.key().c_str());
-      // Serial.println ( "Recived key" + Key ) ;
-      // JsonVariant Value = KeyValue.value () ;
       String Value = JSON_Buffer[Key].as<String>();
 
       // Test if Key already known
@@ -84,43 +82,6 @@ public:
         this->_New_Items = true;
       }
     }
-
-    /*
-      #ifdef FileSystem_SDfat
-        //topic - spltter
-        //data pares json
-        My_StringSplitter *Splitter = new My_StringSplitter ( topic, '/' ) ;
-        String Filename = Splitter -> getItemAtIndex ( -1 ) ;
-        Filename += ".csv" ;
-// Serial.println ( Filename ) ;
-
-
-        //char json[] = "{\"first\":\"hello\",\"second\":\"world\"}";
-        DynamicJsonDocument JSON_Buffer ( 200 ) ;  // Dynamic / Static ???  Heap / Stack of omgekeerd
-        DeserializationError Error = deserializeJson ( JSON_Buffer, data_str ) ;
-
-        if ( Error ) return ;
-
-        JsonObject Root = JSON_Buffer.as<JsonObject>();
-
-        String Header ;
-        String Data   ;
-        for ( JsonPair KeyValue : Root ) {
-          String Key = String ( KeyValue.key().c_str() ) ;
-          //JsonVariant Value = KeyValue.value () ;
-          String Value = JSON_Buffer [ Key ].as<String>();
-          //Serial.print   ( Key   ) ;
-          //Serial.print   ( " = " ) ;
-          //Serial.println ( Value ) ;
-          Header += Key   + '\t' ;
-          Data   += Value + '\t' ;
-        }
-//Serial.println ( "Header = " + Header ) ;
-//Serial.println ( "Data   = " + Data   ) ;
-
-        ((_Receiver_SDfat*)_p_Receiver_SDfat) -> Append_2_CSV ( Filename, Header, Data ) ;
-      #endif
-*/
   }
 
   // class _myMQTTBroker ******************************************
@@ -156,9 +117,7 @@ public:
 
   // Sensor_MQTTBroker ********************************************
   // **************************************************************
-  void loop() {
-    //      delay ( 1 ) ;      // needed to spent time in broker loop
-  }
+  void loop() {}
 
   // Sensor_MQTTBroker ********************************************
   // **************************************************************

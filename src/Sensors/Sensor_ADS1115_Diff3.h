@@ -10,9 +10,8 @@
 #ifndef Sensor_ADS1115_Diff3_h
 #define Sensor_ADS1115_Diff3_h 0.2
 
-#include "Sensor_Base.h"
-//#include <Adafruit_ADS1015.h>
 #include "Hardware/Stef_Adafruit_ADS1015.h"
+#include "Sensor_Base.h"
 
 // ***********************************************************************************
 // https://os.mbed.com/teams/PQ_Hybrid_Electrical_Equipment_Team/code/ADS1015/file/71b44421e736/Adafruit_ADS1015.h/
@@ -106,9 +105,6 @@ public:
   void setup() {
     _ADC.setGain(_Gain);
     _ADC.begin();
-#ifdef ESP32
-//  Wire.setClock ( 50000 ) ;
-#endif
   }
 
   // **********************************************************************************************
@@ -148,7 +144,6 @@ public:
         if (New_Value_Int != Gain) {
           _My_Settings_Buffer["ADS1115-d3 Gain"] = New_Value_Int;
           _Gain = (adsGain_t)(512 * New_Value_Int);
-          // Serial.println ( "ADS GAIN = " + String (_Gain )) ;
           _ADC.setGain(_Gain);
         }
       }
@@ -178,9 +173,6 @@ public:
 #endif
 
       // Onderstaande werkt niet, zelfs niet met yield(0) er voor en er na
-      //#define usec_Delay 1000
-      // delayMicroseconds ( usec_Delay ) ;
-
       _ADC0 += ADC0;
       _ADC1 += ADC1;
       _ADC2 += ADC2;
@@ -217,7 +209,6 @@ public:
   // ***********************************************************************
   void Get_JSON_Data() {
     // Hij moet altijd door deze procedure komen, ook als we geen samples hebben
-    // Serial.println ( _NSample ) ;
     if (_NSample <= 0) _NSample = 1;
 
     JSON_Data += "\"" + this->_Name1 + "\":";

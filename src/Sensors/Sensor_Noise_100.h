@@ -32,7 +32,6 @@ public:
     JSON_Data += " \"Noise_100\":";
     JSON_Data += random(-100, 100);
     JSON_Data += ",";
-    //      External_Watchdog_Disarm () ;
   }
 };
 

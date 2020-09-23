@@ -46,7 +46,6 @@ public:
   int Sample_Time_ms = 1000; // The time between consecutive samples
   String _JSON_Sample = "";  // MAG BLIJKBAAR NIET PRIVATE
   char msg[1000];
-  // int      _My_Number      = 0 ;
   unsigned long Sample_Time_Last = 0;
   String MQTT_Callback_Topic = "";
   int High_Priority_Loop = 0;
@@ -59,9 +58,7 @@ public:
   // The method in the derived class (if available) will take over the functionality
   // If no method with the same name is in the derived class, this virtual method will be effective
   // **********************************************************************************************
-  virtual void setup() {
-    // Serial.print   ( "SETUP of _Sensor_BaseClass,  ID = " ) ;
-  }
+  virtual void setup() {}
 
   // **********************************************************************************************
   // **********************************************************************************************
@@ -83,7 +80,6 @@ public:
     // Not allowed to do here a print statement
     // because it's possible that the sensor doesn't need a loop !!
     // ************************************************************
-    // Serial.println ( "LOOP of the BaseClass" ) ;
   }
 
   // ***********************************************************************
@@ -134,9 +130,6 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  // virtual void MQTT_Callback ( String Payload, JsonObject &root ) {
-  //  Serial.println ( "WARNING: no MQTT Callback function implemented for : " + Version_Name ) ;
-  //}
   virtual void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
     Serial.println("WARNING: no MQTT Callback function implemented for : " + Version_Name);
   }
@@ -144,7 +137,6 @@ public:
   // ***********************************************************************
   // deze wordt alleen aangemaakt voor OKE4
   // ***********************************************************************
-  // virtual bool Change_ID ( uint8_t ID_Old, uint8_t ID_New ) {}
   virtual bool Read_SX(uint8_t ID) {}
 };
 #endif

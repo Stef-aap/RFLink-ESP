@@ -73,7 +73,7 @@ public:
   // ***********************************************************************
   void loop() {
     if (millis() - _Sample_Time_Last >= DHT_ms) {
-      _Sample_Time_Last = millis(); //+= Sample_Time_ms ;
+      _Sample_Time_Last = millis();
 
       float Temperature = dht.getTemperature();
       float Humidity = dht.getHumidity();

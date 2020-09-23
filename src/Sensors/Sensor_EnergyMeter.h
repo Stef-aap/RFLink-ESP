@@ -53,19 +53,12 @@ public:
           Data[i] += (int)_Serial_EnergyMeter->read();
           Data[i] += 256 * (int)_Serial_EnergyMeter->read();
           Data[i] += 256 * 256 * (int)_Serial_EnergyMeter->read();
-          // Serial.print ( Data[i] ) ;
-          // Serial.print ( ',' ) ;
         }
-
-        // Debug ( "in ieder geval 18 bytes") ;
 
         double __Vrms = ((double)Data[0]) / 0x1000000 / _Vgain * 400;
         double __LineFrequency = ((double)Data[5]) / 0x01999A * 50;
-        // Debug ( "Voltage   = " + String ( __Vrms ));
-        // Debug ( "Frequency = " + String ( __LineFrequency ));
 
         if ((__Vrms > 210) && (__Vrms < 250) && (__LineFrequency > 48) && (__LineFrequency < 52)) {
-          // Debug ( "Checked" ) ;
           _Vrms += __Vrms;
           _Irms += ((double)Data[1]) / 0x1000000 / _Igain * 120;
           _Pavg += ((double)Data[2]) / 0x800000 / _Igain / _Vgain * 120 * 400;
@@ -82,28 +75,6 @@ public:
         }
       }
     }
-    /*
-      if ( _Serial_EnergyMeter->available() ) {
-        delay ( 100 ) ;
-        int Data[6] ;
-        for ( int i=0; i<6; i++ ) {
-          Data[i] = 0 ;
-          Data[i] +=             (int) _Serial_EnergyMeter->read () ;
-          Data[i] +=       256 * (int) _Serial_EnergyMeter->read () ;
-          Data[i] += 256 * 256 * (int) _Serial_EnergyMeter->read () ;
-          //Serial.print ( Data[i] ) ;
-          //Serial.print ( ',' ) ;
-        }
-
-        _Vrms          += ((double)Data[0])/0x1000000/_Vgain * 400 ;
-        _Irms          += ((double)Data[1])/0x1000000/_Igain * 120 ;
-        _Pavg          += ((double)Data[2])/0x800000/_Igain/_Vgain * 120*400;
-        _Pactive       += ((double)Data[4])/0x800000/_Igain/_Vgain * 120*400;
-        _Pf            += ((double)Data[3])/0x800000;
-        _LineFrequency += ((double)Data[5])/0x01999A * 50;
-        _N_Measurement += 1 ;
-      }
-*/
   }
 
   // ***********************************************************************
@@ -137,8 +108,6 @@ public:
       JSON_Short_Data += "\t";
       JSON_Short_Data += String(_LineFrequency / _N_Measurement, 1);
       JSON_Short_Data += "\t";
-
-      // Serial.println ( JSON_Data ) ;
 
       _Vrms = 0;
       _Irms = 0;

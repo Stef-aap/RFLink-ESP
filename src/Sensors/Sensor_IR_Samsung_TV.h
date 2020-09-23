@@ -20,8 +20,6 @@
 // ***********************************************************************************
 class _Sensor_IR_Samsung_TV : public _Sensor_BaseClass {
 public:
-  // String   _JSON_Sample    = "" ;         // MAG BLIJKBAAR NIET PRIVATE
-  // char     msg [ 100 ] ;
   int LDR;
   IRsend *IR_Transmitter; // ( IR_LED, true );  // Inverted = true
 
@@ -58,7 +56,6 @@ public:
     JSON_Data += " \"LDR\":";
     JSON_Data += LDR;
     JSON_Data += ",";
-    //      External_Watchdog_Disarm () ;
   }
 
   // ***********************************************************************
@@ -98,7 +95,6 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  //    void Receive_Callback ( char* topic, byte* payload, unsigned int length ) {
   void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
     String Line = "";
     for (int i = 0; i < length; i++) {

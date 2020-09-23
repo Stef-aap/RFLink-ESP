@@ -9,20 +9,6 @@
 #include "MPU9250.h"
 #include "Sensor_Base.h"
 
-/*
-Geen super bibliotheek, ook niet alles werkt.
-
-https://www.invensense.com/products/motion-tracking/9-axis/
-
-MPU92/65 (=GY87?) bestaat uit
-- mpu6500 (ongeveer zoiets als een mpu6050)
-- mpu9255 (ongeveer zoiets als een mpu6055)
-- mpu9250 = mpu 6500 + AK8963
-- mpu6555
-
-I2C address = 0x68
-*/
-
 // ***********************************************************************************
 // ***********************************************************************************
 class _Sensor_MPU9250 : public _Sensor_BaseClass {
@@ -38,7 +24,6 @@ public:
   _Sensor_MPU9250(int Display_X = -1, int Display_Y = -1) {
     this->_Display_X = Display_X;
     this->_Display_Y = Display_Y;
-    this->Default_Settings();
     this->Constructor_Finish();
   }
 
@@ -53,15 +38,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void setup() {
-    // delay ( 2000 ) ;
     _MPU.setup();
     Print_Help();
-  }
-
-  // **********************************************************************************************
-  // **********************************************************************************************
-  void Default_Settings(bool Force = false) {
-    //_I2CAddress      = Settings.Get_Set_Default_Int  ( "BME280 I2C Address"      , 0x76, Force ) ;
   }
 
   // **********************************************************************************************
@@ -136,7 +114,6 @@ public:
 private:
   // ***********************************************************************
   MPU9250 _MPU;
-  // int _I2CAddress ;
   unsigned long _Sample_Time_Last = 0;
   int _Display_X;
   int _Display_Y;

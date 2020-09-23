@@ -25,7 +25,6 @@ public:
   // Get all the sampled data as a JSON string
   // ***********************************************************************
   void Get_JSON_Data() {
-    // Debug ( "Timestamp" ) ;
     JSON_Data += " \"TimeStamp\":";
     JSON_Data += millis() / _Divider;
     JSON_Data += ",";

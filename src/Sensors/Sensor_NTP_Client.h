@@ -36,8 +36,6 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void setup() {
-    // setServer ( "time.nist.gov" )   ;  // WERKT NIET
-    // setServer ( "pool.ntp.org" )    ;  // OK
     setServer("nl.pool.ntp.org"); // OK
 
     waitForSync(30); // timeout [sec]

@@ -60,7 +60,6 @@
 #define Sensor_MHZ14_h 1.4
 
 #include "Sensor_Base.h"
-//#include <SoftwareSerial.h>
 
 const int MHZ14_Servo = 0;
 const int MHZ14_SOFT_SERIAL = 1; // software serial on swap pins
@@ -78,19 +77,14 @@ int _MHZ14_Servo_Count = 0;
 
 static void _MHZ14_Servo_Int() ICACHE_RAM_ATTR;
 static void _MHZ14_Servo_Int() {
-  //*
-
   if (digitalRead(_MHZ14_Servo_Pin) == HIGH) {
     _MHZ14_Servo_Low = millis() - _MHZ14_Servo_Start;
     _MHZ14_Servo_Start = millis();
     _MHZ14_Servo_Count += 1;
-    // Serial.println ( "Rise");
   } else {
     _MHZ14_Servo_High = millis() - _MHZ14_Servo_Start;
     _MHZ14_Servo_Start = millis();
-    // Serial.println ( "Fall");
   }
-  //*/
 }
 
 // ***********************************************************************************
@@ -99,7 +93,6 @@ class _Sensor_MHZ14 : public _Sensor_BaseClass {
 
 public:
   HardwareSerial *Serial_CO2;
-  // SoftwareSerial *Serial_CO2 ;
 
   // ***********************************************************************
   // Creator,
@@ -122,17 +115,9 @@ public:
       // ****************************
       // Eerste manier werkt niet
       // ****************************
-      // Serial_CO2 = new HardwareSerial ( UART0 ) ;
-      //        Serial_CO2 = &Serial ;
-      //#define Serial_CO2  Serial_Device
       Serial_CO2 = &Serial_Device;
       // ****************************
     }
-    /*
-      else if ( _Comm_Mode == MHZ14_MODE_TEST ) {
-        Serial_CO2 = new HardwareSerial ( UART0 ) ;
-      }
-//*/
     Version_Name = "V" + String(Sensor_MHZ14_h) + "  ======  Sensor_MHZ14.h";
     Serial.println("CREATE    " + Version_Name);
 
@@ -150,33 +135,13 @@ public:
 
     if (_Comm_Mode == MHZ14_Servo) {
       pinMode(_MHZ14_Servo_Pin, INPUT_PULLUP);
-      // ?? sommige zeggen dit: digitalPinToInterrupt(14) ;
       attachInterrupt(digitalPinToInterrupt(_MHZ14_Servo_Pin), _MHZ14_Servo_Int, CHANGE);
     }
-    /*
-      else if ( _Comm_Mode == MHZ14_MODE_TEST ) {
-        pinMode ( _MHZ14_Servo_Pin, INPUT ) ;
-Serial_CO2->begin ( 9600 ) ;
-Serial_CO2->swap () ;
-      }
-//*/
+
     //*****************************************
     // normally   UART0 : TX=GPIO1,   RX=GPIO3
     // after swap UART0 : TX=GPIO15,  RX=GPIO13
     //*****************************************
-    else if (_Comm_Mode == MHZ14_SWAP_SERIAL) {
-      /*
-        _Debug_Over_Serial = false ;
-
-        Serial_CO2 -> begin ( 9600 ) ;
-        Serial_CO2 -> flush () ;
-        Serial_CO2 -> swap () ;
-*/
-
-      // Set_Calibration ( true ) ;  //false ) ;
-    } else if (_Comm_Mode == MHZ14_SOFT_SERIAL) {
-      // Set_Calibration ( true ) ;  //false ) ;
-    }
   }
 
   // **********************************************************************************************
@@ -221,22 +186,11 @@ Serial_CO2->swap () ;
   // ***********************************************************************
   // ***********************************************************************
   void loop() {
-    // return ;
     if (_Comm_Mode == MHZ14_Servo) {
       if (_MHZ14_Servo_Count > _MHZ14_Servo_Count_Prev) {
         _MHZ14_Servo_Count_Prev = _MHZ14_Servo_Count;
 
-        /*
-          Serial.print ( _MHZ14_Servo_High ) ;
-          Serial.print ( "  " ) ;
-          Serial.print ( _MHZ14_Servo_Low ) ;
-          Serial.print ( "  " ) ;
-          Serial.print ( _MHZ14_Servo_High + _MHZ14_Servo_Low ) ;
-          Serial.print ( "  " ) ;
-          */
-
         int CO2 = 5000 * (_MHZ14_Servo_High - 2) / (_MHZ14_Servo_High + _MHZ14_Servo_Low - 4);
-        // Serial.println ( CO2 ) ;
 
         _MHZ14_CO2 += CO2;
         _MHZ14_N += 1;
@@ -296,17 +250,9 @@ Serial_CO2->swap () ;
         _MHZ14_CO2 = 0;
         _MHZ14_N = 0;
       }
-    }
-    /*
-      else if ( _Comm_Mode == MHZ14_MODE_TEST ) {
-        _MHZ14_PPM = Get_ppm_Servo  () ;
-        _MHZ14_PPM = Get_ppm_Uart () ;
-      }
-//*/
-    else {
+    } else {
       _MHZ14_PPM = Get_ppm_Uart();
     }
-    // Debugf ( "\nMODE = %i  //  ppm = %i\n", _Comm_Mode, _MHZ14_PPM );
     JSON_Data += " \"MHZ14_CO2_ppm\":";
     JSON_Data += String(_MHZ14_PPM);
     JSON_Data += ",";
@@ -319,40 +265,9 @@ Serial_CO2->swap () ;
   // ***********************************************************************
   bool Hardware_Test(int Test_Nr = 1) {
     int ppm_Uart = Get_ppm_Uart();
-    // int ppm_Servo  = Get_ppm_Servo () ;
     Debugf("CO2 UART/Servo [ppm] = %i / %i,  T[C]=%i", ppm_Uart, _Temperature_Uart);
     return true;
   }
-
-  // ***********************************************************************
-  // ***********************************************************************
-  /*
-    int Get_ppm_Servo () {
-      unsigned long th ;
-      unsigned long _MHZ14_PPM ;
-      unsigned long _Start = millis() ;
-      do {
-        th = pulseIn ( _MHZ14_Servo_Pin, HIGH, 1004000 ) / 1000 ;
-        //_MHZ14_PPM = 5000 * ( th - 2 ) / 1000 ;
-        // Verbeterde Servo formule, PPM komt nu netjes op 400 uit na kalibratie
-        _MHZ14_PPM = 5 * th ;
-      } while ( ( th == 0 ) and (( millis() - _Start ) < 2000 ) ) ;
-      return _MHZ14_PPM ;
-    }
-*/
-
-  // ***********************************************************************
-  // Dit werkt niet
-  // ***********************************************************************
-  // int Set_Calibration ( bool On_Off = false ) {
-  //  byte cmd[9] = { 0xFF, 0x01, 0x79, 0x00, 0x00, 0x00, 0x00, 0x00, 0xFF } ;
-  //  if ( On_Off ) {
-  //    cmd[3] = 0xA0 ;
-  //  }
-  //  cmd[8] = getCheckSum ( cmd ) ;
-  //  Serial_CO2->write ( cmd, 9 ) ;
-  //  Serial_CO2->flush () ;
-  //}
 
   // ***********************************************************************
   // ***********************************************************************
@@ -367,45 +282,33 @@ Serial_CO2->swap () ;
     // *****************************
     // Clear input buffer (flush wacht tot output buffer is leeg)
     // *****************************
-    // while ( Serial_CO2.available () > 0 ) {
-    //  char kar = Serial_CO2.read() ;
     while (Serial_CO2->available() > 0) {
       char kar = Serial_CO2->read();
     }
 
-    // Serial_CO2.write ( cmd, 9 ) ;  // request PPM CO2
     Serial_CO2->write(cmd, 9); // request PPM CO2
-    // clear the buffer
     memset(response, 0, 9);
 
     int waited = 0;
-    // while ( Serial_CO2.available() == 0 ) {
     while (Serial_CO2->available() == 0) {
       delay(100);
       if (waited++ > 10) {
-        // Serial_CO2.flush();
-        // Debug ( "No Response from MHZ14" ) ;
         return false;
       }
     }
 
-    // int count = Serial_CO2.readBytes ( response, 9 ) ;
     int count = Serial_CO2->readBytes(response, 9);
     if (count < 9) {
-      // Debugf ( "Count < 9, %i", count ) ;
       return false;
     }
 
     byte check = getCheckSum(response);
     if (response[8] != check) {
-      // Debug ( "Checksum Error" ) ;
       return false;
     }
     int ppm_uart = 256 * (int)response[2] + response[3];
     _Temperature_Uart = response[4] - 40;
     return ppm_uart;
-
-    // return 44 ;
   }
 
   // ***********************************************************************
@@ -416,18 +319,15 @@ private:
   int _MHZ14_PPM = 0;
   int _MHZ14_Servo_Count_Prev = 0;
 
-  //    int _MHZ14_Servo_Pin ;
   int _MHZ14_Reset_Pin;
   int _Comm_Mode = MHZ14_Servo;
   uint8_t _Temperature_Uart;
   unsigned long _Reset_23_Hour = 0;
   unsigned long _Hour_23 = 23 * 60 * 60 * 1000;
-  // unsigned long _Hour_23        = 1 * 60 * 60 * 1000 ;
 
   // ***********************************************************************
   // ***********************************************************************
   byte getCheckSum(byte *packet) {
-    // if (debug) Serial.println(F("  getCheckSum()"));
     byte i;
     unsigned char checksum = 0;
     for (i = 1; i < 8; i++) {

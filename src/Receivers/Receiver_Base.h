@@ -13,7 +13,6 @@
 // ***********************************************************************************
 class _Receiver_BaseClass {
 public:
-  // int      _My_Number          = 0 ;
   int High_Priority_Loop = 0;
   String Name = "Unknown";
   String Version_Name = "Receiver, Version and Name = UNKNOWN";
@@ -33,10 +32,7 @@ public:
   // The method in the derived class (if available) will take over the functionality
   // If no method with the same name is in the derived class, this virtual method will be effective
   // **********************************************************************************************
-  virtual void setup() {
-    // Serial.print   ( "SETUP of _Send_BaseClass,  ID = " ) ;
-    // External_Watchdog_Disarm () ;
-  }
+  virtual void setup() {}
 
   // **********************************************************************************************
   // This method is called after settings have been changed by the webserver.
@@ -53,9 +49,7 @@ public:
 
   // ***********************************************************************
   // ***********************************************************************
-  virtual void loop() {
-    // External_Watchdog_Disarm () ;
-  }
+  virtual void loop() {}
 
   // ***********************************************************************
   // ***********************************************************************
@@ -66,14 +60,12 @@ public:
   virtual bool Send_Data(String JSON_Message) {
     Serial.print("Send_Data is not implemented for this receiver ");
     Serial.println(this->Name);
-    // External_Watchdog_Disarm () ;
     return true;
   }
 
   // ***********************************************************************
   // ***********************************************************************
   virtual void MQTT_Callback(String Topic, String Payload, DynamicJsonDocument root) {
-    // virtual void MQTT_Callback ( String Payload, JsonObject &root ) {
     Serial.println("WARNING: no MQTT Callback function implemented for : " + Version_Name);
   }
 
@@ -96,17 +88,5 @@ public:
   // even voor SSD1306
   // ***********************************************************************
   virtual void Show(String Line, int x = -1, int y = -1, int Len = -1) {}
-
-  // ***********************************************************************
-  // via TYPECASTING kun je altijd een nieuwe method bereiken, ook al zt ie niet in de baseclass
-  // ***********************************************************************
-  /*
-      OLED = Receivers.Add ( new _Receiver_SSD1306       () ) ;
-
-      ( (_Receiver_SSD1306*)OLED )->Show( "R", 9, 0 ) ;
-
-    */
-  // ***********************************************************************
-  // ***********************************************************************
 };
 #endif

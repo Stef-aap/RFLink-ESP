@@ -27,42 +27,12 @@
 
 const char *Signal[] = {"Signal-1", "Signal-2", "Signal-3", "Signal-4"};
 
-/*
-[13/05/2019 14:38:48.791] { "MHZ14_CO2_ppm":702, "Time_ms":79798, "BME280_Temperature":25.32, "BME280_Pressure":1037,
-"BME280_Humidity":33, "DT28ffaa284a0400ca":25.50, "DHT22_T":24.18, "DHT22_RH":38.24, "ADC_Time_ms":70073, "N_Chan":2,
-"T_Samp":1000,
-"Signals":["Signal-1","Signal-2"],"ADC":[14471,4713,14483,4706,14482,4708,14535,4708,14510,4709,14492,4710,14473,4707,14458,4711,14506,4709,14461,4710],
-"ADC_Time_ms":70091, "N_Chan":2, "T_Samp":10000, "Signals":["Signal-1","Signal-2"],"ADC":[14469,4720]} —
-camper/verdieping0/leefruimte/Sensors_02_ [13/05/2019 14:38:58.791] { "MHZ14_CO2_ppm":713, "Time_ms":89798,
-"BME280_Temperature":25.32, "BME280_Pressure":1037, "BME280_Humidity":33, "DT28ffaa284a0400ca":25.50, "DHT22_T":24.18,
-"DHT22_RH":38.34, "ADC_Time_ms":80073, "N_Chan":2, "T_Samp":1000,
-"Signals":["Signal-1","Signal-2"],"ADC":[14410,4709,14413,4709,14406,4711,14463,4709,14435,4713,14415,4710,14387,4711,14361,4712,14404,4710,14362,4709],
-"ADC_Time_ms":80092, "N_Chan":2, "T_Samp":10000, "Signals":["Signal-1","Signal-2"],"ADC":[14409,4719]} —
-camper/verdieping0/leefruimte/Sensors_02_ [13/05/2019 14:39:08.795] { "MHZ14_CO2_ppm":724, "Time_ms":99797,
-"BME280_Temperature":25.33, "BME280_Pressure":1037, "BME280_Humidity":33, "DT28ffaa284a0400ca":25.50, "DHT22_T":24.18,
-"DHT22_RH":38.38, "ADC_Time_ms":90072, "N_Chan":2, "T_Samp":1000,
-"Signals":["Signal-1","Signal-2"],"ADC":[14316,4707,14326,4710,14329,4710,14402,4708,14375,4708,14362,4709,14354,4711,14350,4711,14408,4711,14378,4708],
-"ADC_Time_ms":90090, "N_Chan":2, "T_Samp":10000, "Signals":["Signal-1","Signal-2"],"ADC":[14316,4714]} —
-camper/verdieping0/leefruimte/Sensors_02_ [13/05/2019 14:39:18.792] { "MHZ14_CO2_ppm":734, "Time_ms":109797,
-"BME280_Temperature":25.33, "BME280_Pressure":1037, "BME280_Humidity":33, "DT28ffaa284a0400ca":25.50, "DHT22_T":24.16,
-"DHT22_RH":38.38, "ADC_Time_ms":100072, "N_Chan":2, "T_Samp":1000, "Signals":["Signal-1","Signal-2"],
-"ADC":[14340,4706,14358,4713,14368,4712,14437,4712,14414,4705,14402,4707,14399,4707,14398,4708,14460,4707,14431,4713],
-"ADC_Time_ms":100091, "N_Chan":2, "T_Samp":10000, "Signals":["Signal-1","Signal-2"],"ADC":[14339,4715]} —
-camper/verdieping0/leefruimte/Sensors_02_
-*/
-
 // ***********************************************************************************
 // https://os.mbed.com/teams/PQ_Hybrid_Electrical_Equipment_Team/code/ADS1015/file/71b44421e736/Adafruit_ADS1015.h/
 // ***********************************************************************************
 class _Sensor_ADS1115 : public _Sensor_BaseClass {
 
 public:
-  //    String Help_Text = "#define Sensor_ADS1115  <Address>\n\
-//#define Sensor_ADS1115  <Address>  <N_Chan>  <Sample_Time_ms>  <Differential>\n\
-//    <Address> the real I2C address or \n\
-//              1 for 0x48, 2 for 0x49, 3 for 0x4A, 4 for 0x4B\n\
-//    <Differential> false/true single-ended/differential AD conversion" ;
-
   // ***********************************************************************
   // Creator,
   // My_Address should be either 1 ... 4  (I2C Address = 0x47 + My_Number)
@@ -289,7 +259,6 @@ public:
 
     JSON_Data += "\"ADC\":[";
     for (int i = 0; i < _ADC_Buffer_Pointer; i++) {
-      // JSON_Data += "-12345," ;   // for test
       JSON_Data += String(_ADC_Buffer[i]);
       JSON_Data += ",";
     }
@@ -302,45 +271,10 @@ public:
     for (int i = 0; i < _N_Chan; i++) {
       JSON_Short_Data += String(_ADC_Buffer[i]);
       JSON_Short_Data += "\t";
-
-      //        _JSON_Short_Header = "ADC" + String(i+1) + "\t" ;
     }
 
     _ADC_Buffer_Pointer = 0;
   }
-  // ***********************************************************************
-  // Get all the sampled data as a JSON string
-  // ***********************************************************************
-  //    String Get_JSON_Data () {
-  //      //StaticJsonBuffer<1024> jsonBuffer;
-  //      //StaticJsonBuffer<2048> jsonBuffer;
-  //      StaticJsonBuffer<3000> jsonBuffer;
-  //      JsonObject& root = jsonBuffer.createObject();
-  //      root [ "ADC_Time_ms" ] = _Start_Time ;  //millis();
-  //      root [ "N_Chan"  ] = _N_Chan;
-  //      //root [ "Signals" ] = Signals;
-  //      root [ "T_Samp"  ] = _Sample_Time_ms ;
-  //      //root [ "N_MQTT"  ] = N_MQTT;
-  //      JsonArray& Signals = root.createNestedArray ( "Signals" );
-  //      for ( int i = 0; i < _N_Chan; i++) {
-  //        Signals.add ( Signal [ i ] );
-  //      }
-  //
-  //      JsonArray& ADC_data = root.createNestedArray ( "ADC" );
-  //      for ( int i = 0; i < _ADC_Buffer_Pointer; i++) {
-  //////        ADC_data.add ( _ADC_Buffer [ i ] );
-  //        ADC_data.add ( -12345 );
-  //      }
-  //
-  //      _JSON_Sample = "" ;
-  //      root.printTo ( _JSON_Sample ) ;  //_DataString );
-  //
-  //      _ADC_Buffer_Pointer = 0 ;
-  //
-  //      //return _JSON_Sample ;
-  //      return _JSON_Sample.substring(1,_JSON_Sample.length()-1) + "," ;
-  ////JSON_Data.remove ( JSON_Data.length() - 1 ) ;
-  //    }
 
   // ***********************************************************************
   // ***********************************************************************
