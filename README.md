@@ -52,6 +52,59 @@ To change settings and store private keys, create a `secrets.h` file under `src/
 #define __SECRET_SMTP_MailTo "someone@gmail.com"
 ```
 
+## Inclusion
+
+By commenting/uncommenting build parameters you can reduce RAM size requirement.
+To include for example the FTP server, uncomment in your main ino file:
+
+```cpp
+#define INCLUDE_FTPSERVER
+```
+
+### Common
+
+These build parameters are often used in most programs.
+
+| Name                | Included by default    |
+| ------------------- | ---------------------- |
+| SENSOR_ADS1115      | :x: no                 |
+| SENSOR_ADS1115_DIFF | :x: no                 |
+| SENSOR_BME280       | :x: no                 |
+| SENSOR_DHT22        | :x: no                 |
+| SENSOR_DS18B20      | :x: no                 |
+| SENSOR_MHZ14        | :x: no                 |
+| SENSOR_MPU9250      | :x: no                 |
+| SENSOR_PIR          | :x: no                 |
+| SENSOR_SDS011       | :x: no                 |
+| RECEIVER_MQTT       | :heavy_check_mark: yes |
+| RECEIVER_EMAIL      | :heavy_check_mark: yes |
+| RECEIVER_SCRATCHPAD | :x: no                 |
+| RECEIVER_SDFAT      | :x: no                 |
+| RECEIVER_SSD1306    | :x: no                 |
+| RECEIVER_TM1638     | :x: no                 |
+
+### Special Case
+
+These build parameters only used in special programs.
+
+| Name                    | Included by default    |
+| ----------------------- | ---------------------- |
+| FTPSERVER               | :x: no                 |
+| BLAUWE_ENGEL            | :x: no                 |
+| FIJNSTOF_CONDITIONERING | :x: no                 |
+| SENSOR_RFLINK           | :heavy_check_mark: yes |
+| SENSOR_BMP280           | :x: no                 |
+| SENSOR_MLX90614         | :x: no                 |
+| SENSOR_MLX90640         | :x: no                 |
+| SENSOR_MQTTBroker       | :x: no                 |
+| SENSOR_NTP              | :x: no                 |
+| SENSOR_OKE4             | :x: no                 |
+| SENSOR_RTC              | :x: no                 |
+| RECEIVER_OTA            | :heavy_check_mark: yes |
+| RECEIVER_TELNET         | :heavy_check_mark: yes |
+| RECEIVER_WEBSERVER      | :heavy_check_mark: yes |
+| RECEIVER_LUFTDATEN      | :x: no                 |
+
 ## Schmurtz
 
 forked V2.1 and made it more compatible with other Bridge-libraries. https://github.com/schmurtzm/RFLink-ESP

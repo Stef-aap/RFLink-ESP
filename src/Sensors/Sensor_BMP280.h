@@ -73,7 +73,7 @@ public:
     JSON_Data += ",";
   }
 
-#ifdef YES_INCLUDE_RECEIVER_LUFTDATEN
+#ifdef INCLUDE_RECEIVER_LUFTDATEN
   // ***********************************************************************
   // Get all the sampled data as a partial JSON string, suited for Luftdaten
   // ***********************************************************************

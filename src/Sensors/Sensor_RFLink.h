@@ -11,7 +11,7 @@
 #ifndef Sensor_RFLink_h
 #define Sensor_RFLink_h 0.2
 
-#ifndef NOT_INCLUDE_RECEIVER_MQTT
+#ifdef INCLUDE_RECEIVER_MQTT
   #include "Receivers/Receiver_MQTT.h"
 #endif
 

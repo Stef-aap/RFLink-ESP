@@ -15,7 +15,7 @@
 
 //#define FTP_DEBUG
 //#include <ESP8266FtpServer.h>
-#ifdef YES_INCLUDE_FTPSERVER
+#ifdef INCLUDE_FTPSERVER
   #include "Clients/My_FtpServer.h"
 FtpServer ftpSrv; // set #define FTP_DEBUG in ESP8266FtpServer.h to see ftp verbose on serial
 #endif
@@ -85,7 +85,7 @@ public:
     bool Result = File_System.Begin(_Filename, _Max_File_Seconds, _Max_NFile);
     Serial.println("Mount SPI-FileSytem (including FTP support): " + String(Result));
 
-#ifdef YES_INCLUDE_FTPSERVER
+#ifdef INCLUDE_FTPSERVER
     ftpSrv.begin("esp8266", "esp8266"); // username, password for ftp.
 #endif
   }
@@ -135,7 +135,7 @@ public:
 
 // ***********************************************************************
 // ***********************************************************************
-#ifdef YES_INCLUDE_FTPSERVER
+#ifdef INCLUDE_FTPSERVER
   void loop() { ftpSrv.handleFTP(); }
 #endif
 

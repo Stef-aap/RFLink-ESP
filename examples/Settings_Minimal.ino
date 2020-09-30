@@ -10,11 +10,7 @@
 // *************************************************************************
 // build parameters to reduce RAM size
 // *************************************************************************
-#define YES_INCLUDE_FTPSERVER
-#define NOT_INCLUDE_RECEIVER_MQTT
-#define NOT_INCLUDE_RECEIVER_SDFAT
-#define NOT_INCLUDE_RECEIVER_SSD1306
-#define NOT_INCLUDE_RECEIVER_TM1638
+#define INCLUDE_FTPSERVER
 
 #include "Sensor_Receiver.h"
 

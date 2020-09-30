@@ -8,7 +8,7 @@
 #define Sensor_MQTTBroker_h 0.1
 
 #include "uMQTTBroker.h"
-#ifndef NOT_INCLUDE_RECEIVER_SDFAT
+#ifdef INCLUDE_RECEIVER_SDFAT
   #include "Receivers/Receiver_SDfat.h"
 #endif
 
