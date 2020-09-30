@@ -58,7 +58,7 @@ void TM1638plus_Model2::brightness(uint8_t brightness) {
 
 void TM1638plus_Model2::DisplayHexNum(unsigned long number, byte dots, boolean leadingZeros) {
   char values[DISPLAY_SIZE + 1];
-  snprintf(values, DISPLAY_SIZE + 1, leadingZeros ? "%08X" : "%X", number); // ignores display size
+  snprintf(values, DISPLAY_SIZE + 1, leadingZeros ? "%08lX" : "%lX", number); // ignores display size
   DisplayStr(values, dots);
 }
 
@@ -76,7 +76,7 @@ void TM1638plus_Model2::DisplayStr(const char *string, const word dots) {
 
   for (uint8_t i = 0; i < DISPLAY_SIZE; i++) {
     if (!done && string[i] != '\0') {
-      if (dots >> 7 - i & 1) // if dots bit is set for that position apply the mask to turn on dot(0x80).
+      if ((dots >> (7 - i)) & 1) // if dots bit is set for that position apply the mask to turn on dot(0x80).
         values[i] = (SevenSeg[string[i] - ASCII_OFFSET] | DOT_MASK_DEC);
       else
         values[i] = SevenSeg[string[i] - ASCII_OFFSET];

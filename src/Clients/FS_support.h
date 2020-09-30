@@ -475,8 +475,6 @@ public:
 
     Line_1 = file.readStringUntil('\n');
     Splitter->newString(Line_1, '\t');
-    String Date1 = Splitter->getItemAtIndex(DT_i);
-    int DT1 = Date1.toInt();
     if (!file.available()) {
       return 0;
     }
@@ -571,6 +569,7 @@ public:
     } else {
       Serial.println("ERROR: file not found");
     }
+    return Result;
   }
 
   // **************************************************
@@ -614,7 +613,9 @@ public:
   bool Create_CSV_File(String Filename, String Header) {
     if (not SPIFFS.exists(Filename)) {
       Append_File(Filename, Header);
+      return true;
     }
+    return false;
   }
 
   // **************************************************
@@ -659,7 +660,9 @@ public:
     if (not SPIFFS.exists(Filename)) {
       Append_File(Filename, Header);
       _Offset_Seconds = -(millis() / 1000);
+      return true;
     }
+    return false;
   }
 
   // *************************************************

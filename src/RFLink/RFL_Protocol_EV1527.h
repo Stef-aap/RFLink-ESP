@@ -19,12 +19,12 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   bool RF_Decode() {
-  #define PulseCount 48
+  #define EV1527PulseCount 48
 
     // ****************************************************
     // Check the length of the sequence
     // ****************************************************
-    if (RawSignal.Number != PulseCount + 3) {
+    if (RawSignal.Number != EV1527PulseCount + 3) {
       //        Count = 0 ;
       return false;
     }
@@ -38,7 +38,7 @@ public:
     unsigned long BitStream = 0L;
     unsigned long P1;
     unsigned long P2;
-    for (byte x = 2; x < PulseCount + 1; x = x + 2) {
+    for (byte x = 2; x < EV1527PulseCount + 1; x = x + 2) {
       P1 = RawSignal.Pulses[x];
       P2 = RawSignal.Pulses[x + 1];
       if (P1 > RawSignal.Mean) {
@@ -90,7 +90,7 @@ public:
       Switch = 1;
       String On_Off = "OFF";
       if ((BitStream & 0x03) != 0) On_Off = "ON";
-      sprintf(_RFLink_pbuffer, "%s;ID=%05X;", Device.c_str(), Id);
+      sprintf(_RFLink_pbuffer, "%s;ID=%05lX;", Device.c_str(), Id);
       sprintf(_RFLink_pbuffer2, "SWITCH=01;CMD=%s;", On_Off.c_str());
     }
 
@@ -98,8 +98,8 @@ public:
     // EV1527
     // ****************************************************
     else {
-      sprintf(_RFLink_pbuffer, "%s;ID=%05X;", Device.c_str(), Id);
-      sprintf(_RFLink_pbuffer2, "SWITCH=%02X;CMD=ON;", Switch);
+      sprintf(_RFLink_pbuffer, "%s;ID=%05lX;", Device.c_str(), Id);
+      sprintf(_RFLink_pbuffer2, "SWITCH=%02lX;CMD=ON;", Switch);
     }
 
     return Send_Message(Device, Id, Switch, "ON");

@@ -105,6 +105,14 @@ These build parameters only used in special programs.
 | RECEIVER_WEBSERVER      | :heavy_check_mark: yes |
 | RECEIVER_LUFTDATEN      | :x: no                 |
 
+## Building
+
+Useful flags while building are
+
+```
+-Wno-deprecated-declarations -Wno-sign-compare -Wno-unused-variable
+```
+
 ## Schmurtz
 
 forked V2.1 and made it more compatible with other Bridge-libraries. https://github.com/schmurtzm/RFLink-ESP

@@ -121,7 +121,7 @@ public:
       0101 1CA5094A
       */
 
-      sprintf(_RFLink_pbuffer, "   %08X", BitStream);
+      sprintf(_RFLink_pbuffer, "   %08lX", BitStream);
       Line_2_File += BitString + "   " + String(_RFLink_pbuffer);
       RFLink_File.Log_Line(Line_2_File);
       return true;
@@ -157,11 +157,9 @@ public:
 #define PULSE3000 3000
 #define PULSE5000 5000
 
-    byte FAconversiontype = 1; // 0=FA500R to Method 2
-    //                            1=FA500R to Method 1
-    byte HEconversiontype = 0; // 0=No conversion, 1=conversion to Elro 58 pulse protocol (same as FA500R Method 1)
-
-    int i, j;
+    // byte FAconversiontype = 1; // 0=FA500R to Method 2
+    //                               1=FA500R to Method 1
+    // byte HEconversiontype = 0; // 0=No conversion, 1=conversion to Elro 58 pulse protocol (same as FA500R Method 1)
 
     // ********************************************
     // Beginning of Signal translation for Impuls

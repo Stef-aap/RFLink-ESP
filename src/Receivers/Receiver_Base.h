@@ -80,9 +80,9 @@ public:
   // ***********************************************************************
   // it is created only for debugging
   // ***********************************************************************
-  virtual bool Publish(String Topic, String Payload) {}
-  virtual bool Publish_Without_(String Topic, String Payload) {}
-  virtual bool Connected() {}
+  virtual bool Publish(String Topic, String Payload) { return true; }
+  virtual bool Publish_Without_(String Topic, String Payload) { return true; }
+  virtual bool Connected() { return true; }
 
   // ***********************************************************************
   // equally for SSD1306

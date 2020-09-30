@@ -26,12 +26,12 @@ public:
   // KAKU always consists of start bit + 32 bits + possibly 4 dim bits.
   // ***********************************************************************
   bool RF_Decode() {
-#define PulseCount 132     // regular KAKU packet length
-#define PulseCount_DIM 148 // KAKU packet length including DIM bits
-#define MidTime 750        // usec, approx between 1T and 4T
+#define KAKUPulseCount 132     // regular KAKU packet length
+#define KAKUPulseCount_DIM 148 // KAKU packet length including DIM bits
+#define MidTime 750            // usec, approx between 1T and 4T
 
-    if ((RawSignal.Number != (PulseCount + 1)) && (RawSignal.Number != (PulseCount_DIM + 1))) return false;
-    boolean Bit;
+    if ((RawSignal.Number != (KAKUPulseCount + 1)) && (RawSignal.Number != (KAKUPulseCount_DIM + 1))) return false;
+    boolean Bit = 0;
     int i;
     int P0, P1, P2, P3;
     byte dim = 0;
@@ -50,7 +50,7 @@ public:
         Bit = 1; // T,4T,T,T
       } else if (P0 < MidTime && P1 < MidTime && P2 < MidTime && P3 < MidTime) {
         // T,T,T,T This should be on i = 111 because: 27th NewKAKU bit times 4 plus 2 positions for start bit
-        if (RawSignal.Number != (PulseCount_DIM + 1)) { // if no DIM bits
+        if (RawSignal.Number != (KAKUPulseCount_DIM + 1)) { // if no DIM bits
           return false;
         }
       } else {
@@ -58,7 +58,7 @@ public:
       }
 
       // all bits belonging to the 32-bit pulse train 32bits * 4 positions per bit + pulse / space for start bit
-      if (i < PulseCount - 1) {
+      if (i < KAKUPulseCount - 1) {
         BitStream = (BitStream << 1) | Bit;
       } else { // the remaining four bits that belong to the dim level
         dim = (dim << 1) | Bit;

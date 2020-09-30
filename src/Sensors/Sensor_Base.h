@@ -137,6 +137,6 @@ public:
   // ***********************************************************************
   // it is only created for OKE4
   // ***********************************************************************
-  virtual bool Read_SX(uint8_t ID) {}
+  virtual bool Read_SX(uint8_t ID) { return true; }
 };
 #endif

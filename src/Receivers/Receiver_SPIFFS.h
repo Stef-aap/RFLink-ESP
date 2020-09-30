@@ -182,9 +182,9 @@ public:
     } else if (LowerCase.startsWith("create ")) {
       Filename = Serial_Command.substring(7);
       File_System.Append_File(Filename, "This is the first line\n");
-    } else {
-      return false;
     }
+
+    return false;
   }
 
   // ***********************************************************************

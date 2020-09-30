@@ -118,7 +118,6 @@ private:
     int addressEnd = 127;
 
 #define RESTORE_LATENCY 5 // for delay between tests of found devices.
-    unsigned long startScan = millis();
     uint8_t count = 0;
     int speeds = 5;
 

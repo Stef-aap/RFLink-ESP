@@ -68,7 +68,6 @@ int base64_enc_length(int plainLen) {
 
 // ***********************************************************************************
 const char *encode64_f(char *Line, uint8_t len) {
-  int encodedLen = base64_enc_length(len);
   static char encoded[256];
   // note input is consumed in this step: it will be empty afterwards
   base64_encode(encoded, Line, len);

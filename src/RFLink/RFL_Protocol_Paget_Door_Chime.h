@@ -20,12 +20,12 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   bool RF_Decode() {
-#define PulseCount 64
+#define PagetPulseCount 64
 
     // ****************************************************
     // Check the length of the sequence
     // ****************************************************
-    if (RawSignal.Number != PulseCount + 3) return false;
+    if (RawSignal.Number != PagetPulseCount + 3) return false;
 
     // ****************************************************
     //  Translate the sequence in bit-values and
@@ -35,10 +35,10 @@ public:
     // ****************************************************
     unsigned long BitStream = 0L;
     unsigned long P1;
-    unsigned long P2;
-    for (byte x = 2; x < PulseCount + 1; x = x + 2) {
+    // unsigned long P2;
+    for (byte x = 2; x < PagetPulseCount + 1; x = x + 2) {
       P1 = RawSignal.Pulses[x];
-      P2 = RawSignal.Pulses[x + 1];
+      // P2 = RawSignal.Pulses[x + 1];
       if (P1 > RawSignal.Mean) {
         BitStream = (BitStream << 1) | 0x1; // append "1"
       } else {

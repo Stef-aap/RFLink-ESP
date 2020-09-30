@@ -292,9 +292,10 @@ uint8_t IRTherm::sleep(void) {
   pinMode(SCL, OUTPUT);
   digitalWrite(SCL, LOW);
   pinMode(SDA, INPUT);
+  return crc;
 }
 
-uint8_t IRTherm::wake(void) {
+void IRTherm::wake(void) {
   // Wake operation from datasheet
   // Deleted Stef, SM:  	Wire.end(); // stop i2c bus to send wake up request via digital pins
   pinMode(SCL, INPUT); // SCL high
@@ -313,12 +314,12 @@ uint8_t IRTherm::wake(void) {
 
 int16_t IRTherm::calcRawTemp(float calcTemp) {
   int16_t rawTemp; // Value to eventually be returned
+  float tempFloat = 0;
 
   if (_defaultUnit == TEMP_RAW) {
     // If unit is set to raw, just return that:
     rawTemp = (int16_t)calcTemp;
   } else {
-    float tempFloat;
     // First convert each temperature to Kelvin:
     if (_defaultUnit == TEMP_F) {
       // Convert from farenheit to Kelvin

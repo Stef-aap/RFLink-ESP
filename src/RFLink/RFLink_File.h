@@ -21,7 +21,7 @@ public:
 
   // **************************************************
   // **************************************************
-  bool Begin() {
+  void Begin() {
     // for logging use max 5 files of length 100000
     File_System.Begin(this->_Log_Filename, -100000, 5);
     _Read_Device_File();
@@ -41,7 +41,9 @@ public:
     if (Known_Devices.indexOf(Line) < 0) {
       Known_Devices += Line;
       _Write_Device_File(Known_Devices);
+      return true;
     }
+    return false;
   }
 
   // **************************************************
@@ -51,14 +53,17 @@ public:
     if (pos >= 0) {
       Known_Devices = Known_Devices.substring(0, pos) + Known_Devices.substring(pos + Line.length());
       _Write_Device_File(Known_Devices);
+      return true;
     }
+    return false;
   }
 
   // **************************************************
   // **************************************************
   bool Clear_Devices() {
-    SPIFFS.remove(_Filename);
+    bool removed = SPIFFS.remove(_Filename);
     Known_Devices = "";
+    return removed;
   }
 
   // **************************************************

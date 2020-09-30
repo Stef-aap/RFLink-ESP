@@ -48,8 +48,6 @@ public:
     } else {
       Serial.println("ERROR: file not found = " + _My_Settings_Filename);
     }
-
-    JsonObject DocumentRoot = _My_Settings_Buffer.as<JsonObject>();
 #endif
   }
 

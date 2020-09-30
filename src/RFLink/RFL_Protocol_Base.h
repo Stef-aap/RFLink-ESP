@@ -31,7 +31,7 @@ String Randomize_Device_ID(String Device_ID) {
 bool Unknown_Device(String Device) {
   int pos = RFLink_File.Known_Devices.indexOf(Device);
   // *******************************************************************
-  // If there's a mius sign before the Device name,
+  // If there's a minus sign before the Device name,
   // the received RF ID should be changed by the pseudo random generator
   // *******************************************************************
   if ((pos > 0) && (RFLink_File.Known_Devices.charAt(pos - 1) == '-')) {
@@ -71,7 +71,7 @@ Name      ID      Switch   CMD     extra
 */
 // ***********************************************************************************
 bool Send_Message(String Name, unsigned long Id, unsigned long Switch, String On_Off, String Extra = "") {
-  sprintf(_RFLink_pbuffer, "%s;ID=%0X;", Name.c_str(), Id);
+  sprintf(_RFLink_pbuffer, "%s;ID=%0lX;", Name.c_str(), Id);
   if (Unknown_Device(_RFLink_pbuffer)) return false;
 
   // **********************************************************
@@ -79,11 +79,11 @@ bool Send_Message(String Name, unsigned long Id, unsigned long Switch, String On
   //      ha/from_HA/ev1527_005df     S02
   // **********************************************************
   String Topic = _RFLink_MQTT_Topic_Send + Name + "_";
-  sprintf(_RFLink_pbuffer, "%0X", Id);
+  sprintf(_RFLink_pbuffer, "%0lX", Id);
   Topic += String(_RFLink_pbuffer);
 
   String Payload = "S";
-  sprintf(_RFLink_pbuffer, "%0X_%s", Switch, On_Off.c_str());
+  sprintf(_RFLink_pbuffer, "%0lX_%s", Switch, On_Off.c_str());
   Payload += String(_RFLink_pbuffer);
 
   if (Extra.length() > 0) {
