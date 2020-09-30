@@ -12,7 +12,7 @@
 //
 // Version 0.2
 //    - changed from Sensor to Receiver
-//    - luisteren naar MQTT bericht werkt
+//    - listening to MQTT message works
 //
 // Version 0.1
 //    - initial release, only create/setup works
@@ -312,7 +312,7 @@ public:
         } break;
 
         // ***********************************
-        // scroll through te alfabet, when ready go to State=5
+        // scroll through the alphabet, when ready go to State=5
         // ***********************************
         case 61: {
         } break;
@@ -327,7 +327,7 @@ public:
 
     _LED_Change = 0;
 
-    // LET OP: er moet hier iedere keer een nieuwe string worden gedefineerd, anders compile error
+    // ATTENTION: a new string must be defined here every time, otherwise compile error
     String Regel_S7 = root["R8"]["S"];
     if (Regel_S7 != "null") {
       _TM1638_Dots[7] = root["R8"]["D"];

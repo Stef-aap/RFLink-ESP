@@ -1,58 +1,58 @@
 // ***********************************************************************************
 // Version 1.4, 28-01-2020, SM, checked by ...
-//    - _MHZ14_Servo_Count kon door de nul gaan, solved
+//    - _MHZ14_Servo_Count could go through zero, solved
 //
-// Version 1.3, 05-09-2019, SM, checked by ...
-//    - Servo uitlezen via interrupt routine
+// Version 1.3, 2019-09-05, SM, checked by ...
+//    - Read servo via interrupt routine
 //
-// Version 1.2, 18-08-2019, SM, checked by ...
-//    - geschikt gemaakt voor WebSettings
+// Version 1.2, 08/18/2019, SM, checked by ...
+//    - made suitable for WebSettings
 //
-// Version 1.1, 13-06-2019, SM, checked by ...
+// Version 1.1, 06/13/2019, SM, checked by ...
 //    - Get_Name_Version () added
 //    - JSON_Short_Data added
 //
-// Version 1.0, 8-03-2019
-//    - gebruik van Redirect_Serial
+// Version 1.0, 3/8/2019
+//    - use of Redirect_Serial
 //
-// Version 0.9, 7-03-2019
-//    - wel swapped pins, maar geen nieuwe instance
+// Version 0.9, 2019-03-07
+//    - swapped pins, but no new instance
 //
-// Version 0.8, 5-03-2019
-//    - PWM procedure voorzien van een timeout, zodat ie niet meer daar blijft hangen
+// Version 0.8, 2019-03-05
+//    - PWM procedure with a timeout, so it no longer hangs there
 //
-// Version 0.8, 5-12-2018
-//    - private Serial (swapped) toegevoegd
+// Version 0.8, 12/5/2018
+//    - private Serial (swapped) added
 //
-// Version 0.7, 3-12-2018
-//    - Software serial mode toegevoegd
+// Version 0.7, 12/3/2018
+//    - Software serial mode added
 //
-// Version 0.6, 2-12-2018
+// Version 0.6, 12/2/2018
 //    - added Serial communication via swapped pins
-//        TX van 1 naar 15 ( blauwe draad )
-//        RX van 3 naar 13 ( groene draad )
-//      noodzakelijk om de volgende instellingen te gebruiken
-//        _Debug_Over_Serial = false ;
-//        Serial_Setup ( 9600, true ) ;
-//    - Kalibratie: 20 minuten stabiel in buitenlucht, dan bruine draad >7sec aan aarde
+//        TX from 1 to 15 (blue wire)
+//        RX from 3 to 13 (green wire)
+//      necessary to use the following settings
+//        _Debug_Over_Serial = false;
+//        Serial_Setup (9600, true);
+//    - Calibration: Stable for 20 minutes in outdoor air, then brown wire> 7 seconds to ground
 //    - added disable calibration through serial (not sure this works for MHZ14, commands are taken from MHZ19)
 //
 // Version 0.5
-//    - PWM formule iets gecorrigeerd, zodat 400 netjes uitkomt
+//    - PWM formula corrected slightly, so 400 comes out nicely
 //
 // Version 0.4
-//    - Domoticz output verwijderd
-//    - PWM meting via PulseIn function
+//    - Domoticz output removed
+//    - PWM measurement via PulseIn function
 //
 // Version 0.3
-//    - Domoticz output toegevoegd
+//    - Domoticz output added
 //
 // Version 0.2
 //    - because software serial can ran out of sync
 //    - changed to PWM detection
 // The advantage of PWM detection is that it consumes only 1 IO-pin.
 // The disadvantage is that timing in milliseconds might not be very precise.
-//   with an Interrupt Service Routine (ISR) this problem can be omzeild.
+//   with an Interrupt Service Routine (ISR) this problem can be bypassed.
 //
 // Version 0.1
 
@@ -113,7 +113,7 @@ public:
   void Constructor_Finish() {
     if (_Comm_Mode == MHZ14_SWAP_SERIAL) {
       // ****************************
-      // Eerste manier werkt niet
+      // First way does not work
       // ****************************
       Serial_CO2 = &Serial_Device;
       // ****************************
@@ -280,7 +280,7 @@ public:
     byte response[9]; // for answer
 
     // *****************************
-    // Clear input buffer (flush wacht tot output buffer is leeg)
+    // Clear input buffer (flush waits until output buffer is empty)
     // *****************************
     while (Serial_CO2->available() > 0) {
       char kar = Serial_CO2->read();

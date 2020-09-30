@@ -8,7 +8,7 @@
 #define PubSubClient_h
 
 // *****************************************************
-// Zorg dat buffers en timeout groter is in PubSubClient  MINE !!!!!
+// Make buffers and timeout larger in PubSubClient MINE !!!!!
 // *****************************************************
 #define MQTT_MAX_PACKET_SIZE 4096
 //#define MQTT_SOCKET_TIMEOUT   600

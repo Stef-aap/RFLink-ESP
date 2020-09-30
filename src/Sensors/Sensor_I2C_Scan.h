@@ -1,7 +1,7 @@
 // Version 0.3  20-12-07-2019, SM
 //
 // Version 0.2  07-12-07-2019, SM
-//    - Na I2C scan clock teruggezet naar oorspronkelijke waarde
+//    - After I2C scan clock reset to original value
 //
 // Version 0.1  26-07-2019, SM, original release
 
@@ -93,7 +93,7 @@ private:
 
   // **********************************************************************************************
   // !!!!!!!!!!!!!!!!!!
-  // HIER MOET EERST DE OUDE ENTREIS UIT _My_Settings_Buffer worden verwijderd !!!!!!
+  // HERE THE OLD ENTRY FROM _My_Settings_Buffer MUST BE REMOVED FIRST !!!!!!
   // !!!!!!!!!!!!!!!!!!
   // **********************************************************************************************
   void I2Cscan() {
@@ -158,7 +158,7 @@ private:
         wi->beginTransmission(address);
         found[s] = (wi->endTransmission() == 0);
         fnd |= found[s];
-        // give device 5 millis
+        // give device 5msec
         if (fnd) delay(RESTORE_LATENCY);
       }
       if (fnd) count++;

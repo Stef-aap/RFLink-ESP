@@ -2,7 +2,7 @@
 // Version 0.3, 24-07-2019, SM, checked by ...
 //
 // Version 0.2, 18-07-2019, SM, checked by ...
-//    - LED detectie dmv falling edges counting
+//    - LED detection by means of falling edges counting
 // Version 0.1, 17-07-2019, SM, checked by ...
 //    - initial version
 // ***********************************************************************************
@@ -26,7 +26,7 @@
 Adafruit_SSD1306 Boiler_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // ***********************************************************************************
-// interrupt routine, detecteert a falling edge van de Start_Knop
+// interrupt routine, detects a falling edge of the Start_Button
 // ***********************************************************************************
 int _Sensor_Blauwe_Engel_StartKnop_Count = 0;
 unsigned long _Sensor_Blauwe_Engel_StartKnop_Start = 0;
@@ -34,7 +34,7 @@ static void _Sensor_Blauwe_Engel_Knop_Falling() ICACHE_RAM_ATTR;
 static void _Sensor_Blauwe_Engel_Knop_Falling() { _Sensor_Blauwe_Engel_StartKnop_Count += 1; }
 
 // ***********************************************************************************
-// interrupt routine, detecteert het aan zijn van de WarmWater-LED
+// interrupt routine, detects the WarmWater LED being on
 // ***********************************************************************************
 int _Sensor_Blauwe_Engel_LED_Count = 0;
 unsigned long _Sensor_Blauwe_Engel_LED_Start = 0;
@@ -86,9 +86,9 @@ public:
     Version_Name = "V" + String(Sensor_Blauwe_Engel_h) + "   Sensor_Blauwe_Engel.h";
     Serial.println("CREATE    " + Version_Name);
 
-    Help_Text = "    Boiler besturing van de Blauwe Engel\n\
-    Na het drukken op de knop, wordt de warmwater-voorziening voor een halfuur ingeschakeld.\n\
-    Op het display wordt de gebruikte hoeveelheid water weergegeven.\n\
+    Help_Text = "    Boiler control of the Blue Angel\n\
+    After pressing the button, the hot water supply is switched on for half an hour.\n\
+    The amount of water used is shown on the display.\n\
 _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
 ";
     MQTT_Callback_Topic = "huis/verdieping0/meterkast/SlimmeEnergieMeter";
@@ -144,8 +144,8 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     _TM1638_Regel[2] = String(" 20   40");  //  ppm2_5     // ppm10
     _TM1638_Regel[4] = String("12 1 27.5"); //  Time left [min]     //  Water [Liter]
     _TM1638_Regel[5] = String("78 2 27.5"); //  TBoiler [ Celsius]  //  Water [Liter]
-    _TM1638_Regel[6] = String("SENS  03");  //  Programm Name and Version
-    // _TM1638_Regel[7] = String(_Main_Name); //  Programm Name and Version
+    _TM1638_Regel[6] = String("SENS  03");  //  Program Name and Version
+    // _TM1638_Regel[7] = String(_Main_Name); //  Program Name and Version
   }
 
   // **********************************************************************************************
@@ -206,7 +206,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
   // ***********************************************************************
   void loop() {
     // ***********************************************************
-    // Sla periodiek het aantal pulsen van de Boiler LED op
+    // Periodically store the number of pulses of the Boiler LED
     // ***********************************************************
     if ((millis() - _Sensor_Blauwe_Engel_LED_Start) > 200) {
       _Sensor_Blauwe_Engel_LED_Start = millis();
@@ -219,8 +219,8 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     }
 
     // ***********************************************************
-    // Stop the Boiler als de tijd is verstreken
-    // Display hoe lang de Boiler nog aan blijft staan
+    // Stop the Boiler when the time has expired
+    // Display how long the Boiler will remain on
     // ***********************************************************
     if (_Boiler_Start > 0) {
       if ((millis() - _Boiler_Start) > (_Boiler_Period)) {
@@ -255,7 +255,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     switch (_StartKnop_State_Machine) {
       case _StartKnop_OFF:
         // **********************************************************************
-        // als StartKnop ingedrukt wordt
+        // when the Start button is pressed
         // **********************************************************************
         if (_Sensor_Blauwe_Engel_StartKnop_Count > 0) {
           _StartKnop_Status_Start = millis();
@@ -265,7 +265,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
 
       case _StartKnop_OFF_Pressed:
         // **********************************************************************
-        // als de knop lang genoeg is ingedrukt zet de Boiler aan
+        // if the button is pressed long enough, the boiler turns on
         // **********************************************************************
         _Sensor_Blauwe_Engel_StartKnop_Count = 0;
         if (millis() - _StartKnop_Status_Start > _StartKnop_PRESS_TIME) {
@@ -286,7 +286,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
 
       case _StartKnop_ON:
         // **********************************************************************
-        // als de knop wordt losgelaten
+        // when the button is released
         // **********************************************************************
         _Sensor_Blauwe_Engel_StartKnop_Count = 0;
         if (digitalRead(_Start_Knop_Pin) == HIGH) {
@@ -297,7 +297,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
 
       case _StartKnop_ON_Released:
         // **********************************************************************
-        // als de knop lang genoeg is losgelaten, ga weer in de ruststand
+        // when the button is released long enough, return to the idle position
         // **********************************************************************
         _Sensor_Blauwe_Engel_StartKnop_Count = 0;
         if (millis() - _StartKnop_Status_Start > _StartKnop_PRESS_TIME) {
@@ -319,7 +319,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
     // ***********************************************************
     switch (_Boiler_Knop_State_Machine) {
       // ******************************************************
-      // start van het indrukken van de Boiler knop, registreer de startijd
+      // start from pressing the Boiler button, record the start time
       // ******************************************************
       case _State_Boiler_Knop_Press:
         digitalWrite(_Boiler_Knop_Pin, _BOILER_KNOP_PRESS);
@@ -327,7 +327,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
         _Boiler_Knop_State_Machine = _State_Boiler_Knop_Pressed;
         break;
       // ******************************************************
-      // wacht tot de knop lang genoeg is ingedrukt, laat hem dan los
+      // wait for the button to be pressed long enough, then release it
       // ******************************************************
       case _State_Boiler_Knop_Pressed:
         if (millis() - _Boiler_Status_Start > _BOILER_PRESS_TIME) {
@@ -337,7 +337,7 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
         }
         break;
       // ******************************************************
-      // wacht tot de knop lang genoeg is losgelaten, ga dan de status weer vergelijken
+      // wait until the button is released long enough, then start comparing the status again
       // ******************************************************
       case _State_Boiler_Knop_Released:
         if (millis() - _Boiler_Status_Start > _BOILER_RELEASE_TIME) {
@@ -346,9 +346,9 @@ _Sensor_Blauwe_Engel ( int Chan_0, int Chan_1 )\n\
         break;
       default:
         // ******************************************************
-        // Controleer of de Boiler gelijk is aan gewenste status
-        // als niet en het maximum aantal pogingen is nog niet bereikt
-        // druk dan de knop nog een keer in
+        // Check whether the Boiler is equal to the desired status
+        // if not and the maximum number of attempts has not yet been reached
+        // then press the button again
         // ******************************************************
         if (Boiler_State() != _Boiler_Should_be_ON) {
           if (_Boiler_Knop_Try < _MAX_BOILER_TRY) {

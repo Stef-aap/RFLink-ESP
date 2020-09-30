@@ -27,7 +27,7 @@ public:
   _My_Settings_Class() {}
 
   void Setup() {
-    //*   DIT LIJKT ME ONZIN HIER  IS WEL DEGELIJK NODIG !!!
+    // THIS SEEMS NONSENSE HERE IS REQUIRED !!!
 #ifdef FileSystem_SPIFFS
   #ifdef ESP32
     SPIFFS.begin(true); // format if no filesystem yet
@@ -92,8 +92,8 @@ public:
     file.print(Line);
 
     // *************************************************
-    // omdat My_Settings array gewijzigd kan zijn,
-    // moet er onieuw een JSON object van gemaakt worden
+    // because My_Settings array may have changed,
+    // must be made a JSON object again
     // *************************************************
     JsonObject DocumentRoot = _My_Settings_Buffer.as<JsonObject>();
 

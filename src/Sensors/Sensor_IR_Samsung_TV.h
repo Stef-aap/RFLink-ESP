@@ -1,6 +1,6 @@
 
 // Version 0.2,  19-10-2018, SM
-//    - Off command verbeterd door eerst Chan-UP te doen waardoor ie zeker aanstaat
+//    - Improved Off command by doing Chan-UP first so it is definitely on
 //
 // Version 0.1, Initial_Release, 23-09-2018
 
@@ -120,7 +120,7 @@ public:
         Serial.println("Samsung TV AANgezet, om daarna te kunnen uitzetten");
 
         // ***********************************************
-        // dan na een seconde of 10 (als we zeker weten dat ie aan is) uitzetten
+        // then switch it off after about 10 seconds (if we are sure it is on)
         // ***********************************************
         Time_TurnOff_Started = 10000 + millis();
       }

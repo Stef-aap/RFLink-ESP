@@ -1,9 +1,9 @@
 // Version 0.3  16-03-2020, SM
-//    - maximaal aantal elementen verhoogd naar 25
+//    - maximum number of elements increased to 25
 //
 // Version 0.2  23-02-2020, SM
 //    - getItemAtIndex accepts negative values (-1 is the last element)
-//    - maximaal aantal elementen verhoogd naar 20
+//    - maximum number of elements increased to 20
 //
 // Version 0.1  16-06-2019, SM
 //

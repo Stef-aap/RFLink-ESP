@@ -4,8 +4,8 @@
 //    - extra check values of Voltage and LineFrequency
 //
 // Version 0.2, 29-05-2019, SM
-//    - toch weer terug naarsoftware serial
-//      (ik vraag me sterk af of de hardware serial die rare Baudrate aan kan )
+//    - back to software serial
+//      (I really wonder if the hardware serial can handle that weird Baudrate)
 //
 // Version 0.1, 13-04-2019, SM
 //   - initial version
@@ -24,7 +24,7 @@ public:
 
   // ***********************************************************************
   // Creator,
-  // alleen Rx op pin 0 t/m 5 en 12 t/m 15 are interrupt driven !!
+  // only Rx on pin 0 to 5 and 12 to 15 are interrupt driven !!
   // ***********************************************************************
   _Sensor_EnergyMeter(int RX = 13, int TX = -1) {
     bool Inverted = true;
@@ -41,11 +41,11 @@ public:
   void setup() { _Serial_EnergyMeter->begin(60000); }
 
   // ***********************************************************************
-  // every second one sequnece is sent by the energymeter
+  // every second one sequence is sent by the energymeter
   // ***********************************************************************
   void loop() {
     if (_Serial_EnergyMeter->available()) {
-      delay(15); // at 60000 bits/sec, 18 bytes take 3 msec, toch is 5 msec te weinig
+      delay(15); // at 60000 bits/sec, 18 bytes take 3 msec, yet 5 msec is too little
       if (_Serial_EnergyMeter->available() == 18) {
         int Data[6];
         for (int i = 0; i < 6; i++) {

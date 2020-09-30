@@ -1,5 +1,5 @@
 // Version 0.6   04-10-2019, SM
-//    - oplsag OTA password gecorrigeerd
+//    - storage OTA password corrected
 //
 // Version 0.5   04-05-2019, SM
 //    - on setup, OTA-Hostname naar Serial

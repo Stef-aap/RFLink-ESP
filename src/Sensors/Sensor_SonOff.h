@@ -3,7 +3,7 @@
 //
 // Version 0.3, 27-01-2019, SM
 //   - problem with empty fields in json command solved (by first testing string length
-//   - output mqqt message limited to S1 (without any space), needed for HomeAssistant
+//   - output MQTT message limited to S1 (without any space), needed for HomeAssistant
 //
 // Version 0.2, 25-01-2019, SM
 //   -Force_Push added
@@ -49,15 +49,15 @@ public:
   void loop() {
     if (true) {
       // ***************************************************
-      // read the button and invert it, to get postive logic
+      // read the button and invert it, to get positive logic
       // ***************************************************
       int Button = !digitalRead(_SonOff_Button);
       unsigned long Now = millis();
 
       if (Button == _Button_Previous) {
         // *****************************************************
-        // als button niet ingedrukt was en 1 seconde verstreken,
-        // dan actie als er down-presses geweest zijn
+        // if button was not pressed and 1 second passed,
+        // then action if there have been down presses
         // *****************************************************
         if (!Button) {
           if (_Button_Counter > 0) {

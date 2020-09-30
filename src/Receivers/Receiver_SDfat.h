@@ -1,23 +1,23 @@
 
 // Version 0.2   22-02-2020,  SM
-//    - opschoning Send_Data
+//    - cleanup Send_Data
 //
 // Version 0.1   05-02-2020, SM
 //    - initial release
-//    - werkt behoorlijk goed
-//    - homepage werkt alleen als niette ceel files op sdcard
-//    - downloaden + graph+ ftp werken nog niet op SDcard
+//    - works pretty well
+//    - homepage only works as non-ceel files on sdcard
+//    - download + graph + ftp don't work on SDcard yet
 //
 // ***********************************************************************************
 // ***********************************************************************************
-//  C:\Users\Mattijs\Documents\Arduino\libraries\SdFat\src\FatLib
-//     ArduinoFiles.h
-//     FatFileSystem.h
-//       "File" vervangen door "Arduino_File"
-//       conflicteert anders met FS.h
+//  <root>\Arduino\libraries\SdFat\src\FatLib
+//    ArduinoFiles.h
+//    FatFileSystem.h
+//      Replace "File" with "Arduino_File"
+//      otherwise conflicts with FS.h
 //
-// Inmiddels overgestapt op de Adafruit forl op SDfat
-//  en op de volgende manier het conflicht opgelost
+// In the meantime switched to the Adafruit forl to SDfat
+// and resolved the conflight in the following way
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -31,7 +31,7 @@
 #include "Clients/FS_support.h" // is dat nodig ???
 #include "Utilities/My_File_Support.h"
 
-// MOET WORDEN VERWIJDERS VAN FILELIST BESTAAT NIET MEER
+// MUST BE REMOVERS OF FILELIST NO LONGER EXISTS
 // ***********************************************************************************
 // ***********************************************************************************
 void MySort(String String_List[], int Len, bool Reversed) {
@@ -190,7 +190,7 @@ public:
 
     //******************************************************
     // if the file is available, write to it:
-    // neemt zo'n 18 msec in beslag
+    // takes about 18 msec
     //******************************************************
     if (DataFile.isOpen()) {
       DataFile.println(String(millis() / 1000 + this->_Seconds_In_File) + "\t" + JSON_Short_Data);
@@ -368,15 +368,15 @@ private:
   char _SDcard_Line[250];
 
   String _Serial_Commands_Text = "======  Receiver_SDfat  ======\n\
-dir  [FILENAME] // Display Alle bestanden in deze (of huidige) directory\n\
-dirr [FILENAME] // Display alle bestanden recursively\n\
-cd    Filename  // change directory\n\
-md    Filename  // make dierectory \n\
-dump  FILENAME  // Print de inhoude van een bestand\n\
-dumpALL         // Print de inhoud van alle bestanden\n\
-create FILENAME // Create bestand als nog niet bestaat , append regel text\n\
-del    FILENAME // Delete bestand\n\
-delALL YES      // TODO Delete ALL bestanden";
+dir [FILENAME]  // Display All files in this (or current) directory \ n \
+dirr [FILENAME] // Display all files recursively \ n \
+cd FILENAME     // change directory \ n \
+md FILENAME     // make Dierectory \ n \
+dump FILENAME   // Print the contents of a file \ n \
+dumpALL         // Print the contents of all files \ n \
+create FILENAME // Create file if not already exist, append line text \ n \
+del FILENAME    // Delete file \ n \
+delALL YES      // TODO Delete ALL files";
 
   // Receiver_SDfat ********************************************************
   // ***********************************************************************
@@ -471,10 +471,9 @@ delALL YES      // TODO Delete ALL bestanden";
   }
 
   // Receiver_SDfat ********************************************************
-  // De file wordt verondersteld een tab-delimited csv-file te zijn
-  // De eerste kolom bevat het aatal seconden sinds de start van deze file
-  // returns de last genoteerde seconde teller
-  //         -1 als file niet bestaat
+  // The file is supposed to be a tab-delimited csv file
+  // The first column contains the number of seconds since the start of this file
+  // returns the last noted second counter -1 if file does not exist
   // ***********************************************************************
   int Get_LastTime_In_File(String Filename) {
     ifstream sdin(Filename.c_str());

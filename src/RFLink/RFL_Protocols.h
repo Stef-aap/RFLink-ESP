@@ -112,7 +112,7 @@ public:
     int Switch = (int)HexString_2_Long(Switch_String);
 
     // *********************************************
-    // geen probleem als de ; op het einde ontbreekt
+    // no problem if the ; in the end is missing
     // *********************************************
     x1 = x2 + 1;
     x2 = CommandLine.indexOf(";", x1);

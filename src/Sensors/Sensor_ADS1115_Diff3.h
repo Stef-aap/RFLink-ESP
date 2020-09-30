@@ -172,7 +172,7 @@ public:
       ADC2 = _ADC.readADC_Differential_2_3();
 #endif
 
-      // Onderstaande werkt niet, zelfs niet met yield(0) er voor en er na
+      // The following does not work, not even with yield (0) before and after
       _ADC0 += ADC0;
       _ADC1 += ADC1;
       _ADC2 += ADC2;
@@ -208,7 +208,7 @@ public:
   // Get all the sampled data as a JSON string
   // ***********************************************************************
   void Get_JSON_Data() {
-    // Hij moet altijd door deze procedure komen, ook als we geen samples hebben
+    // He always has to get through this procedure, even if we don't have samples
     if (_NSample <= 0) _NSample = 1;
 
     JSON_Data += "\"" + this->_Name1 + "\":";

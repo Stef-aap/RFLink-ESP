@@ -82,7 +82,7 @@ public:
       // Display the main Bar
       // *****************************
       // Height = Bar_Value ;
-      // OLED_Display.fillRect ( 51,        0, 16, Height      , BLACK ) ;
+      // OLED_Display.fillRect ( 51,      0, 16, Height    , BLACK ) ;
       // OLED_Display.fillRect ( 51, Height, 16, 64-Height , WHITE ) ;
 
       // *****************************
@@ -112,10 +112,10 @@ public:
   }
 
   // ***********************************************************************
-  // Displayed een Bar in het midden van een 128*65 display
-  //    De schaling wordt gerelatieveerd aan het maximum Bar_1_Max
-  //    Noise moet >= 0 zijn
-  //    Gardient geeft een paaltje rechts naar boven of naar beneden
+  // Displayed a Bar in the center of a 128 * 65 display
+  // The scaling is related to the maximum Bar_1_Max
+  // Noise must be >= 0
+  // Gardient gives a pole to the right up or down
   // ***********************************************************************
   void Bar_1(float Value, int Noise, int Gradient) {
     // *****************************

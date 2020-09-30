@@ -1,4 +1,4 @@
-// WAAROM SENSOR EN NIET RECEIVER ?
+// WHY SENSOR AND NOT RECEIVER?
 
 // Version 0.1, 05-08-2019, SM, checked by ..
 //    - initial version
@@ -55,7 +55,7 @@ public:
     Set_Signal_LED(1, 100, 200);
     Serial.println("received topic '" + topic + "' with data '" + (String)data_str + "'");
 
-    DynamicJsonDocument JSON_Buffer(200); // Dynamic / Static ???  Heap / Stack of omgekeerd
+    DynamicJsonDocument JSON_Buffer(200); // Dynamic / Static ???  Heap / Stack or vice versa
     DeserializationError Error = deserializeJson(JSON_Buffer, data_str);
     if (Error) return;
     JsonObject Root = JSON_Buffer.as<JsonObject>();

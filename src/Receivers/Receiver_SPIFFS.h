@@ -1,10 +1,10 @@
-// Version 0.4,  09-04-2020, SM
+// Version 0.4, 04/09/2020, SM
 //    - if filename == "" no recordig in Send_Data
 //
-// Version 0.3,  14_06-2019, SM
-//    - "delall yes" werkte niet
-// Version 0.2,  23-05-2019, SM
-//    - 1 file per tijdseenheid of grootte, en als vol begint te raken oudste file weggooien
+// Version 0.3, 06/14/2019, SM
+//    - "delall yes" did not work
+// Version 0.2, 05/23/2019, SM
+//    - 1 file per unit of time or size, and when it gets full, discard the oldest file
 //
 // Version 0.1,  23-05-2019, SM
 
@@ -206,14 +206,14 @@ private:
   String _Filename;
 
   String _Serial_Commands_Text = "======  Receiver_SPIFFS  ======\r\n\
-dir [FILENAME]  // Display een lijst van alle bestanden die beginnen met Filename\r\n\
-copy FILENAME   // Kopieer bestand naar de USB poort\r\n\
-move FILENAME   // Kopieer bestand naar de USB poort en delete bestand\r\n\
-dump FILENAME   // Print de inhoude van een bestand\r\n\
-dumpALL         // Print de inhoud van alle bestanden\r\n\
-create FILENAME // Create bestand als nog niet bestaat , append regel text\r\n\
-del    FILENAME // Delete bestand\r\n\
-delALL YES      // Delete ALL bestanden";
+dir [FILENAME]  // Display a list of all files starting with Filename \r\n \
+copy FILENAME   // Copy file to USB port \r\n \
+move FILENAME   // Copy file to USB port and delete file \r\n \
+dump FILENAME   // Print the contents of a file \r\n \
+dumpALL         // Print the contents of all files \r\n \
+create FILENAME // Create file if not already exist, append line text \r\n \
+del FILENAME    // Delete file \r\n \
+delALL YES      // Delete ALL files ";
 };
 
 #endif

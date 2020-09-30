@@ -15,7 +15,7 @@
 class _Sensor_Dummy : public _Sensor_BaseClass {
 
 public:
-  String Device_Firmware = "deviceID Mijn eerste sensor";
+  String Device_Firmware = "deviceID My first sensor";
 
   // ***********************************************************************
   // Creator,

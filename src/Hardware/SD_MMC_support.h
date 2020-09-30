@@ -1,8 +1,8 @@
 // Version 0.2,  14-04-2010, SM
-//    - Get_Ordered_DirList verwijderd
+//    - Get_Ordered_DirList deleted
 //    - HTML_File_CheckList only sends html if anay file exists
 //
-// Version 0.1,  29-08-2019, SM (op basis van FS_support 0.6)
+// Version 0.1,  29-08-2019, SM (based on FS_support 0.6)
 //
 
 #ifndef SD_MMC_support_h
@@ -14,7 +14,7 @@
   #include "SD_MMC.h"
 #endif
 
-// FILELIEST BESTAAT NIET MEER
+// FILELIEST NO LONGER EXISTS
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -480,7 +480,7 @@ public:
   // **************************************************
   bool Create_CSV_File_Nr(String Filename, String Header) {
     // ************************************************************
-    // als ongeveer een dag opgenomen, ga over naar een nieuwe file
+    // If recorded about a day, skip to a new file
     // ************************************************************
     bool NewFile = false;
     if (_Max_FileSize > 0) {

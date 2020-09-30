@@ -1,10 +1,10 @@
 
 // Version 0.2, 29-05-2019, SM
-//   - Divider toegevoegd
-//   - JSON_Short_Data toegevoegd (hoeft niet, want SPIFFS det het zelf al !!)
+//    - Added divider
+//    - JSON_Short_Data added (not necessary, because SPIFFS already detects it itself !!)
 //
 // Version 0.1
-//   - Version number added
+//    - Version number added
 
 #ifndef Sensor_Timestamp_h
 #define Sensor_Timestamp_h 0.2

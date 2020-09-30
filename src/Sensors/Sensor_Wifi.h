@@ -1,5 +1,5 @@
 // Version 0.3, 23-02-2020, SM, checked by ..
-//    - MDNS verwijderd, gebruikt heel veel RAM (bijna 3000)
+//    - Removed MDNS, uses a lot of RAM (almost 3000)
 //    - default WIFI_OPTIONS_MUTIPLE
 //
 // Version 0.2, 06-08-2019, SM, checked by ..
@@ -12,7 +12,7 @@
 // setting softap parameters:
 // https://arduino-esp8266.readthedocs.io/en/latest/esp8266wifi/soft-access-point-class.html
 
-// mogelijk alternatief voor esp8266WiFi
+// possible alternative to esp8266WiFi
 // https://github.com/ekstrand/ESP8266wifi
 // ***********************************************************************************
 
@@ -147,7 +147,7 @@ public:
       Serial.print(".");
       Max_Count -= 1;
 
-      // zit nog niet in setup loop, dus handmatig
+      // is not yet in setup loop, so manually
       if (Signal_LED > 0) {
         LED = !LED;
         pinMode(Signal_LED, OUTPUT);
@@ -162,7 +162,7 @@ public:
     }
 
 // ******************************************************
-// Zet ook een eigen AccessPoint op, als geen verbinding met ingesteld netwerk
+// Also set up your own AccessPoint, if not connected to the set network
 // ******************************************************
 #ifdef ESP32
     WiFi.setHostname(_AP_ssid.c_str());

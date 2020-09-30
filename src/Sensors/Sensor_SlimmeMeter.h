@@ -18,9 +18,9 @@ public:
     _Time_Delta = _Time - _Time_Old;
     _Value = _Read_Watermeter();
     // *******************************************
-    // in State = 0 wachten we op een verandering,
-    //   om vervolgens (met onthouden van de starttijd)
-    //   naar State = 1 te springen
+    // in State = 0 we wait for a change,
+    // to then (remembering the start time)
+    // to jump to State = 1
     // *******************************************
     if (_State == 0) {
       if (_Value != _Value_Old) {
@@ -29,11 +29,11 @@ public:
       }
     }
     // *******************************************
-    // In Steta =1, vallen we (zonder iets te doen) terug
-    //    als het nivo weer het oude was (korte stoorpiek)
-    // Zodra de verandering langer duurt dan de debounce tijd,
-    //    hebben we een geldige verandering, dus count ophogen
-    //    en ook terugvallen, met registratie van huidige stand
+    // In Steta = 1, we fall back (without doing anything)
+    // if the level was the same again (short disturbance peak)
+    // once the change takes longer than the debounce time,
+    // we have a valid change, so increment count
+    // and also fall back, with registration of current state
     // *******************************************
     else {
       if (_Value == _Value_Old) {
@@ -69,7 +69,7 @@ private:
   // ***********************************************************************
   // ***********************************************************************
   bool _Read_Watermeter() {
-    delay(5); // anders crashed het programma !!!
+    delay(5); // otherwise the program will crash !!!
     return analogRead(A0) > 150;
   }
 };

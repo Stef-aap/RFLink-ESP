@@ -189,12 +189,12 @@ private:
   String _Filename;
 
   String _Serial_Commands_Text = "======  Receiver_SDMMC  ======\n\
-dir [FILENAME]  // Display een lijst van alle bestanden die beginnen met Filename\n\
-dump FILENAME   // Print de inhoude van een bestand\n\
-dumpALL         // Print de inhoud van alle bestanden\n\
-create FILENAME // Create bestand als nog niet bestaat , append regel text\n\
-del    FILENAME // Delete bestand\n\
-delALL YES      // Delete ALL bestanden";
+dir [FILENAME]  // Display a list of all files starting with Filename \n \
+dump FILENAME   // Print the contents of a file \n \
+dumpALL         // Print the contents of all files \n \
+create FILENAME // Create file if not already exist, append line text \n \
+del FILENAME    // Delete file \n \
+delALL YES      // Delete ALL files ";
 };
 
 #endif

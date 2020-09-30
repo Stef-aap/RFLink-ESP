@@ -1,5 +1,5 @@
 // Version 0.6   10-04-2020, SM
-//    - Serial_2_Telnet flag removed, because simultanuous Seria; and Telnet is possible
+//    - Serial_2_Telnet flag removed, because simultaneous Serial and Telnet is possible
 //
 // Version 0.5   09-03-2019, SM
 //    - print _Main_Version removed
@@ -11,7 +11,7 @@
 //    - Swap added to Serial_Setup
 //
 // Version 0.2   10-11-2018, SM
-//    - Wordt niet geactiveerd als    "#define Serial_Leave_Off"
+//    - Not triggered if    "#define Serial_Leave_Off"
 //
 // Version 0.1
 

@@ -47,95 +47,95 @@
 //    - more build flags added
 //
 // Version 2.9  10-04-2020, SM
-//    - Topic toegeveoegd aan: MQTT_Callback ( Topic, Payload, jsonBuffer ) ;
+//    - Topic appended to: MQTT_Callback (Topic, Payload, jsonBuffer);
 //    - if from a Sensor or Receiver, the subscribed topic ends with an "/",
-//        then a "#" is added (universal subscription)
-//    - _Debug_MQTT_Client hernoemd naar My_MQTT_Client
-//    - afhandeling van serial commands in Sensor/Receiver loop corrected
-//    - Serial_2_Telnet flag removed, because simultanuous Seria; and Telnet is possible
+// then a "#" is added (universal subscription)
+//    - _Debug_MQTT_Client renamed to My_MQTT_Client
+//    - handling of serial commands in Sensor / Receiver loop corrected
+//    - Serial_2_Telnet flag removed, because simultaneous Serial and Telnet is possible
 //    - _DEBUG_Global_String added, to collects debug info while serial not yet available
-//        will be printed at the end of Receivers.Setup
+// will be printed at the end of Receivers.Setup
 //
-// Version 2.8  23-02-2020, SM
-//    - wat opschoning
-//    -   #define _Settings_Factory_BufSize  100   (verlaagd van 512)
+// Version 2.8 23-02-2020, SM
+//    - some cleaning up
+//    - #define _Settings_Factory_BufSize 100 (reduced from 512)
 //
-// Version 2.7  05-02-2020, SM
-//    - SDfat toegevoegd, even via defines andere filesuystemen uitgeschakeld
-//    - command loop, loopt nu gegarandeerd door zowel Sensors als Receivers heen
+// Version 2.7 05-02-2020, SM
+//    - SDfat added, disabled other filesu systems via defines
+//    - command loop, now guaranteed to run through both Sensors and Receivers
 //
-// Version 2.6  02-02-2020, SM
-//    - MLX90640 only for ESP32 (gives compile errors on ESP8266 )
+// Version 2.6 02-02-2020, SM
+//    - MLX90640 only for ESP32 (gives compile errors on ESP8266)
 //
-// Version 2.5  20-12-2019, SM
+// Version 2.5 12/20/2019, SM
 //
-// Version 2.4  06-12-2019, SM
+// Version 2.4 06-12-2019, SM
 //    - Sensor_MLX90614 added
 //    - Sensor_MLX90640 added
 //    - Sensor_MPU9250 added
-//    - Sensor.Add   returns a pointer to the Sensor
+//    - Sensor.Add returns a pointer to the Sensor
 //    - Receiver.Add returns a pointer to the Receiver
 //    - MQTT_ID derived from MQTT_Topic in Debug function
 //
-// Version 2.3  26-09-2019, SM
-//    - My_Prefs = Preferences ( "My_Prefs", ... ) added
+// Version 2.3 2019-09-26, SM
+//    - My_Prefs = Preferences ("My_Prefs", ...) added
 //
-// Version 2.2  06-08-2019, SM
-//    - delay(2) added to loops of Sensors and Receivers
+// Version 2.2 06-08-2019, SM
+//    - delay (2) added to loops of Sensors and Receivers
 //
-// Version 2.1  30-07-2019, SM
-//    - FTP flag, diebediend kan worden door MQTT toegevoegd
+// Version 2.1 2019-07-30, SM
+//    - Added FTP flag, which can be controlled by MQTT
 //
-// Version 2.0  17-07-2019, SM
+// Version 2.0 17-07-2019, SM
 //    - Sensor_ESP32_ADC added
-//    - Sensor_Blauwe_Engel added
-//    - CSV header wordt aan het begin geprint
-//    = Help info van sensors geprint na setup
+//    - Sensor_Blauwe_Angel added
+//    - CSV header is printed at the beginning
+//    - Help info from sensors printed after setup
 //
-// Version 1.9  12-06-2019, SM
+// Version 1.9 12-06-2019, SM
 //
-// Version 1.8  23-mei-2019, SM
-//   - JSON_Short_Data added (specially for SPIFFS storage
+// Version 1.8 May 23, 2019, SM
+//    - JSON_Short_Data added (specially for SPIFFS storage
 //
-// Version 1.7  8-mei-2019, SM
-//   - MQTT_Broker_IP, MQTT_Topic, MQTT_ID worden hier gedefinieerd en naam iets gewijzigd
-//   - OTA_HostName hier gedefinieerd
+// Version 1.7 May 8, 2019, SM
+//    - MQTT_Broker_IP, MQTT_Topic, MQTT_ID are defined here and name slightly changed
+//    - OTA_HostName defined here
 //
-// Version 1.6  4-mei-2019, SM
-//   - splitsing (hoef je niet te gebruiken), teneinde MQTT broker en message naar main program te halen
+// Version 1.6 May 4, 2019, SM
+//    - split (no need to use), in order to get MQTT broker and message to main program
 //
-// Version 1.5  9-maart-2019, SM
-//   - print Main_Version in setup Sensors
+// Version 1.5 March 9, 2019, SM
+//    - print Main_Version in setup Sensors
 //
-// Version 1.3  5-maart-2019, SM
-//   - Debug zend alleen maar over MQTT als er al een connectie is
-//   - import Luftdaten verwijderd
-//   - Value2Json added
+// Version 1.3 March 5, 2019, SM
+//    - Debug only sends over MQTT if there is already a connection
+//    - import Luftdaten removed
+//    - Value2Json added
 //
-// Version 1.2  22-feb-2019, SM
-//   - wifi mode en power toegevoegd
+// Version 1.2 Feb 22, 2019, SM
+//    - added wifi mode and power
 //
 // Version 1.1  25-jan-2019
-//   - Sensors.Pushed added
+//    - Sensors.Pushed added
 //
 // Version 1.0  1-jan-2019
-//   - External Watchdog Added
+//    - External Watchdog Added
 //
-// Version 0.9 in wording 31 oktober 2018
-//   - Als geen responses JSON_Data made empty
-//   - in bovenstaand geval wordt de data ook niet verzonden
+// Version 0.9 in wording 31 october 2018
+//    - If no responses JSON_Data made empty
+//    - in the above case, the data is also not sent
 //
 // Version 0.8
-//   - Debug method added
-//   - Sensor_OKE4 added
+//    - Debug method added
+//    - Sensor_OKE4 added
 //
 // Version 0.7
-//   - Get_JSON_Data based on global append of all sensors
+//    - Get_JSON_Data based on global append of all sensors
 //
 // Version 0.6
-//   - Send_Data returns true if all receivers returned true
+//    - Send_Data returns true if all receivers returned true
 //                       false otherwise
-//   - includes iets gewijzigd
+//    - includes changed something
 //
 // Version 0.5
 // ****************************************************************************
@@ -182,8 +182,8 @@ ESP8266WebServer My_Webserver(80);
 // It's essential that these statements are at the top of the program
 // ****************************************************************************
 #ifndef Redirect_Serial_h
-// Nodig als geen Redirect Serial, om te kunnen compileren
-// MOET EIGFENLIJK GEWOON NAAR SERIAL WIJZEN
+// Needed as no Redirect Serial, to compile
+// ACTUALLY MUST JUST CHANGE TO SERIAL
 HardwareSerial Serial_Device(0); // UART_NUM_0 ) ;
 #endif
 
@@ -237,7 +237,7 @@ void Print_Heap(int ID = -1) {
 }
 
 // ****************************************************************************
-// Belangrijk: hier wordt de settingsfile gelezen
+// Important: the settings file is read here
 // ****************************************************************************
 #include "Clients/My_Settings.h"
 // ****************************************************************************
@@ -296,7 +296,7 @@ word _TM1638_Dots[8] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 bool Allow_Wifi_Not_Found = false;
 
-// stond helemaal bovenaan
+// was at the very top
 #ifndef ESP32
   #include "user_interface.h" //system_get_sdk_version()
 #endif
@@ -411,10 +411,10 @@ void Debugf(char *fmt, ...) {
 }
 
 // ***********************************************************************
-// _Serial_Command = 0   wacht op een commando
-// _Serial_Command = 1   commando gevonden
-// _Serial_Command = 2   commando doorlopen door eerste lus (Sensors of Receivers) en false
-// _Serial_Command = 3   commando doorlopen door Sensors en receivers of true in een van beide lussen
+// _Serial_Command = 0   wait for a command
+// _Serial_Command = 1   command found
+// _Serial_Command = 2   command run through first loop (Sensors or Receivers) and false
+// _Serial_Command = 3   command run through Sensors and receivers or true in either loop
 // ***********************************************************************
 #define _SERIAL_MAX_SIZE 40
 int _Serial_Command = 0;
@@ -990,7 +990,7 @@ void Settings_Factory() {
 
 #ifdef FileSystem_SDcard
   #ifdef ESP32
-    #include "Receivers/Receiver_SDcard.h" //DEZE GEEFT HEEL REGELMATIG PROBLEMEN !!!!
+    #include "Receivers/Receiver_SDcard.h" // THIS IS REALLY REGULAR PROBLEMS !!!!
   #endif
 #endif
 // **************************
@@ -1264,7 +1264,7 @@ void Set_Signal_LED(int N = 5, int On = 50, int Off = 400) {
 void Store_Modified_Settings_From_Webserver(bool Restart_Needed) {
 
   // *******************************************************
-  // Algemene settings controleren op veranderinegn
+  // Check general settings for changes
   // *******************************************************
   String Key;
   int New_Value_Int;
@@ -1307,7 +1307,7 @@ void Store_Modified_Settings_From_Webserver(bool Restart_Needed) {
     }
   }
 
-  // blijkbaar fast boolean evalustion, dus let op volgorde !!!
+  // apparently fast boolean evalustion, so watch order !!!
   Restart_Needed = Sensors.Check_Modified_Settings() || Restart_Needed;
   Restart_Needed = Receivers.Check_Modified_Settings() || Restart_Needed;
 
@@ -1394,11 +1394,11 @@ void Settings_Setup() {
   Signal_LED = Settings.Get_Set_Default_Int(F("Signal LED"), -1);
 
   // ************************************************************
-  //  Sensors / Receivers die altijd aanwezig moeten zijn
+  //  Sensors / Receivers that must always be present
   // ************************************************************
   _My_Settings_Buffer[F("Sensor_Wifi")] = true;
   Sensors.Add(new _Sensor_Wifi(F("FS")));
-  // het idee was om hier te zorgen dat wifi er snel is, zodat telnet alles kan weergeven
+  // the idea here was to make sure that WiFi is fast, so that telnet can display everything
 
 #ifdef YES_INCLUDE_RECEIVER_TELNET
   _My_Settings_Buffer[F("Receiver_Telnet")] = true;
@@ -1432,7 +1432,7 @@ void Settings_Setup() {
   }
 
   // ************************************************************
-  // Create Sensors (en als niet nodig, zorg in ieder geval dat ie in de settings file staat )
+  // Create Sensors (and if not needed, make sure it's in the settings file)
   // ************************************************************
   if (Settings.Read_Bool(F("Sensor_Watchdog"))) Sensors.Add(new _Sensor_Watchdog());
   else
@@ -1691,7 +1691,7 @@ void Settings_Loop() {
   // for all sensors, get JSON-data and send to all active receivers
   // ***********************************************************
   if (millis() - _Loop_Last_Time >= _Loop_Send_Time) {
-    _Loop_Last_Time = millis(); // geen noodzaak om in te halen !!
+    _Loop_Last_Time = millis(); // no need to overtake !!
     if (Recording) {
       Sensors.Get_JSON_Data();
       Receivers.Send_Data(JSON_Data);

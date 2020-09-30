@@ -1,5 +1,5 @@
 // Version 0.3
-//    - Domoticz output toegevoegd
+//    - Domoticz output added
 //
 // Version 0.2
 //    - Get_JSON_Data,  commented out, has to be chenged
@@ -79,7 +79,7 @@ public:
   // ***********************************************************************
   String Get_JSON_LuftData() {
     // ********************************************************
-    // it's absolutly necessairy to read temperature first
+    // it's absolutely necessary to read temperature first
     // because it's needed for an accurate pressure measurement
     // ********************************************************
     _JSON_Sample = "";

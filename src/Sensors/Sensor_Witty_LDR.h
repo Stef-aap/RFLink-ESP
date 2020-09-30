@@ -1,6 +1,6 @@
 
 // Version 0.2,  15-08-2019, SM
-//    - JSON_Short_Data toegevoegd
+//    - JSON_Short_Data added
 
 #ifndef Sensor_Witty_LDR_h
 #define Sensor_Witty_LDR_h 0.2

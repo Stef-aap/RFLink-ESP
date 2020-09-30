@@ -78,14 +78,14 @@ public:
   }
 
   // ***********************************************************************
-  // deze wordt alleen aangemaakt voor het debuggen
+  // it is created only for debugging
   // ***********************************************************************
   virtual bool Publish(String Topic, String Payload) {}
   virtual bool Publish_Without_(String Topic, String Payload) {}
   virtual bool Connected() {}
 
   // ***********************************************************************
-  // even voor SSD1306
+  // equally for SSD1306
   // ***********************************************************************
   virtual void Show(String Line, int x = -1, int y = -1, int Len = -1) {}
 };

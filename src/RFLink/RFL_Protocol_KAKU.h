@@ -23,7 +23,7 @@ public:
   }
 
   // ***********************************************************************
-  // KAKU bestaat altijd uit start bit + 32 bits + evt 4 dim bits.
+  // KAKU always consists of start bit + 32 bits + possibly 4 dim bits.
   // ***********************************************************************
   bool RF_Decode() {
 #define PulseCount 132     // regular KAKU packet length
@@ -37,7 +37,7 @@ public:
     byte dim = 0;
     unsigned long BitStream = 0L;
 
-    i = 4; // RawSignal.Pulses [ 4 ] is de eerste van een T,xT,T,xT combinatie
+    i = 4; // RawSignal.Pulses [4] is the first of a T,xT,T,xT combination
     do {
       P0 = RawSignal.Pulses[i];
       P1 = RawSignal.Pulses[i + 1];
@@ -49,22 +49,22 @@ public:
       } else if (P0 < MidTime && P1 > MidTime && P2 < MidTime && P3 < MidTime) {
         Bit = 1; // T,4T,T,T
       } else if (P0 < MidTime && P1 < MidTime && P2 < MidTime && P3 < MidTime) {
-        // T,T,T,T Deze hoort te zitten op i=111 want: 27e NewKAKU bit maal 4 plus 2 posities voor startbit
-        if (RawSignal.Number != (PulseCount_DIM + 1)) { // als geen DIM bits
+        // T,T,T,T This should be on i = 111 because: 27th NewKAKU bit times 4 plus 2 positions for start bit
+        if (RawSignal.Number != (PulseCount_DIM + 1)) { // if no DIM bits
           return false;
         }
       } else {
-        return false; // andere mogelijkheden zijn niet geldig
+        return false; // other options are not valid
       }
 
-      // alle bits die tot de 32-bit pulstrein behoren 32bits * 4posities per bit + pulse/space voor startbit
+      // all bits belonging to the 32-bit pulse train 32bits * 4 positions per bit + pulse / space for start bit
       if (i < PulseCount - 1) {
         BitStream = (BitStream << 1) | Bit;
-      } else { // de resterende vier bits die tot het dimlevel behoren
+      } else { // the remaining four bits that belong to the dim level
         dim = (dim << 1) | Bit;
       }
       i += 4;
-      //-2 omdat de space/pulse van de stopbit geen deel meer van signaal uit maakt.
+      //-2 because the space / pulse of the stop bit is no longer part of the signal.
     } while (i < RawSignal.Number - 2);
 
     //==================================================================================

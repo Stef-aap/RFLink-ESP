@@ -3,7 +3,7 @@
 #define RFL_Protocol_Paget_Door_Chime_h
 
 // ***********************************************************************************
-// dit is het oude protocol 071
+// this is the old 071 protocol
 // ***********************************************************************************
 class _RFL_Protocol_Paget_Door_Chime : public _RFL_Protocol_BaseClass {
 

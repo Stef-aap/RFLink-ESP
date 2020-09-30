@@ -1,58 +1,58 @@
 // ***********************************************************************************
-// Version 1.6   17-04-2020, SM
-//    - property _Topic  vervangen door global MQTT_Topic
+// Version 1.6 17-04-2020, SM
+//    - replace property _Topic with global MQTT_Topic
 //    - several subtopics derived from MQTT_Topic
 //
-// Version 1.5   12-04-2020, SM
+// Version 1.5 04/12/2020, SM
 //    - Method Publish_Without_ added
 //
-// Version 1.4   29-02-2020, SM
-//    - dynamisch wijzigen van broker address, bijv na setuo:
-//        if ( WiFi.localIP()[2] == 0 ) MQTT_Broker_IP = "192.168.0.18" ;
+// Version 1.4 29-02-2020, SM
+//    - dynamically change broker address, e.g. after setup:
+//   if (WiFi.localIP()[2] == 0) MQTT_Broker_IP = "192.168.0.18";
 //
-// Version 1.3   22-02-2020, SM
+// Version 1.3 22-02-2020, SM
 //    - support for 2 broker addresses
 //
-// Version 1.2   15-02-2020, SM
-//    - SOCKET_TIMEOUT in PubSubClient.h toch maar verlaagd (lijkt beter te werken)
-//        //#define MQTT_SOCKET_TIMEOUT   600
-//        #define MQTT_SOCKET_TIMEOUT   15
+// Version 1.2 15-02-2020, SM
+//    - SOCKET_TIMEOUT in PubSubClient.h lowered anyway (seems to work better)
+//        // #define MQTT_SOCKET_TIMEOUT 600
+//        #define MQTT_SOCKET_TIMEOUT 15
 
-// Version 1.1   15-10-2019, SM
-//    - WifiClient vanuit Sensor_Wifi.h naar hier gebracht
+// Version 1.1 15-10-2019, SM
+//    - WifiClient brought here from Sensor_Wifi.h
 //
-// Version 1.0   24-09-2019, SM
-//    - ReConnect called in loop()
+// Version 1.0 24-09-2019, SM
+//    - ReConnect called in loop ()
 //    - ReConnect doesn't need to publish anymore
 //
-// Version 0.9   06-08-2019, SM
+// Version 0.9 06-08-2019, SM
 //    - test wifi available removed
 //    - reset on no conection removed
 //
-// Version 0.8   19-07-2019, SM
-//    - MQTT Callback overgeheveld naarSensor_Receiver.h  (nu kunnen meerdere Sensors/Receivers MQTT ontvangen )
+// Version 0.8 2019-07-19, SM
+//    - MQTT Callback transferred to Sensor_Receiver.h (now multiple Sensors / Receivers can receive MQTT)
 //
-// Version 0.7   29-05-2019, SM
-//    - doet geen restart als geen connectie kan worden gerealiseerd en Allow_Wifi_Not_Found == true
-//    - Reageert op MQTT message: { "Loop_Time" : 2 }
-//    - MQTT Callback ingebouwd
+// Version 0.7 2019-05-29, SM
+//    - will not restart if no connection can be established and Allow_Wifi_Not_Found == true
+//    - Responds to MQTT message: {"Loop_Time": 2}
+//    - MQTT Callback built in
 //
-// Version 0.6   04-03-2019, SM
-//    - Multiple Broker compleet verwijderd
+// Version 0.6 04-03-2019, SM
+//    - Multiple Broker completely removed
 //
-// Version 0.5   02-01-2019, SM
+// Version 0.5 02-01-2019, SM
 //    - External_Watchdog_Disarm added
 //
-// Version 0.4, 20-10-2018, SM, checked by ..
-//    - toch maar weer mqtt reconnect toegevoegd
+// Version 0.4, 10/20/2018, SM, checked by ..
+//    - added mqtt reconnect anyway
 //
 // Version 0.3, 10-10-2018, SM, checked by ..
-//    - even terug naar single broker
+//    - back to single broker for a moment
 //
-// Version 0.2, 27-06-2018, SM, checked by ..
+// Version 0.2, 06/27/2018, SM, checked by ..
 //    - increased time to get an reset from 2 to 10 seconds
 //
-// Version 0.1, 30-03-2018, SM, checked by ..
+// Version 0.1, 03/30/2018, SM, checked by ..
 //    - initial version
 // ***********************************************************************************
 
@@ -107,7 +107,7 @@ public:
     _MQTT_ID = String(WiFi.macAddress());
 
     // *****************************************************
-    // Omdat het geen callback is maar een event, moet dit zo moeilijk
+    // Since it is not a callback but an event, this must be so difficult
     // https://hobbytronics.com.pk/arduino-custom-library-and-pubsubclient-call-back/
     // *****************************************************
 
@@ -193,7 +193,7 @@ public:
 
     if (!MyMQTT->connected()) {
       // **********************************************************
-      // Controleer of het Broker address (dynamisch) is gewijzigd
+      // Check if the broker address (dynamic) has been changed
       // **********************************************************
       if (MQTT_Broker_IP != this->_MQTT_Broker_IPx) {
         MyMQTT->setServer(MQTT_Broker_IP.c_str(), Broker_Port);
@@ -213,7 +213,7 @@ public:
   }
 
   // ***********************************************************************
-  // HIER MOGEN NATUURLIJK GEEN DEBUG STATEMENTS IN STAAN !!!
+  // OF COURSE MAY NOT INCLUDE DEBUG STATEMENTS !!!
   // ***********************************************************************
   bool Publish(String Topic, String Payload) { return this->Publish_Without_(Topic + "_", Payload); }
 

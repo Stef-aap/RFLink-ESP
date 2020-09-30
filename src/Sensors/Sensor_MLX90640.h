@@ -21,19 +21,19 @@ SimpleKalmanFilter ( e_mea, e_est, q ) ;
  q: Process Noise
 
  e_mea: Measurement Uncertainty - How much do we expect to our measurement vary
-e_est: Estimation Uncertainty - Can be initilized with the same value as e_mea since the kalman filter will adjust its
+e_est: Estimation Uncertainty - Can be initialized with the same value as e_mea since the kalman filter will adjust its
 value. q: Process Variance - usually a small number between 0.001 and 1 - how fast your measurement moves. Recommended
 0.01. Should be tunned to your needs.
 */
 
-// 0.01 oorspronkelijk
-// 0.1  verergert de ruis
-// 1.0  verergert de ruis
-// 0.01 en 0.001 exact gelijk
+// 0.01 originally
+// 0.1 worsens the noise
+// 1.0 worsens the noise
+// 0.01 and 0.001 exactly the same
 float Uncertainty = 0.3;
 
-// 90 is veel te hoog (zeer traag)
-// 10 is veel te hoog (zeer traag)
+// 90 is way too high (very slow)
+// 10 is way too high (very slow)
 float Process_Variance = 0.0003;
 
 SimpleKalmanFilter simpleKalmanFilter_T1(Uncertainty, Uncertainty, Process_Variance);
@@ -111,7 +111,7 @@ public:
   }
 
   // ***********************************************************************
-  // De eerste 20 msec is de sensor niet aanspreekbaar
+  // The sensor cannot be addressed during the first 20 msec
   // ***********************************************************************
   void loop() {
     // ***************************************************
@@ -121,7 +121,7 @@ public:
 
     // ***************************************************
     // if data ok, write data to USB-port
-    // als nodig bewaar Photo and zend deze over MQTT
+    // save Photo as needed and send it over MQTT
     // ***************************************************
     if (Frame_Available) {
       for (byte x = 0; x < 1; x++) { // Read SINGLE subpage

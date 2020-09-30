@@ -50,7 +50,6 @@ public:
     int RHhyst = Settings.Read_Int("FSC RHhyst");
 
     for (int i = 0; i < My_Webserver.args(); i++) {
-      // Serial.println ( "Fijsntof: "+ My_Webserver.argName(i) ) ;
       New_Value_Int = My_Webserver.arg(i).toInt();
       if (My_Webserver.argName(i) == "FSC Delay") {
         if (New_Value_Int != Delay) _My_Settings_Buffer["FSC Delay"] = New_Value_Int;

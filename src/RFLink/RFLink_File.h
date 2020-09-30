@@ -7,7 +7,7 @@
 #define RFLink_File_h 0.2
 
 // ***********************************************************************************
-// This class is explictly NOT derived from _FS_Class,
+// This class is explicitly NOT derived from _FS_Class,
 // because an instance of _FS_Class will always exist already and therfor can be used.
 // ***********************************************************************************
 class _RFLink_File {

@@ -11,7 +11,7 @@
 //
 // Version 0.2, 27-06-2018, SM, checked by ...
 //    - added multiple creators
-//    - added differental setup
+//    - added differential setup
 //    - added Testroutine, to measure signals with a scope
 //
 // Version 0.1, 30-03-2018, SM, checked by ...
@@ -266,7 +266,7 @@ public:
     JSON_Data += "],";
 
     // ****************************************************************
-    // Voorlopig gekozen om maar hier 1 sample per kanaal weer te geven
+    // For the time being chosen to only display 1 sample per channel here
     // ****************************************************************
     for (int i = 0; i < _N_Chan; i++) {
       JSON_Short_Data += String(_ADC_Buffer[i]);

@@ -1,16 +1,16 @@
 // Version 0.1, 03-02-2020, SM
 //   - initial version
 // ***********************************************************************************
-// maakt gebruik van C:\Users\Mattijs\Documents\Arduino\libraries\Grove_-_RTC_DS1307
-// volgens de datasheet: https://datasheets.maximintegrated.com/en/ds/DS1307.pdf
-//   werkt het ic alleen met een I2C-klok van 100 kHz
-// experimenten tonen echter het volgende
-//   de chip werkt goed met een klok van 200kHz ... 1MHz
-//   getest met ESP8266 in 80/160MHz mode, met en zonder optrekweerstanden
+// uses <root>\Arduino\libraries\Grove_-_RTC_DS1307
+// according to the datasheet: https://datasheets.maximintegrated.com/en/ds/DS1307.pdf
+// the ic only works with an I2C clock of 100 kHz
+// experiments however show the following
+// the chip works well with a clock of 200kHz ... 1MHz
+// tested with ESP8266 in 80 / 160MHz mode, with and without pull-up resistors
 // ***********************************************************************************
 
 // ***********************************************************************************
-// Gebruik definieer Set_RTC_YMD_HMS_DoW, voordat Sensor_Receiver wordt geimporteerd
+// Use define Set_RTC_YMD_HMS_DoW, before importing Sensor_Receiver
 // ***********************************************************************************
 //#define Set_RTC_YMD_HMS_DoW  "2020,1,10,13,11,13,MON"
 //#include "Sensor_Receiver.h"
@@ -20,10 +20,10 @@
 #define Sensor_RTC_h 0.1
 
 #include "DS1307.h"
-DS1307 Rclock; // liefst Llokaal
+DS1307 Rclock; // preferably local
 
-// Volgens de specificaties mag  de klok maximaal 100 kHz zijn
-// Volgens mijn metingen    moet de klok minimaal 200 kHz zijn
+// Specifies that the clock can be a maximum of 100 kHz
+// According to my measurements, the clock should be at least 200 kHz
 // ***********************************************************************
 #define _RTC_My_I2C_Clock 400000
 // ***********************************************************************
@@ -41,7 +41,7 @@ public:
     Serial.println("CREATE    " + Version_Name);
     this->_JSON_Long_Header = "Date\tTime\t";
     this->_JSON_Short_Header = "Date\tTime\t";
-    Help_Text = "    >>>>>>> ToDO Help tekst";
+    Help_Text = "    >>>>>>> ToDO Help text";
   }
 
   // _Sensor_RTC ***********************************************************
@@ -205,8 +205,8 @@ private:
   // ***********************************************************************
 
   String _Serial_Commands_Text = "======  Sensor_RTC  ======\n\
-RTC +[N]  // TODO Zet de tijd [N] seconden vooruit\n\
-RTC -[N]  // TODO Zet de tijd [N] seconden teruguit";
+RTC +[N]  // TODO Advances the time [N] seconds\n\
+RTC -[N]  // TODO Set the time back to [N] seconds";
 
   // _Sensor_RTC ***********************************************************
   // ***********************************************************************

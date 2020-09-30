@@ -169,7 +169,7 @@ private:
   const int RX = 15;  // Witty RED
   const int DIR = 13; // Witty BLUE
   const bool Inverted = false;
-  const unsigned long _Message_Time = 500; // 400 is te kort
+  const unsigned long _Message_Time = 500; // 400 is too short
 
   int _Energy = 0;
   int _Voltage = 0;
@@ -177,7 +177,7 @@ private:
   int _N_Power = 0;
   int _Sum_Power = 0;
 
-  const int mw10 = 9182; // kapot=9254, hobby=9248,  schuur= 9182
+  const int mw10 = 9182; // broken = 9254, hobby = 9248, shed = 9182
 
   int _State = 0;
   unsigned long _Time_Wait;
@@ -324,7 +324,7 @@ private:
     int Result = 0;
     for (int ID = 0; ID < 3; ID++) {
       OKE4_Write_Command(ID, "E?");
-      delay(_Message_Time); // verlaagd van +1000 naar -100, -200, -300, -400, +500
+      delay(_Message_Time); // decreased from +1000 to -100, -200, -300, -400, +500
       Result = OKE4_Read(); // ID ) ;
       if (Result > 0) {
         Serial.printf("\nFound OKE4 with ID = %i\n", ID);

@@ -1,13 +1,13 @@
 // Version 1.1,  14-04-2020, SM
-//    - nu ook voor ESP32 filelist ordering removed (not tesed!!)
+//    - now also for ESP32 file list ordering removed (not tested !!)
 //
 // Version 1.0,  27-02-2020, SM
-//    - Ordering van filelist removed, vraagt teveel RAM (tzt oplossen in HTML)
-//    - SPIFFS wordt reeds geopend in de class constructor
-//    - method Read_File toegeveogd (allen geschilt voor kleine bestanden )
+//    - Ordering of filelist removed, requires too much RAM (fix in HTML in due time)
+//    - SPIFFS is already opened in the class constructor
+//    - method Read_File added (only suitable for small files)
 //
 // Version 0.9,  18-02-2020, SM
-//    - bij restart wordt aantal seconden in de file opgezocht, zodat dit een monotoon stijgende reeks is
+//    - restart looks up the number of seconds in the file, so that this is a monotonically increasing series
 //
 // Version 0.8,  20-12-2019, SM
 //    - Get_File_Nr added
@@ -68,7 +68,7 @@ public:
   // **************************************************
   _FS_class() {
     // **********************************************************************
-    // Bewust naar constructor verplaatst, zodat filesysteem direct bruikbaar
+    // Deliberately moved to constructor, so file system immediately usable
     // **********************************************************************
 #ifdef ESP32
 #else
@@ -140,8 +140,8 @@ public:
     }
 #endif
 
-    //   >0  aantal seconden (eerste kolom) dat een file maximaal mag bevatten
-    //   <0  maximaal filesize (in bytes)
+    //   >0  number of seconds (first column) that a file may contain
+    //   <0  maximum filesize (in bytes)
     _Max_FileSize = 0;
     _Max_FileTime = 0;
     if (Max_File_Time > 0) {
@@ -336,7 +336,7 @@ public:
   }
 
   // **************************************************
-  // ene variant om de laatste MLX_xxx.bin file te bepalen
+  // one variant to determine the last MLX_xxx.bin file
   // **************************************************
   int Get_Last_File_Number() {
 
@@ -492,7 +492,6 @@ public:
     Line_x = "###";
     while (file.available() && (Line_x.length() > 1)) {
       Line_x = file.readStringUntil('\n');
-      // Serial.println ( Line_x ) ;
       Splitter->newString(Line_x, '\t');
       String Datex = Splitter->getItemAtIndex(DT_i);
       int DTx = Datex.toInt();
@@ -622,7 +621,7 @@ public:
   // **************************************************
   bool Create_CSV_File_Nr(String Filename, String Header) {
     // ************************************************************
-    // als ongeveer een dag opgenomen, ga over naar een nieuwe file
+    // If recorded about a day, skip to a new file
     // ************************************************************
     bool NewFile = false;
     if (_Max_FileSize > 0) {

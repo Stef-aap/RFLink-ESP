@@ -1,9 +1,9 @@
 // Version 0.6   20-12-2019, SM
 //
 // Version 0.5   08-08-2019, SM
-//    - json5 naar6, MQTT_Callback veranderd
+//    - json5 naar6, MQTT_Callback changed
 // Version 0.4   17-07-2019, SM
-//    - Get_Name_Version() verwijderd en vervangen door Version_Name
+//    - Get_Name_Version() removed and replaced with Version_Name
 // Version 0.3   12-06-2019, SM
 //    - Get_Name_Version() added
 // Version 0.2   08-05-2019, SM
@@ -18,7 +18,7 @@
 
 // ***********************************************************************************
 // Defaults for ESP8266 boards
-// Omdat deze pinnen niet op te vragen zijn, nemen we Wire.begin over
+// Since these pins cannot be retrieved, we take over Wire.begin
 // ***********************************************************************************
 int Wire_SDA = 4;
 int Wire_SCL = 5;
@@ -44,7 +44,7 @@ public:
   String Help_Text = ""; //"No help information available for this module" ;
   String Device_Firmware = "unknown";
   int Sample_Time_ms = 1000; // The time between consecutive samples
-  String _JSON_Sample = "";  // MAG BLIJKBAAR NIET PRIVATE
+  String _JSON_Sample = "";  // APPEARSELY NOT TO BE PRIVATE
   char msg[1000];
   unsigned long Sample_Time_Last = 0;
   String MQTT_Callback_Topic = "";
@@ -135,7 +135,7 @@ public:
   }
 
   // ***********************************************************************
-  // deze wordt alleen aangemaakt voor OKE4
+  // it is only created for OKE4
   // ***********************************************************************
   virtual bool Read_SX(uint8_t ID) {}
 };

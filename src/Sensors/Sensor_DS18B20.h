@@ -1,6 +1,6 @@
 // ***********************************************************************************
-// INSTRUCTIE:
-// definieer OneWire_Pin, voor het includen van Sensor_Receiver.h
+// INSTRUCTION:
+// define OneWire_Pin, to include Sensor_Receiver.h
 //   Any pin 2 to 12 (not 13) and A0 to A5
 //
 //   #define OneWire_Pin  2
@@ -12,29 +12,29 @@
 //    - JSON_Short_Data added
 //
 // Version 0.9   04-05-2019, SM
-//    - OneWire_Pin = 2 wordt hier gedefineerd als deze nog niet gedefinieerd is
+//    - OneWire_Pin = 2 is defined here if it is not already defined
 //
-// Version 0.8   02-01-2019, SM
+// Version 0.8 02-01-2019, SM
 //    - External_Watchdog_Disarm added
 //
 // version 0.7
-//    - andere manier van temperatuur correctie : data[1] & 0xFB.
+//    - other way of temperature correction: data [1] & 0xFB.
 //
 // Version 0.6
-//    - als temperatuur . 60 Celcius, 64 Celcius er van tellen
+//    - as temperature. 60 Celsius, counting 64 Celsius
 //
 // Version 0.5
-//    - andere berekening van de temperatuur
-//    - Domoticz support verwijderd
+//    - other calculation of the temperature
+//    - Domoticz support removed
 //
 // Version 0.4
-//    - Domoticz output toegevoegd
+//    - Domoticz output added
 //
 // Version 0.3, 26-07-2018, SM, checked by ...
 //    - Get_JSON_Data appends directly to a global string
 //
 // Version 0.2
-//   - Offset of 2 Celcius removed
+//   - Offset of 2 Celsius removed
 //
 // Version 0.1
 //    - initial version
@@ -323,7 +323,7 @@ private:
 #endif
 
 /*
-slechte, die bij kamertemperatuur negatieve waarden geeft
+bad, which gives negative values at room temperature
 RS: { "TimeStamp":269621, "DT28c6cf5500000027":-32.50 }
 FC  /  FD  /  7F  /  FF  /  3F  /  FF  /  4  /  10  /  B7  /
 RS: { "TimeStamp":279621, "DT28c6cf5500000027":-32.25 }

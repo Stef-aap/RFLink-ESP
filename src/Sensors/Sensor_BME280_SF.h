@@ -11,7 +11,7 @@
 //
 // Version 0.1, 20-04-2018, SM
 //    - initial version
-//    - debug_out is used as in the orginal software
+//    - debug_out is used as in the original software
 // ***********************************************************************************
 
 #include "Sensor_Base.h"

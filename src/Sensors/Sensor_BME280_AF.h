@@ -1,21 +1,21 @@
 
-// Version 0.8,  26-02-2020, SM ...
-//    - Time_ms in JSON verwijderd
+// Version 0.8, 02/26/2020, SM ...
+//    - Removed time_ms in JSON
 //
 // Version 0.7
-//    - Temperatuur compensatie kan ook bij creation
-//    - RH compensatie op basis van T-compensatie
+//    - Temperature compensation is also possible with creation
+//    - RH compensation based on T compensation
 //
 // Version 0.6
-//    - Temperatuur compensatie
+//    - Temperature compensation
 //
 // Version 0.5
-//    - ondersteuning fileopslag toegevoegd
+//    - added file storage support
 //
 // Version 0.4
-//    - Domoticz output toegevoegd
+//    - Domoticz output added
 //
-// Version 0.3, 26-07-2018, SM, checked by ...
+// Version 0.3, 07/26/2018, SM, checked by ...
 //    - Get_JSON_Data appends directly to a global string
 //
 // Version 0.2

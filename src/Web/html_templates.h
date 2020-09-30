@@ -119,7 +119,7 @@ const char HTML_Settings_Done[] PROGMEM = R"(<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-<h2><img src="logo.gif" style="width:24px;height:24px;" /> Gewijzigde Instellingen zijn opgeslagen. de ESP wordt opnieuw gestart.</h2>
+<h2><img src="logo.gif" style="width:24px;height:24px;" /> Changed Settings are saved. the ESP is restarted.</h2>
 <a href="index.html" target="_self" >StartPage</a><br><br>
 </body>
 </html>)";
@@ -135,8 +135,8 @@ const char HTML_Graph_Page_Begin[] PROGMEM = R"(<!doctype html>
 <a href="index.html" target="_self" >StartPage</a><br><br>)";
 
 // ***********************************************************************************
-// LET OP deze is heel gevoelig en bevat bovendien het eindteken   )"
-//   hiervoor is een extra spatie ingevoegd
+// NOTE this one is very sensitive and also contains the ending character) "
+// an extra space has been added for this
 // ***********************************************************************************
 const char HTML_Dygraph_Signal_Select[] PROGMEM =
     R"(<input type="checkbox" id="XXX" onclick="change_0(this) " checked>  <label for="XXX"> XXX_Label</label><br>)";

@@ -1,5 +1,5 @@
 // Version 0.2, 08-05-2019, SM
-//   - Topic was hernoemd naar MQTT_Topic
+//   - Topic was renamed to MQTT_Topic
 
 // Version 0.1, 22-01-2019, SM
 //   - initial version

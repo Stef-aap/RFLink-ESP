@@ -1,8 +1,8 @@
 // Version 0.3, 23-02-2020, SM
-//   - DateTime gesplits in 2 kolommen
+//   - DateTime split into 2 columns
 //
 // Version 0.2, 23-06-2019, SM
-//   - Datetime string in JSON had geen doulblequotes
+//   - Datetime string in JSON did not have duplicate quotes
 //
 // Version 0.1, 11-06-2019, SM
 //   - initial version
@@ -27,7 +27,7 @@ public:
     Version_Name = "V" + String(Sensor_NTP_Client_h) + "  ======  Sensor_NTP_Client.h";
     Serial.println("CREATE    " + Version_Name);
     _JSON_Short_Header = "Date\tTime\t";
-    Help_Text = "    >>>>>>> PAS OP,  HET LIJKT ER OP DAT DEZE SENSOR DE MQTT COMMUNICATIE AANZIENLIJK VERSLECHTERD";
+    Help_Text = "    >>>>>>> BEWARE, THIS SENSOR LIKES THAT THIS SENSOR DETERMINES MQTT COMMUNICATION SIGNIFICANTLY";
 
     this->_JSON_Short_Header = "Date\tTime\t";
     this->_JSON_Long_Header = this->_JSON_Short_Header;
@@ -40,7 +40,7 @@ public:
 
     waitForSync(30); // timeout [sec]
 
-    Serial.print("NTP server nl.pool.ntp.org, last synced : zou niet weten hoe ik dat formateren ");
+    Serial.print("NTP server nl.pool.ntp.org, last synced : wouldn't know how to format that ");
     Serial.println(lastNtpUpdateTime());
 
     if (!_myTZ.setCache(0)) {

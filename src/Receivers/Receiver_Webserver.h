@@ -6,13 +6,13 @@
 // http://192.168.4.1/index.html
 // http://192.168.4.1
 // http://192.168.4.1/7410.jpg
-// http://192.168.4.1/index.h   (maar geeft pagina weer als textfile)
+// http://192.168.4.1/index.h   (but displays page as text file)
 //
 // goed overzicht :  https://lastminuteengineers.com/creating-esp32-web-server-arduino-ide/
 //   https://github.com/esp8266/Arduino/tree/master/libraries/ESP8266WebServer
 //
-// op basis van example ESp8266Webserver/AdvancedWebServer.ino
-// deze webserver geeft problemen bij grotere bestanden, je moet dan echt een asynchrone webserver gebruiken
+// based on example ESp8266Webserver/AdvancedWebServer.ino
+// this web server causes problems with larger files, you really have to use an asynchronous web server
 // ***********************************************************************************
 // Version 0.3   11-02-2020, SM, checked by ....
 //    - opschoning
@@ -34,7 +34,7 @@ String WebServer_Root_Page = "/index.html";
 #include "Web/html_templates.h"
 
 // ***********************************************************************
-// Stream de opgegeven file naar de webclient
+// Stream the specified file to the web client
 // ***********************************************************************
 bool Load_File(fs::FS &Drive, String path) {
   String dataType = "text/plain";
@@ -100,7 +100,7 @@ void handleRoot() {
 }
 
 // ***********************************************************************
-// Direct verzenden werkt beter dan eerst in een file opslaan
+// Sending directly works better than saving to a file first
 //
 // check/Uncheck ALL signal CBs:
 // https://www.includehelp.com/code-snippets/javascript-select-unselect-check-unckecck-all-checkboxes.aspx
@@ -211,8 +211,8 @@ void Handle_Modifed_Settings() {
   Serial.println(message);
 
   // **************************************************************
-  // Het antwoord op de webpagina bevat allee items die aangechecked zijn
-  // vandaar dat we op een lastige manier doorheen moeten lopen
+  // The answer on the webpage contains all items checked in
+  // hence we have to walk through in a tricky way
   // **************************************************************
   bool Restart_Needed = false;
 
@@ -314,10 +314,10 @@ void Handle_Values() {
 }
 
 // ***********************************************************************
-// this callback will be invoked when user request "/Xsensors" */
-// het zou kunnen dat een request midden in de opbouw van JSON_Data komt
-//   maar dat vinden we helemaal niet erg.
-// LET OP: ER VERSCHIJNT NIET ALS ER EEN FOUT IN HET JSON BERICHT ZIT
+// this callback will be invoked when user request "/Xsensors"
+// it could be that a request comes in the middle of the JSON_Data structure
+// but we don't mind at all.
+// NOTE: IT DOES NOT APPEAR IF THERE IS AN ERROR IN THE JSON MESSAGE
 // ***********************************************************************
 void Update_Values() { My_Webserver.send(200, "application/json", JSON_Data); }
 
@@ -420,7 +420,7 @@ public:
   _Receiver_Webserver() {
     Version_Name = "V" + String(Receiver_Webserver_h) + "   Receiver_Webserver.h";
     Serial.println("CREATE    " + Version_Name);
-    Help_Text = "    PAS OP, deze Receiver werkt aanzienlijk slechter als Receiver_OTA wordt gebruikt !!!!\r\n\
+    Help_Text = "    BEWARE, this Receiver works significantly worse when Receiver_OTA is used !!!!\r\n\
 Starts a WebServer on IP address assigned by the home network\r\n\
 All pages should be stored in SPIFFS, with their names starting with a forward slash \"/\".\r\n\
 Files with the extension .h (which can be edited in Arduino) will be sent as type \"text/html\".\r\n\

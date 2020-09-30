@@ -166,7 +166,7 @@ private:
 #endif
 
 /*  PT2262 encoding
-AA / BB / CC / DD is de draaiknop aan de achterkant
+AA / BB / CC / DD is the dial on the back
 AA
 1L = 0001  0101  0001  0101  0101  0111
 1R = 0001  0101  0001  0101  0101  0100
@@ -198,6 +198,6 @@ On/Off zit in de laatste 2 bits
 11 = On
 00 = Off
 
-Draaischakelaar zit in de eerste
+Rotary switch is in the first
 
 */

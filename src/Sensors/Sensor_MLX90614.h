@@ -2,7 +2,7 @@
 // Version 0.2, 20-12-2019, SM
 //
 // Version 0.1, Initial_Release, 06-12-2019, SM
-// LET OP DE EMISSIVITEIT STAAT MOMENTEEL OP 1
+// ATTENTION THE EMISSIVITY IS CURRENTLY AT 1
 
 #ifndef Sensor_MLX90614_h
 #define Sensor_MLX90614_h 0.2
@@ -34,7 +34,7 @@ public:
     this->MLX->begin(this->_I2C_Address);
     MLX->setUnit(TEMP_C);
 
-    // EERST MAAR EESN EVEN DUMPEE GOED MAKEN
+    // FIRST BUT MAKE SOME DUMPEE GOOD
 
     float Emissivity = MLX->readEmissivity();
     Serial.println("MLX90614 at " + String(this->_I2C_Address) + "     Emissivity = " + String(Emissivity, 2));
@@ -47,7 +47,7 @@ public:
   }
 
   // ***********************************************************************
-  // De eerste 20 msec is de sensor niet aanspreekbaar
+  // The sensor cannot be addressed during the first 20 msec
   // ***********************************************************************
   void loop() {
     if ((millis() - _Last_Time) > 100) {

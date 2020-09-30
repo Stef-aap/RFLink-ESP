@@ -1,18 +1,18 @@
 // ***********************************************************************************
 // Version 0.7
-//   - support for Webserver Settings
+//    - support for Webserver Settings
 //
 // Version 0.6
-//   - Redirect_Serial library used
-//   - Meettijd verlaagd van 15 sec naar 5 sec
+//    - Redirect_Serial library used
+//    - Measurement time reduced from 15 sec to 5 sec
 //
 // Version 0.5
-//   - Missed sample verbeterd
-//   - Meettijd vergroot van 5 sec naar 15 sec
+//    - Missed sample improved
+//    - Measurement time increased from 5 sec to 15 sec
 //
 // Version 0.4
-//   - new lib definitions + much simpeler
-//   - Gebruikte Comm is gdefinieerd als pointer maar nog wel verbonden met de echte swapped Serial
+//    - new lib definitions + much simpler
+//    - Comm used is defined as a pointer but still connected to the real swapped Serial
 // ***********************************************************************************
 
 #ifndef Sensor_SDS011_h
@@ -42,10 +42,10 @@ public:
   }
 
   // ***********************************************************************
-  // Probleem is dat de sensor soms (m.n. na het programmeren) in een mode komt,
-  //   waarin de sensor niet werkt en waarde sensor niet uit te halen is,
-  //   anders dan door powerup
-  //   Het _SDS_Continuous_cmd werkt dan ook niet.
+  // Problem is that the sensor sometimes (especially after programming) enters a mode,
+  // in which the sensor does not work and the value of the sensor cannot be extracted,
+  // other than by powerup
+  // The _SDS_Continuous_cmd therefore does not work.
   // ***********************************************************************
   void setup() {
     _Serial_SDS011 = &Serial_Device;
@@ -90,7 +90,7 @@ public:
         _Max_PM_2_5 = 0;
         _Max_PM_10 = 0;
         // ******************************************************************
-        // omdat de sensor (als ie aan staat) iedere seconde een message send
+        // because the sensor (if it is on) a message send every second
         // flush the incoming buffer
         // ******************************************************************
         while (_Serial_SDS011->available() > 0) {
@@ -282,7 +282,7 @@ private:
             Answer_Len += 1;
           }
           // ********************************************
-          // Als Checksum fout, helemaal opnieuw beginnen
+          // If Checksum is wrong, start all over
           // ********************************************
           else {
             Answer_Len = 0;

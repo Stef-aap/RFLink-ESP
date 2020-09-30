@@ -13,9 +13,9 @@
 
 // ***********************************************************************************
 // ***********************************************************************************
-// Definieer een nieuwe Serial port, die we expliciet benaderen met Serial_Device
+// Define a new Serial port, which we will access explicitly with Serial_Device
 // HardwareSerial Serial_Device ( 0 ) ;
-// Definieer de Telnet Server en Client
+// Define the Telnet Server and Client
 WiFiServer Telnet_Server(23);
 WiFiClient Telnet_Client;
 
@@ -64,10 +64,10 @@ public:
 };
 
 // ***********************************************************************************
-// De class die dynamisch kan schakelen tussen UART eb TelNet
-// en de vlag die dit regelt
-// en direct een instance aanmaken
-// en een define om "Serial" tijdens compilatie te vervangen door deze instance
+// The class that can dynamically switch between UART and TelNet
+// and the flag that controls this
+// and immediately create an instance
+// and a define to replace "Serial" with this instance during compile time
 // ***********************************************************************************
 bool MySerial_2_Telnet = false;
 class Class_MySerial : public Stream {
