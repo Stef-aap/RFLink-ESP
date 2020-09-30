@@ -1301,7 +1301,7 @@ void Store_Modified_Settings_From_Webserver(bool Restart_Needed) {
 // Call this function before any sensor or receiver is added!!!!
 // ***********************************************************************************
 void Restart_Email(String MailTo, String Subject, String Body, bool HTML_Format = false) {
-#ifndef ESP32
+#if !defined(ESP32) && defined(INCLUDE_RECEIVER_EMAIL)
   _Email_Client_Class My_Mail_Client(__SECRET_SMTP_Server, __SECRET_SMTP_Port, __SECRET_SMTP_User, __SECRET_SMTP_PWD);
 
   bool Result;
