@@ -38,9 +38,9 @@ char PreFix[20];
 // ****************************************************************************
 #define MIN_PULSE_LENGTH                                                                                               \
   40 // Pulses shorter than this value in uSec. will be seen as garbage and not taken as actual pulses.
-#define SIGNAL_TIMEOUT 7      // Timeout, after this time in mSec. the RF signal will be considered to have stopped.
-#define RAW_BUFFER_SIZE 512   // Maximum number of pulses that is received in one go.
-#define INPUT_COMMAND_SIZE 60 // Maximum number of characters that a command via serial can be.
+#define SIGNAL_TIMEOUT     7   // Timeout, after this time in mSec. the RF signal will be considered to have stopped.
+#define RAW_BUFFER_SIZE    512 // Maximum number of pulses that is received in one go.
+#define INPUT_COMMAND_SIZE 60  // Maximum number of characters that a command via serial can be.
 
 String Received_MQTT_Topic;
 String Received_MQTT_Payload;

@@ -145,7 +145,7 @@ public:
 
 // ********************************************
 // ********************************************
-#define OVERSIZED_LIMIT 291 // longest packet is handled by plugin 48
+#define OVERSIZED_LIMIT      291 // longest packet is handled by plugin 48
 #define FA500RM3_PulseLength 26
 #define FA500RM1_PulseLength 58
 

@@ -16,13 +16,13 @@
     #include "WProgram.h"
   #endif
 
-  #define ACTIVATE_TM 0x8F        // Start up
-  #define BUTTONS_MODE 0x42       // Buttons mode
-  #define WRITE_LOC 0x44          // Write to a location
-  #define WRITE_INC 0x40          // Incremental write
-  #define SEG_ADR 0xC0            // leftmost segment Address C0 C2 C4 C6 C8 CA CC CE
-  #define BRIGHT_ADR 0x88         // Brightness address
-  #define BRIGHT_MASK 0x07        // Brightness mask
+  #define ACTIVATE_TM        0x8F // Start up
+  #define BUTTONS_MODE       0x42 // Buttons mode
+  #define WRITE_LOC          0x44 // Write to a location
+  #define WRITE_INC          0x40 // Incremental write
+  #define SEG_ADR            0xC0 // leftmost segment Address C0 C2 C4 C6 C8 CA CC CE
+  #define BRIGHT_ADR         0x88 // Brightness address
+  #define BRIGHT_MASK        0x07 // Brightness mask
   #define DEFAULT_BRIGHTNESS 0x02 // can be 0x00 to 0x07
 
   #define DISPLAY_SIZE 8   // size of display

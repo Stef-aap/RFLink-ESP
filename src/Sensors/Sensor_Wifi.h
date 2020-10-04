@@ -29,7 +29,7 @@ ESP8266WiFiMulti wifiMulti;
 #endif
 
 #define WIFI_OPTIONS_MUTIPLE 0
-#define WIFI_OPTIONS_SINGLE 1
+#define WIFI_OPTIONS_SINGLE  1
 
 // ***********************************************************************************
 // ***********************************************************************************

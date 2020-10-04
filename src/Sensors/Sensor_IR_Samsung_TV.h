@@ -13,8 +13,8 @@
 #include <IRsend.h>
 
 #define Samsung_TV_Chan_Up 0xE0E048B7UL
-#define Samsung_TV_Off 0xE0E040BFUL
-#define Samsung_TV_NBit 32
+#define Samsung_TV_Off     0xE0E040BFUL
+#define Samsung_TV_NBit    32
 
 // ***********************************************************************************
 // ***********************************************************************************

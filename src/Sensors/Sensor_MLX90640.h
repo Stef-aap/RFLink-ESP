@@ -57,8 +57,8 @@ public:
   adc1_channel_t ADC_VBatt = ADC1_CHANNEL_5; // GPIO33
 
 #define Knop_Pin 15
-#define Led_Pin 13
-#define Spot_N 10
+#define Led_Pin  13
+#define Spot_N   10
 
   int Count = 0;
   float emissivity = 0.95;

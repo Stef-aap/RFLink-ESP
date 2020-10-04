@@ -20,9 +20,9 @@
 #define _Boiler_Period 15 * 60 * 1000
 
 // Adafruit_SSD1306 Boiler_Display ( -1 ) ;  // reset pin not used on 4-pin OLED module
-#define SCREEN_WIDTH 128 // OLED display width, in pixels
-#define SCREEN_HEIGHT 64 // OLED display height, in pixels
-#define OLED_RESET -1    // Reset pin # (or -1 if sharing Arduino reset pin)
+#define SCREEN_WIDTH  128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64  // OLED display height, in pixels
+#define OLED_RESET    -1  // Reset pin # (or -1 if sharing Arduino reset pin)
 Adafruit_SSD1306 Boiler_Display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
 // ***********************************************************************************
@@ -54,13 +54,13 @@ const int _State_Boiler_Knop_Released = 3;
 class _Sensor_Blauwe_Engel : public _Sensor_BaseClass {
 
 public:
-#define _BOILER_KNOP_PRESS HIGH
+#define _BOILER_KNOP_PRESS   HIGH
 #define _BOILER_KNOP_RELEASE LOW
 
 #define _StartKnop_PRESS_TIME 100
-#define _BOILER_PRESS_TIME 500
-#define _BOILER_RELEASE_TIME 1000
-#define _MAX_BOILER_TRY 4
+#define _BOILER_PRESS_TIME    500
+#define _BOILER_RELEASE_TIME  1000
+#define _MAX_BOILER_TRY       4
 
   // ***********************************************************************
   // Creator,

@@ -26,9 +26,9 @@ public:
   // KAKU always consists of start bit + 32 bits + possibly 4 dim bits.
   // ***********************************************************************
   bool RF_Decode() {
-#define KAKUPulseCount 132     // regular KAKU packet length
+#define KAKUPulseCount     132 // regular KAKU packet length
 #define KAKUPulseCount_DIM 148 // KAKU packet length including DIM bits
-#define MidTime 750            // usec, approx between 1T and 4T
+#define MidTime            750 // usec, approx between 1T and 4T
 
     if ((RawSignal.Number != (KAKUPulseCount + 1)) && (RawSignal.Number != (KAKUPulseCount_DIM + 1))) return false;
     boolean Bit = 0;
