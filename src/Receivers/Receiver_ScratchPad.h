@@ -13,11 +13,11 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_ScratchPad() {
-    Version_Name = "V" + String(Receiver_ScratchPad_h) + "   Receiver_ScratchPad.h";
-    Serial.println("CREATE    " + Version_Name);
-    Help_Text = "ScartchPad is bedoeld voor de programmeur die er stukjes code mee kan testen.\n\
-De inhoud van deze Receiver is dan ook zeer veranderlijk en \n\
-In normaal gebruik moet deze Reeceiver dus altijd zijn uitgeschakeld.";
+    Version_Name = "V" + String(Receiver_ScratchPad_h) + "  ──────  Receiver_ScratchPad.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Help_Text = "ScartchPad is intended for programmers to test pieces of code.\n\
+The content of this receiver is therefore very changeable and \n\
+in normal use, this receiver must always be switched off.";
   }
 
   // **********************************************************************************************

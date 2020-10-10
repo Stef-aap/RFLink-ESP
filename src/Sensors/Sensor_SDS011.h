@@ -37,7 +37,7 @@ public:
   // ***********************************************************************
   _Sensor_SDS011() {
     Serial.println("V" + String(Sensor_SDS011_h) + "   Sensor_SDS011.h");
-    Serial.println("CREATE    " + Version_Name);
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     _JSON_Short_Header = "PM_2_5\tPM_10\t";
   }
 

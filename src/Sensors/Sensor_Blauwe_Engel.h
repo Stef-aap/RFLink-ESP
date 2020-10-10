@@ -83,8 +83,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_Blauwe_Engel_h) + "   Sensor_Blauwe_Engel.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_Blauwe_Engel_h) + "  ──────  Sensor_Blauwe_Engel.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     Help_Text = "    Boiler control of the Blue Angel\n\
     After pressing the button, the hot water supply is switched on for half an hour.\n\

@@ -188,7 +188,7 @@ public:
   }
 
   void DirList_Print(String Path = "/") {
-    Serial.println("=====  Files in SPIFFS  =====  " + Path);
+    Serial.println("──────  Files in SPIFFS  ──────  " + Path);
     int Count = 0;
 
 // **************************************************
@@ -414,14 +414,14 @@ public:
   // **************************************************
   // **************************************************
   void Dump(String Filename) {
-    Serial.println("===== Dump " + Filename);
+    Serial.println("────── Dump " + Filename);
     fs::File file = SPIFFS.open(Filename, "r");
     if (file) {
       while (file.available()) {
         Serial.print(file.readString());
       }
       file.close();
-      Serial.println("\n===============");
+      Serial.println("\n──────");
     } else {
       Serial.println("ERROR: file not found");
     }
@@ -544,7 +544,7 @@ public:
     while (dir.next()) {
       fs::File file = dir.openFile("r");
       if (file) {
-        Serial.print("===== Contents of ");
+        Serial.print("────── Contents of ");
         Serial.print(dir.fileName());
         Serial.print("    ");
         Serial.println(file.size());
@@ -552,7 +552,7 @@ public:
           Serial.print(file.readString());
         }
         file.close();
-        Serial.println("\n===============");
+        Serial.println("\n──────");
       }
     }
 #endif
@@ -562,10 +562,10 @@ public:
   // **************************************************
   // **************************************************
   bool Delete(String Filename) {
-    Serial.println("===== Delete " + Filename);
+    Serial.println("────── Delete " + Filename);
     bool Result = SPIFFS.remove(Filename);
     if (Result) {
-      Serial.println("\n===============");
+      Serial.println("\n──────");
     } else {
       Serial.println("ERROR: file not found");
     }
@@ -575,7 +575,7 @@ public:
   // **************************************************
   // **************************************************
   void Delete_All() {
-    Serial.println("===== Delete All Files");
+    Serial.println("────── Delete All Files");
     String Filename;
 
 #ifdef ESP32

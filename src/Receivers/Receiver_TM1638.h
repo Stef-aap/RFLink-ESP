@@ -48,8 +48,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Receiver_TM1638_h) + "   Receiver_TM1638.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Receiver_TM1638_h) + "  ──────  Receiver_TM1638.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     Help_Text = "    ToDo";
 

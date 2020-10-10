@@ -13,8 +13,8 @@ public:
   // Creators
   // ***********************************************************************
   _Sensor_Witty_LDR() {
-    Version_Name = "V" + String(Sensor_Witty_LDR_h) + "   Sensor_Witty_LDR.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_Witty_LDR_h) + "  ──────  Sensor_Witty_LDR.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     _JSON_Short_Header = "LDR\t";
   }

@@ -29,7 +29,7 @@ public:
     _Channels[6] = Chan_6;
     _Channels[7] = Chan_7;
 
-    Version_Name = "V" + String(Sensor_ESP32_ADC_h) + "   Sensor_ESP32_ADC.h";
+    Version_Name = "V" + String(Sensor_ESP32_ADC_h) + "  ──────  Sensor_ESP32_ADC.h";
     Serial.println(Version_Name);
 
     for (int i = 0; i < 8; i++) {

@@ -77,8 +77,8 @@ public:
   // ***********************************************************************
   void Constructor_Finish() {
     _Is_Receiver_SDFat = true;
-    Version_Name = "V" + String(Receiver_SDfat_h) + "   Receiver_SDfat.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Receiver_SDfat_h) + "  ──────  Receiver_SDfat.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     int x1 = this->_Data_Filename.indexOf('.');
     _Data_Filename_Prefix = this->_Data_Filename.substring(0, x1) + '_';
@@ -237,11 +237,11 @@ public:
       this->Get_CWD();
       Filename = Serial_Command.substring(5);
       if (Filename.length() == 0) Filename = "/";
-      Serial.println("======  Recursed Files in :  \"" + Filename + "\"  ======");
+      Serial.println("──────  Recursed Files in :  \"" + Filename + "\"  ──────");
       SdFile SDfile(Filename.c_str(), O_RDONLY);
       SDfile.ls(&Serial, LS_R);
       SDfile.close();
-      Serial.println("=====================================");
+      Serial.println("──────────────────");
       return false;
     }
 
@@ -367,7 +367,7 @@ private:
 
   char _SDcard_Line[250];
 
-  String _Serial_Commands_Text = "======  Receiver_SDfat  ======\n\
+  String _Serial_Commands_Text = "──────  Receiver_SDfat  ──────\n\
 dir [FILENAME]  // Display All files in this (or current) directory \ n \
 dirr [FILENAME] // Display all files recursively \ n \
 cd FILENAME     // change directory \ n \
@@ -398,11 +398,11 @@ delALL YES      // TODO Delete ALL files";
     } else
       String Path = Filename;
 
-    Serial.println("======  Files in :  \"" + Path + "\"  ======");
+    Serial.println("──────  Files in :  \"" + Path + "\"  ──────");
     SdFile SDfile(Filename.c_str(), O_RDONLY);
     SDfile.ls(&Serial);
     SDfile.close();
-    Serial.println("=====================================");
+    Serial.println("──────────────────");
   }
 
   // Receiver_SDfat ********************************************************
@@ -411,7 +411,7 @@ delALL YES      // TODO Delete ALL files";
     if (!_Card_Present) return;
 
     SDcard.chdir(Path.c_str());
-    Serial.println("======  Files in :  \"" + Path + "\"  ======");
+    Serial.println("──────  Files in :  \"" + Path + "\"  ──────");
     while (SDfile.openNext(SDcard.vwd(), O_READ)) {
       if (SDfile.isFile()) {
         SDfile.printName(&Serial);
@@ -424,7 +424,7 @@ delALL YES      // TODO Delete ALL files";
       } else
         SDfile.close();
     }
-    Serial.println("=====================================");
+    Serial.println("──────────────────");
   }
 
   // **************************************************
@@ -436,7 +436,7 @@ delALL YES      // TODO Delete ALL files";
       SDfile.close();
 
       if (Result) {
-        Serial.println("=============== File removed " + Filename);
+        Serial.println("────── File removed " + Filename);
       } else {
         Serial.println("ERROR: file not found " + Filename);
       }
@@ -449,7 +449,7 @@ delALL YES      // TODO Delete ALL files";
   void Dump(String Filename) {
     if (!_Card_Present) return;
 
-    Serial.println("===== Dump :  " + Filename + "  ======");
+    Serial.println("────── Dump :  " + Filename + "  ──────");
     SdFile SDfile(Filename.c_str(), O_RDONLY);
     if (SDfile.isOpen()) {
       int n;
@@ -457,7 +457,7 @@ delALL YES      // TODO Delete ALL files";
         Serial.print(_SDcard_Line);
       }
       SDfile.close();
-      Serial.println("\n===============");
+      Serial.println("\n──────────────────");
     } else {
       Serial.println("ERROR: File not found.");
     }

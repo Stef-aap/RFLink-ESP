@@ -70,8 +70,8 @@ public:
   // _Sensor_RFLink ********************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_RFLink_h) + "   Sensor_RFLink.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_RFLink_h) + "  ──────  Sensor_RFLink.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     My_StringSplitter *Splitter = new My_StringSplitter(MQTT_Topic, '/');
     String First_Part = Splitter->getItemAtIndex(0);
@@ -79,7 +79,7 @@ public:
     this->MQTT_Callback_Topic = First_Part + "/from_HA/"; // MQTT_Topic_Rec ;
     _RFLink_MQTT_Topic_Send = First_Part + "/from_RFLink/";
 
-    Help_Text = "    >>>>>>> ToDO Help tekst";
+    Help_Text = "    >>>>>>> ToDo Help Text";
   }
 
   // _Sensor_RFLink ********************************************************
@@ -233,10 +233,10 @@ public:
 
       Serial.print("Sensor_RFLink, MQTT Received Topic: ");
       Serial.print(Topic);
-      Serial.print("  Payload: " + Payload);
-      Serial.println("    Converted: " + Line);
+      Serial.print("   Payload: " + Payload);
+      Serial.println("   Converted: " + Line);
 
-      Line_2_File = "MQTT-Receive  Topic=" + Topic + "   Payload=" + Payload + " - Converted: " + Line;
+      Line_2_File = "MQTT-Receive   Topic=" + Topic + "   Payload=" + Payload + " - Converted: " + Line;
       RFLink_File.Log_Line(Line_2_File);
 
       Handle_Serial_Command(Line);
@@ -255,7 +255,7 @@ public:
   bool Handle_Serial_Command(String Serial_Command) {
     String LowerCase = Serial_Command;
     LowerCase.toLowerCase();
-    char InputBuffer_Serial[100]; // Buffer for Seriel data
+    char InputBuffer_Serial[100]; // Buffer for Serial data
     Serial_Command.toCharArray(InputBuffer_Serial, 100);
 
     if (LowerCase.startsWith("help")) {
@@ -303,7 +303,7 @@ public:
       // *********************************************
       // PING
       // Very Important, because this is used by Domoticz
-      //    to see if the RFLink is working properly
+      //   to see if the RFLink is working properly
       // *********************************************
       else if (strcasecmp(InputBuffer_Serial + 3, "PING;") == 0) {
         sprintf(InputBuffer_Serial, "20;%02X;PONG;", PKSequenceNumber++);
@@ -333,7 +333,7 @@ public:
       else if (strncasecmp(InputBuffer_Serial + 3, "DEBUG=", 6) == 0) {
         byte kar = InputBuffer_Serial[9];
         Learning_Mode = kar - 0x30;
-        Line_2_File = "\r\n=====  Change Learning Mode to : " + String(Learning_Mode);
+        Line_2_File = "\r\n──────  Change Learning Mode to: " + String(Learning_Mode) + "  ──────";
         RFLink_File.Log_Line(Line_2_File);
 
         // *********************************************
@@ -488,12 +488,12 @@ private:
 1 : Real Learning Mode\r\n\
 2 : one detection  + statistics\r\n\
 3 : all detections + statistics\r\n\
-4 : display pulstime\r\n\
-5 : display pulstime rounded at 30 usec\r\n\
+4 : display pulsetime\r\n\
+5 : display pulsetime rounded at 30 usec\r\n\
 6 : Statistics, Binairy and Hex Results\r\n\
 7 : Statistics followed, by normal detection\r\n\
 8 : Transmit a predefined sequence\r\n\
-9 : same as 8, but indefinitly";
+9 : same as 8, but indefinitely";
 
   String Commands_Text = "\n\
 10;LIST;          // list all commands\r\n\

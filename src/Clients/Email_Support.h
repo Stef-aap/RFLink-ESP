@@ -100,7 +100,7 @@ bool Email_Wait(WiFiClientSecure &Mail_Client, String Response = "", uint16_t ti
     yield();
   }
   String Server_Response = Mail_Client.readStringUntil('\n');
-  Serial.println("Waiting for: " + Response + "     Received: " + Server_Response);
+  Serial.println("Waiting for: " + Response + "   Received: " + Server_Response);
   if ((Response.length() > 0) && Server_Response.indexOf(Response) == -1) return false;
   return true;
 }
@@ -141,14 +141,14 @@ public:
       Serial.println();
     }
 
-    Serial.println("Connecting to mailserver:" + this->_SMTP_Server + "   Port:" + String(this->_SMTP_Port));
+    Serial.println("Connecting to mailserver: " + this->_SMTP_Server + "   Port:" + String(this->_SMTP_Port));
 
     WiFiClientSecure Email_Client;
     Email_Client.setInsecure();
     delay(1000);
 
     if (!Email_Client.connect(this->_SMTP_Server, this->_SMTP_Port)) {
-      Serial.println("Could not connect to mail server:" + this->_SMTP_Server + "    Port:" + String(this->_SMTP_Port));
+      Serial.println("Could not connect to mail server: " + this->_SMTP_Server + "   Port:" + String(this->_SMTP_Port));
       return false;
     }
 
@@ -164,10 +164,10 @@ public:
     }
 
     Email_Client.println("AUTH LOGIN");
-    Email_Wait(Email_Client, "");
+    Email_Wait(Email_Client, "any");
 
     Email_Client.println(Encode64(this->_SMTP_User));
-    Email_Wait(Email_Client, "");
+    Email_Wait(Email_Client, "any");
 
     Email_Client.println(Encode64(this->_SMTP_PWD));
     if (!Email_Wait(Email_Client, "235")) {

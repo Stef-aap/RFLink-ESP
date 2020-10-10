@@ -118,8 +118,8 @@ public:
       Serial_CO2 = &Serial_Device;
       // ****************************
     }
-    Version_Name = "V" + String(Sensor_MHZ14_h) + "  ======  Sensor_MHZ14.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_MHZ14_h) + "  ──────  Sensor_MHZ14.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     _JSON_Short_Header = "CO2\t";
     _JSON_Long_Header = "MHZ14_CO2_ppm\t";

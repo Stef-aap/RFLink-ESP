@@ -106,8 +106,8 @@ public:
     _Broker.init();
     _Broker.subscribe("#");
 
-    Version_Name = "V" + String(Sensor_MQTTBroker_h) + "   Sensor_MQTTBroker.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_MQTTBroker_h) + "  ──────  Sensor_MQTTBroker.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     _JSON_Long_Header = File_System.Read_File("/MBH.txt");
     _JSON_Short_Header = _JSON_Long_Header;

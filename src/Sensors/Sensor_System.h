@@ -1,7 +1,8 @@
 // Version 0.2, 23-02-2020, SM
-//   - Free Heap added
+//    - Free Heap added
+//
 // Version 0.1, 16-06-2019, SM
-//   - initial version
+//    - initial version
 
 #ifndef Sensor_System_h
 #define Sensor_System_h 0.2
@@ -15,8 +16,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Sensor_System() {
-    Version_Name = "V" + String(Sensor_System_h) + "  ======  Sensor_System.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_System_h) + "  ──────  Sensor_System.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
 
     _JSON_Long_Header = F("RSSI\tFree_Disk\tFree_Heap\t");
     _JSON_Short_Header = _JSON_Long_Header;

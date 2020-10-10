@@ -38,12 +38,12 @@ public:
     SPIFFS.begin();
   #endif
 
-    Serial.println("===== Read_Settings from file = " + _My_Settings_Filename);
+    Serial.println("────── Read_Settings from file = " + _My_Settings_Filename);
     fs::File file = SPIFFS.open(_My_Settings_Filename, "r");
 
     if (file) {
       DeserializationError error = deserializeJson(_My_Settings_Buffer, file);
-      if (error) Serial.println("Failed to read file JJJJJaaaa, using default configuration" + _My_Settings_Filename);
+      if (error) Serial.println("Failed to read file, using default configuration" + _My_Settings_Filename);
       file.close();
     } else {
       Serial.println("ERROR: file not found = " + _My_Settings_Filename);

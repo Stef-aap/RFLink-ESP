@@ -28,8 +28,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_I2C_Scan_h) + "  ======  Sensor_I2C_Scan.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_I2C_Scan_h) + "  ──────  Sensor_I2C_Scan.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     Help_Text = "";
   }
 

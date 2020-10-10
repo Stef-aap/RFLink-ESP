@@ -37,8 +37,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Sensor_RTC() {
-    Version_Name = "V" + String(Sensor_RTC_h) + "   Sensor_RTC.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_RTC_h) + "  ──────  Sensor_RTC.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     this->_JSON_Long_Header = "Date\tTime\t";
     this->_JSON_Short_Header = "Date\tTime\t";
     Help_Text = "    >>>>>>> ToDO Help text";
@@ -204,7 +204,7 @@ public:
 private:
   // ***********************************************************************
 
-  String _Serial_Commands_Text = "======  Sensor_RTC  ======\n\
+  String _Serial_Commands_Text = "──────  Sensor_RTC  ──────\n\
 RTC +[N]  // TODO Advances the time [N] seconds\n\
 RTC -[N]  // TODO Set the time back to [N] seconds";
 

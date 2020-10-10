@@ -30,8 +30,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_MPU9250_h) + "   Sensor_MPU9250.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_MPU9250_h) + "  ──────  Sensor_MPU9250.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     _JSON_Short_Header = "Acc_X\tAcc_Y\tAcc_Z\t";
   }
 

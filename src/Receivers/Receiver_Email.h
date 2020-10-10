@@ -37,8 +37,8 @@ public:
   void Constructor_Finish() {
     this->_Is_Receiver_Email = true;
 
-    Version_Name = "V" + String(Receiver_Email_h) + "   Receiver_Email.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Receiver_Email_h) + "  ──────  Receiver_Email.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
   }
 
   // _Receiver_Email  ******************************************************

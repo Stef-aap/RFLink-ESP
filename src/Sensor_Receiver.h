@@ -15,7 +15,7 @@
 //    - handling of serial commands in Sensor / Receiver loop corrected
 //    - Serial_2_Telnet flag removed, because simultaneous Serial and Telnet is possible
 //    - _DEBUG_Global_String added, to collects debug info while serial not yet available
-// will be printed at the end of Receivers.Setup
+//      will be printed at the end of Receivers.Setup
 //
 // Version 2.8 23-02-2020, SM
 //    - some cleaning up
@@ -187,10 +187,10 @@ void Send_Email(String Mail_To, String Subject, String Body, bool HTML_Format);
 // ****************************************************************************
 void Print_Heap(int ID = -1) {
   if (ID >= 0) Serial.print(ID);
-  Serial.print("            Free Heap = ");
+  Serial.print("Free Heap = ");
   Serial.print(ESP.getFreeHeap());
 #ifdef ESP8266
-  Serial.print("            Fragmentation = ");
+  Serial.print("Fragmentation = ");
   Serial.println(" %");
 #else
   Serial.println();
@@ -231,7 +231,7 @@ void MQTT_Topics_Append(String Topic) {
 }
 
 void MQTT_Topics_Print(String Title) {
-  Serial.println("\n    ==========  MQTT Subscribes from " + Title);
+  Serial.println("\n════════════  MQTT Subscribes from " + Title + "  ════════════");
   for (int i = 0; i < MAX_MQTT_TOPICS; i++) {
     if (MQTT_Topics[i].length() > 0) {
       Serial.println(MQTT_Topics[i]);
@@ -614,12 +614,12 @@ public:
   #ifndef _Main_Version
     #define _Main_Version "????"
   #endif
-    Serial.println("  MAIN    V" + String(_Main_Version) + "   " + String(_Main_Name));
+    Serial.println("\n──────    MAIN  ──────  V" + String(_Main_Version) + "  ──────  " + String(_Main_Name));
 #else
     Serial.println("V?    UNKNOWN PROGRAM");
 #endif
 
-    Serial.println("CREATE    V" + String(Sensor_Receiver_h) + "  ======  Sensor_Receiver_h");
+    Serial.println("\n──────  CREATE  ──────  V" + String(Sensor_Receiver_h) + "  ──────  Sensor_Receiver_h");
     JSON_Data.reserve(1000);
     JSON_Short_Data.reserve(200);
     JSON_Short_Header.reserve(200);
@@ -628,7 +628,7 @@ public:
     JSON_Long_Header = "";
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      Serial.print(F("\n======  SETUP  ======  "));
+      Serial.print(F("\n──────   SETUP  ──────  "));
       Serial.println(Sensor->Version_Name);
       Sensor->Print_Help();
 
@@ -643,7 +643,7 @@ public:
         if (Sensor->MQTT_Callback_Topic.endsWith("/")) MQTT_Topics_Append(Sensor->MQTT_Callback_Topic + "#");
         else
           MQTT_Topics_Append(Sensor->MQTT_Callback_Topic);
-        Serial.println("SENSOR   MQTT CALLBACK  = " + Sensor->MQTT_Callback_Topic);
+        Serial.println("MQTT Callback = " + Sensor->MQTT_Callback_Topic);
       }
 #endif
       External_Watchdog_Toggle();
@@ -658,7 +658,7 @@ public:
     MQTT_Topics_Print(F("Sensors"));
 #endif
 
-    Serial.println("=======================  SETUP  SENSORS  DONE  ==================================");
+    Serial.println("════════════  Setup Sensors Done  ════════════");
   }
 
   // Sensors ***************************************************************
@@ -808,7 +808,7 @@ public:
   // Sensors ***************************************************************
   // ***********************************************************************
   void Print() {
-    Serial.println(F("=======================  My_Numbers  ======================="));
+    Serial.println(F("════════════  My_Numbers  ════════════"));
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
       Serial.println("Something");
@@ -1034,7 +1034,7 @@ public:
     for (auto Receiver : _Receiver_List) {
       Receiver->setup();
       Debug_Counter += 1;
-      Serial.print(F("\n======  SETUP  ======  "));
+      Serial.print(F("\n──────   SETUP  ──────  "));
       Serial.println(Receiver->Version_Name);
       Receiver->Print_Help();
 
@@ -1043,7 +1043,7 @@ public:
         if (Receiver->MQTT_Callback_Topic.endsWith("/")) MQTT_Topics_Append(Receiver->MQTT_Callback_Topic + "#");
         else
           MQTT_Topics_Append(Receiver->MQTT_Callback_Topic);
-        Serial.println("RECEIVER MQTT CALLBACK  = " + Receiver->MQTT_Callback_Topic);
+        Serial.println("RECEIVER MQTT CALLBACK = " + Receiver->MQTT_Callback_Topic);
       }
 #endif
       External_Watchdog_Toggle();
@@ -1055,41 +1055,41 @@ public:
 
 #ifdef ESP32
 
-    Serial.println(F("===============  ESP 32 parameters ====================== "));
-    Serial.println("       CPU FREQUENCY        = " + String(ESP.getCpuFreqMHz()) + " MHz");
-    Serial.println("       SDK Version          = " + String(ESP.getSdkVersion()));
-    // Serial.println ( "       SketchSize           = " + String ( ESP.getSketchSize() ) ) ;
-    // Serial.println ( "       Free Sketch Space    = " + String ( ESP.getFreeSketchSpace() ) ) ;
-    Serial.println("       Flash Chip Size      = " + String(ESP.getFlashChipSize()));
-    Serial.println("       Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
-    Serial.print(F("       IP Address           = "));
+    Serial.println(F("════════════  ESP 32 parameters ════════════"));
+    Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
+    Serial.println("SDK Version          = " + String(ESP.getSdkVersion()));
+    //Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
+    //Serial.println("Free Sketch Space    = " + String(ESP.getFreeSketchSpace()));
+    Serial.println("Flash Chip Size      = " + String(ESP.getFlashChipSize()));
+    Serial.println("Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
+    Serial.print(F("IP Address           = "));
     Serial.println(WiFi.localIP());
     Serial.println();
 #else
-    Serial.println(F("===============  ESP 8266 parameters ====================== "));
-    Serial.println("       CPU FREQUENCY        = " + String(ESP.getCpuFreqMHz()) + " MHz");
-    // Serial.println ( "       Heap Fragmentation   = " + String ( ESP.getHeapFragmentation() ) + " %" ) ;
-    // Serial.println ( "       Max Allocatable RAM  = " + String ( ESP.getMaxFreeBlockSize() ) ) ;
-    Serial.println("       Core Version         = " + String(ESP.getCoreVersion()));
-    Serial.println("       SDK Version          = " + String(ESP.getSdkVersion()));
-    Serial.println("       SketchSize           = " + String(ESP.getSketchSize()));
-    Serial.println("       Free Sketch Space    = " + String(ESP.getFreeSketchSpace()));
-    Serial.println("       Flash Chip Size      = " + String(ESP.getFlashChipSize()));
-    Serial.println("       Real Flash Chip Size = " + String(ESP.getFlashChipRealSize()));
-    Serial.println("       Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
-    Serial.print(F("       IP Address           = "));
+    Serial.println(F("════════════  ESP 8266 parameters ════════════"));
+    Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
+    //Serial.println ("Heap Fragmentation   = " + String(ESP.getHeapFragmentation()) + " %");
+    //Serial.println ("Max Allocatable RAM  = " + String(ESP.getMaxFreeBlockSize()));
+    Serial.println("Core Version         = " + String(ESP.getCoreVersion()));
+    Serial.println("SDK Version          = " + String(ESP.getSdkVersion()));
+    Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
+    Serial.println("Free Sketch Space    = " + String(ESP.getFreeSketchSpace()));
+    Serial.println("Flash Chip Size      = " + String(ESP.getFlashChipSize()));
+    Serial.println("Real Flash Chip Size = " + String(ESP.getFlashChipRealSize()));
+    Serial.println("Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
+    Serial.print(F("IP Address           = "));
     Serial.println(WiFi.localIP());
     Serial.println();
 #endif
 
-    Serial.println("=======================  SETUP  RECEIVERS  DONE  ==================================");
+    Serial.println("════════════  Setup Receivers Done  ════════════");
 
     Create_HTML_Values_Page();
 
     if (_DEBUG_Global_String.length() > 0) {
-      Serial.println("======  _DEBUG_Global_String =====");
+      Serial.println("──────  _DEBUG_Global_String ──────");
       Serial.println(_DEBUG_Global_String);
-      Serial.println("======  END _DEBUG_Global_String =====");
+      Serial.println("──────  END _DEBUG_Global_String ──────");
     }
   }
 
@@ -1162,7 +1162,7 @@ public:
   // Receivers *************************************************************
   // ***********************************************************************
   void Print() {
-    Serial.println(F("=======================  My_Numbers  ======================="));
+    Serial.println(F("════════════  My_Numbers  ════════════"));
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
       Serial.println(F("Something Else"));
@@ -1216,7 +1216,7 @@ void Update_All_Headers() {
 // Witty:   Green=12,  Blue=13,  Red=15,  Builtin=2
 // ***********************************************************************
 void Set_Signal_LED(int N = 5, int On = 50, int Off = 400) {
-  Serial.println("*0*0*0*0*  Signal LED *0*0*0*0*  " + String(N) + " / " + String(On) + " / " + String(Off));
+  Serial.println("*0*0*0*0* Signal LED *0*0*0*0*   " + String(N) + " / " + String(On) + " / " + String(Off));
   Sensors.Set_Signal_LED(N, On, Off);
 }
 

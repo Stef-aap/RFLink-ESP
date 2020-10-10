@@ -92,8 +92,8 @@ public:
   void Constructor_Finish() {
     MQTT_Topics_Append(MQTT_Topic);
 
-    Version_Name = "V" + String(Receiver_MQTT_h) + "  ======  Receiver_MQTT.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Receiver_MQTT_h) + "  ──────  Receiver_MQTT.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     Help_Text = "Topic = " + MQTT_Topic;
 
     if (!this->Device_Active) return;
@@ -116,9 +116,9 @@ public:
     // *****************************************************
     // *****************************************************
 
-    Serial.print("                                                          IP = ");
+    Serial.print("IP = ");
     Serial.print(WiFi.localIP());
-    Serial.print("         Broker = ");
+    Serial.print("   Broker = ");
     Serial.println(MQTT_Broker_IP);
 
     _Subscription_Out = MQTT_Topic + "_";
@@ -224,7 +224,7 @@ public:
     if (MyMQTT->connected()) {
       MyMQTT->publish(Topic.c_str(), Payload.c_str());
       _Error_Time = 0;
-      Serial.println("Published To: " + this->_MQTT_Broker_IPx + "    Topic: " + Topic);
+      Serial.println("Published To: " + this->_MQTT_Broker_IPx + "   Topic: " + Topic);
       return true; // SHOULD BE IMPROVED
     }
 
@@ -278,7 +278,7 @@ private:
       for (int i = 0; i < MAX_MQTT_TOPICS; i++) {
         if (MQTT_Topics[i].length() > 0) {
           MyMQTT->subscribe(MQTT_Topics[i].c_str(), MQTTQOS0);
-          Serial.println("MQTT Subsrcibe : " + MQTT_Topics[i]);
+          Serial.println("MQTT Subscribe: " + MQTT_Topics[i]);
         } else
           break;
       }
@@ -290,7 +290,7 @@ private:
       return true;
     }
 
-    Serial.println("try reconnect FIN, niet gelukt ");
+    Serial.println("try reconnect FIN, did not work");
 
     // **************************************
     //  if more than one broker, toggle between brokers if reconnect necessary
@@ -301,12 +301,12 @@ private:
         MyMQTT->setServer(MQTT_Broker_IP2.c_str(), Broker_Port);
         this->_MQTT_Broker_IPx = MQTT_Broker_IP2;
         _ReConnect_Count = 5;
-        Serial.print("MQQQQQQQQQQQQQQQQQQQQQQQQQQQQT-broker : " + MQTT_Broker_IP2);
+        Serial.print("MQTT-broker: " + MQTT_Broker_IP2);
       } else if (Mode == 0) {
         MyMQTT->setServer(MQTT_Broker_IP.c_str(), Broker_Port);
         this->_MQTT_Broker_IPx = MQTT_Broker_IP;
         _ReConnect_Count = 0;
-        Serial.print("MQQQQQQQQQQQQQQQQQQQQQQQQQQQQT-broker : " + MQTT_Broker_IP);
+        Serial.print("MQTT-broker: " + MQTT_Broker_IP);
       }
     }
     _ReConnect_Count += 1;

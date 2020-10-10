@@ -31,7 +31,7 @@ public:
     _Serial_EnergyMeter = new SoftwareSerial(RX, TX, Inverted);
     Serial.println("V" + String(Sensor_EnergyMeter_h) + "   Sensor_EnergyMeter.h");
     if ((RX >= 6) && (RX <= 11)) {
-      Serial.println("=====  WARNING, software RX has no interrupt !!!!!");
+      Serial.println("WARNING, software RX has no interrupt !!!!!");
     }
     JSON_Short_Header = "V\tI\tPavg\tPact\tPf\tFreq\t";
   }

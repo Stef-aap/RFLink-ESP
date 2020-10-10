@@ -29,8 +29,8 @@ public:
     this->Constructor_Finish();
   }
   _Sensor_ADS1115_Diff3(int My_Address = 1, adsGain_t Gain = GAIN_ONE) {
-    Version_Name = "V" + String(Sensor_ADS1115_Diff3_h) + "  ======  Sensor_ADS1115_Diff3.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_ADS1115_Diff3_h) + "  ──────  Sensor_ADS1115_Diff3.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     _Gain = Gain;
     _My_Address = My_Address;
 

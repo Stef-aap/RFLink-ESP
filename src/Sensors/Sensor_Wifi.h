@@ -50,8 +50,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish(int Options) {
-    Version_Name = "V" + String(Sensor_Wifi_h) + "  ======  Sensor_Wifi.h";
-    Serial.println("CREATE    " + Version_Name);
+    Version_Name = "V" + String(Sensor_Wifi_h) + "  ──────  Sensor_Wifi.h";
+    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
     this->_Wifi_Options = Options;
 
 #ifdef __SECRET_Broker_IP
@@ -78,9 +78,9 @@ public:
     _AP_ssid = "ESP_" + _Mac.substring(9, 11) + _Mac.substring(12, 14) + _Mac.substring(15);
 #endif
 
-    Serial.print("      Chip-ID = " + _Chip_ID);
-    Serial.print("      MAC = " + _Mac);
-    Serial.println("      AP-sssid = " + _AP_ssid);
+    Serial.print("Chip-ID = " + _Chip_ID);
+    Serial.print("   MAC = " + _Mac);
+    Serial.println("   AP-SSID = " + _AP_ssid);
 
     if (this->_Wifi_Options == WIFI_OPTIONS_MUTIPLE) this->_Setup_Multi_Wifi();
     else
@@ -154,7 +154,7 @@ public:
         digitalWrite(Signal_LED, LED);
       }
     }
-    Serial.print(F("\n                                                          IP = "));
+    Serial.print(F("\nIP = "));
     Serial.println(WiFi.localIP());
 
     if (Signal_LED > 0) {
@@ -187,18 +187,18 @@ public:
   #endif
   #ifdef WIFI_TX_POWER
     system_phy_set_max_tpw(WIFI_TX_POWER); // set TX power [ 0..82 ], 0.25 dBm per step
-    Serial.print(F("    WIFI-Power = "));
+    Serial.print(F("WIFI-Power = "));
     Serial.println(WIFI_TX_POWER);
   #endif
 
   #ifdef WIFI_MODE_BGN
     wifi_set_phy_mode(WIFI_MODE_BGN); // B(werkt hier niet), G, N
-    Serial.print(F("    WIFI-Mode  = "));
+    Serial.print(F("WIFI-Mode  = "));
     Serial.println(WIFI_MODE_BGN);
   #else
     #define WIFI_MODE_BGN PHY_MODE_11N
     wifi_set_phy_mode(WIFI_MODE_BGN); // B(werkt hier niet), G, N
-    Serial.print(F("    WIFI-Mode  = "));
+    Serial.print(F("WIFI-Mode  = "));
     Serial.println(WIFI_MODE_BGN);
   #endif
 #endif
@@ -229,7 +229,7 @@ public:
       }
     }
 
-    Serial.print("                                                          IP = ");
+    Serial.print("IP = ");
     Serial.println(WiFi.localIP());
   }
 
@@ -309,8 +309,7 @@ private:
     // *****************************************************
     delay(100);
     WiFi.softAPConfig(local_IP, local_IP, subnet);
-    Serial.println("      AP = " + _AP_ssid + "   Password = " + _AP_pwd.substring(1) +
-                   "    IP = " + local_IP.toString());
+    Serial.println("AP = " + _AP_ssid + "   Password = " + _AP_pwd.substring(1) + "   IP = " + local_IP.toString());
     Serial.println(WiFi.softAPIP().toString());
     Serial.println();
   }
