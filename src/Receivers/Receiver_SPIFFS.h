@@ -67,11 +67,11 @@ public:
   void Constructor_Finish() {
     if (!_Filename.startsWith("/")) _Filename = "/aap.csv";
 
-    Version_Name = "V" + String(Receiver_SPIFFS_h) + "  ──────  Receiver_SPIFFS.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_SPIFFS_h) + "  ------  Receiver_SPIFFS.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "    FTP support: Username = esp8266 / Password = esp8266";
     Help_Text += _Serial_Commands_Text;
-    Help_Text += "\n──────  Filename = " + _Filename;
+    Help_Text += "\n------  Filename = " + _Filename;
     Help_Text += "    File_Seconds = " + String(_Max_File_Seconds);
     Help_Text += "    Max_N_Files = " + String(_Max_NFile) + "\n";
 
@@ -205,7 +205,7 @@ private:
   int _Max_NFile;
   String _Filename;
 
-  String _Serial_Commands_Text = "──────  Receiver_SPIFFS  ──────\r\n\
+  String _Serial_Commands_Text = "------  Receiver_SPIFFS  ------\r\n\
 dir [FILENAME]  // Display a list of all files starting with Filename \r\n \
 copy FILENAME   // Copy file to USB port \r\n \
 move FILENAME   // Copy file to USB port and delete file \r\n \

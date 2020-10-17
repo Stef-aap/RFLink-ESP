@@ -13,8 +13,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_ScratchPad() {
-    Version_Name = "V" + String(Receiver_ScratchPad_h) + "  ──────  Receiver_ScratchPad.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_ScratchPad_h) + "  ------  Receiver_ScratchPad.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "ScartchPad is intended for programmers to test pieces of code.\n\
 The content of this receiver is therefore very changeable and \n\
 in normal use, this receiver must always be switched off.";

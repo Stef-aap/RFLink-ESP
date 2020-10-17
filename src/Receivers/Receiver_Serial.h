@@ -30,7 +30,7 @@ int Serial_Setup(int Baudrate, bool Swap = false) {
   // Open serial communications and wait for port to open:
   if (Baudrate <= 0) Baudrate = 115200;
   Serial.begin(Baudrate);
-  Serial.println("\n──────  CREATE  ──────  V" + String(Receiver_Serial_h) + "  ──────  Receiver_Serial_h");
+  Serial.println("\n------  CREATE  ------  V" + String(Receiver_Serial_h) + "  ------  Receiver_Serial_h");
 #endif
   return Baudrate;
 }
@@ -44,8 +44,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_Serial() {
-    Version_Name = "V" + String(Receiver_Serial_h) + "  ──────  Receiver_Serial.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_Serial_h) + "  ------  Receiver_Serial.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************

@@ -24,8 +24,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_Watchdog_h) + "  ──────  Sensor_Watchdog.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_Watchdog_h) + "  ------  Sensor_Watchdog.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************

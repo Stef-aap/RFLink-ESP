@@ -51,8 +51,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_BME280_AF_h) + "  ──────  Sensor_BME280_AF.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_BME280_AF_h) + "  ------  Sensor_BME280_AF.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
 
     _JSON_Short_Header = "BME_T\tBME_P\tBME_RH\t";
     _JSON_Long_Header = "BME280_Temperature\tBME280_Pressure\tBME280_Humidity\t";

@@ -15,8 +15,8 @@ public:
   // ***********************************************************************
   _Receiver_Fijnstof_Conditionering() {
     this->Default_Settings();
-    Version_Name = "V" + String(Receiver_Fijnstof_Conditionering_h) + "  ──────  Receiver_Fijnstof_Conditionering.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_Fijnstof_Conditionering_h) + "  ------  Receiver_Fijnstof_Conditionering.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************

@@ -418,8 +418,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_Webserver() {
-    Version_Name = "V" + String(Receiver_Webserver_h) + "  ──────  Receiver_Webserver.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_Webserver_h) + "  ------  Receiver_Webserver.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "    BEWARE, this Receiver works significantly worse when Receiver_OTA is used !!!!\r\n\
 Starts a WebServer on IP address assigned by the home network\r\n\
 All pages should be stored in SPIFFS, with their names starting with a forward slash \"/\".\r\n\

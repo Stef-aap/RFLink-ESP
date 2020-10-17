@@ -231,7 +231,7 @@ void MQTT_Topics_Append(String Topic) {
 }
 
 void MQTT_Topics_Print(String Title) {
-  Serial.println("\n════════════  MQTT Subscribes from " + Title + "  ════════════");
+  Serial.println("\n============  MQTT Subscribes from " + Title + "  ============");
   for (int i = 0; i < MAX_MQTT_TOPICS; i++) {
     if (MQTT_Topics[i].length() > 0) {
       Serial.println(MQTT_Topics[i]);
@@ -614,12 +614,12 @@ public:
   #ifndef _Main_Version
     #define _Main_Version "????"
   #endif
-    Serial.println("\n──────    MAIN  ──────  V" + String(_Main_Version) + "  ──────  " + String(_Main_Name));
+    Serial.println("\n------    MAIN  ------  V" + String(_Main_Version) + "  ------  " + String(_Main_Name));
 #else
     Serial.println("V?    UNKNOWN PROGRAM");
 #endif
 
-    Serial.println("\n──────  CREATE  ──────  V" + String(Sensor_Receiver_h) + "  ──────  Sensor_Receiver_h");
+    Serial.println("\n------  CREATE  ------  V" + String(Sensor_Receiver_h) + "  ------  Sensor_Receiver_h");
     JSON_Data.reserve(1000);
     JSON_Short_Data.reserve(200);
     JSON_Short_Header.reserve(200);
@@ -628,7 +628,7 @@ public:
     JSON_Long_Header = "";
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
-      Serial.print(F("\n──────   SETUP  ──────  "));
+      Serial.print(F("\n------   SETUP  ------  "));
       Serial.println(Sensor->Version_Name);
       Sensor->Print_Help();
 
@@ -658,7 +658,7 @@ public:
     MQTT_Topics_Print(F("Sensors"));
 #endif
 
-    Serial.println("════════════  Setup Sensors Done  ════════════");
+    Serial.println("============  Setup Sensors Done  ============");
   }
 
   // Sensors ***************************************************************
@@ -808,7 +808,7 @@ public:
   // Sensors ***************************************************************
   // ***********************************************************************
   void Print() {
-    Serial.println(F("════════════  My_Numbers  ════════════"));
+    Serial.println(F("============  My_Numbers  ============"));
     int Debug_Counter = 0;
     for (auto Sensor : _Sensor_List) {
       Serial.println("Something");
@@ -1034,7 +1034,7 @@ public:
     for (auto Receiver : _Receiver_List) {
       Receiver->setup();
       Debug_Counter += 1;
-      Serial.print(F("\n──────   SETUP  ──────  "));
+      Serial.print(F("\n------   SETUP  ------  "));
       Serial.println(Receiver->Version_Name);
       Receiver->Print_Help();
 
@@ -1055,7 +1055,7 @@ public:
 
 #ifdef ESP32
 
-    Serial.println(F("════════════  ESP 32 parameters ════════════"));
+    Serial.println(F("============  ESP 32 parameters  ============"));
     Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
     Serial.println("SDK Version          = " + String(ESP.getSdkVersion()));
     //Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
@@ -1066,7 +1066,7 @@ public:
     Serial.println(WiFi.localIP());
     Serial.println();
 #else
-    Serial.println(F("════════════  ESP 8266 parameters ════════════"));
+    Serial.println(F("============  ESP 8266 parameters  ============"));
     Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
     //Serial.println ("Heap Fragmentation   = " + String(ESP.getHeapFragmentation()) + " %");
     //Serial.println ("Max Allocatable RAM  = " + String(ESP.getMaxFreeBlockSize()));
@@ -1082,14 +1082,14 @@ public:
     Serial.println();
 #endif
 
-    Serial.println("════════════  Setup Receivers Done  ════════════");
+    Serial.println("============  Setup Receivers Done  ============");
 
     Create_HTML_Values_Page();
 
     if (_DEBUG_Global_String.length() > 0) {
-      Serial.println("──────  _DEBUG_Global_String ──────");
+      Serial.println("------  _DEBUG_Global_String  ------");
       Serial.println(_DEBUG_Global_String);
-      Serial.println("──────  END _DEBUG_Global_String ──────");
+      Serial.println("------  END _DEBUG_Global_String  ------");
     }
   }
 
@@ -1162,7 +1162,7 @@ public:
   // Receivers *************************************************************
   // ***********************************************************************
   void Print() {
-    Serial.println(F("════════════  My_Numbers  ════════════"));
+    Serial.println(F("============  My_Numbers  ============"));
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
       Serial.println(F("Something Else"));

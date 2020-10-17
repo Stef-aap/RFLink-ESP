@@ -79,8 +79,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_DS18B20_h) + "  ──────  Sensor_DS18B20.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_DS18B20_h) + "  ------  Sensor_DS18B20.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************

@@ -16,8 +16,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Sensor_System() {
-    Version_Name = "V" + String(Sensor_System_h) + "  ──────  Sensor_System.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_System_h) + "  ------  Sensor_System.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
 
     _JSON_Long_Header = F("RSSI\tFree_Disk\tFree_Heap\t");
     _JSON_Short_Header = _JSON_Long_Header;

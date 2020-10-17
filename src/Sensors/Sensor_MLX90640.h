@@ -72,8 +72,8 @@ public:
   _Sensor_MLX90640(int I2C_Address = 0x33) {
     _Debug_Over_Serial = false;
     this->_I2C_Address = I2C_Address;
-    Version_Name = "V" + String(Sensor_MLX90640_h) + "  ──────  Sensor_MLX90640.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_MLX90640_h) + "  ------  Sensor_MLX90640.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     _JSON_Short_Header = "T1\tT2\tTd\tV_Batt\tT1_Raw\tT2_Raw";
   }
 

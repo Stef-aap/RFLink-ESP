@@ -24,8 +24,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Sensor_NTP_Client() {
-    Version_Name = "V" + String(Sensor_NTP_Client_h) + "  ──────  Sensor_NTP_Client.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_NTP_Client_h) + "  ------  Sensor_NTP_Client.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     _JSON_Short_Header = "Date\tTime\t";
     Help_Text = "    >>>>>>> BEWARE, THIS SENSOR LIKES THAT THIS SENSOR DETERMINES MQTT COMMUNICATION SIGNIFICANTLY";
 
@@ -45,7 +45,7 @@ public:
 
     if (!_myTZ.setCache(0)) {
       _myTZ.setLocation("Europe/Amsterdam");
-      Serial.println("──────  Timezone SetLocation was not yet found in Cache  ──────");
+      Serial.println("------  Timezone SetLocation was not yet found in Cache  ------");
     }
   }
 

@@ -23,8 +23,8 @@ public:
   _Sensor_Dummy(int Display_X = -1, int Display_Y = -1) {
     this->_Display_X = Display_X;
     this->_Display_Y = Display_Y;
-    Version_Name = "V" + String(Sensor_Dummy_h) + "  ──────  Sensor_Dummy.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_Dummy_h) + "  ------  Sensor_Dummy.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     _JSON_Short_Header = "Dummy Sawtooth\tDummy_Noise\t";
     _JSON_Long_Header = _JSON_Short_Header;
   }

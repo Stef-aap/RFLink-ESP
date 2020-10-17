@@ -69,7 +69,7 @@ public:
   // **************************************************
   // **************************************************
   void Print_Devices() {
-    String Line = "──────  Known Devices ──────";
+    String Line = "------  Known Devices ------";
     this->Log_Line(Line);
     int x0 = 0;
     while (x0 < Known_Devices.length()) {

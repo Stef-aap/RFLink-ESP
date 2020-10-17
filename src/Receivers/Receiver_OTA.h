@@ -31,8 +31,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_OTA() {
-    Version_Name = "V" + String(Receiver_OTA_h) + "  ──────  Receiver_OTA.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_OTA_h) + "  ------  Receiver_OTA.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "BEWARE, this Receiver may significantly degrade FTP server and Web server operation !!!!!";
   }
 

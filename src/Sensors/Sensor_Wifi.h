@@ -50,8 +50,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish(int Options) {
-    Version_Name = "V" + String(Sensor_Wifi_h) + "  ──────  Sensor_Wifi.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_Wifi_h) + "  ------  Sensor_Wifi.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     this->_Wifi_Options = Options;
 
 #ifdef __SECRET_Broker_IP

@@ -30,11 +30,11 @@ public:
   void Constructor_Finish() {
     if (!_Filename.startsWith("/")) _Filename = "/aap.csv";
 
-    Version_Name = "V" + String(Receiver_SDMMC_h) + "  ──────  Receiver_SDMMC.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_SDMMC_h) + "  ------  Receiver_SDMMC.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "    FTP support: Username = esp8266 / Password = esp8266";
     Help_Text += _Serial_Commands_Text;
-    Help_Text += "\n──────  Filename = " + _Filename;
+    Help_Text += "\n------  Filename = " + _Filename;
     Help_Text += "    File_Seconds = " + String(_Max_File_Seconds);
     Help_Text += "    Max_N_Files = " + String(_Max_NFile) + "\n";
 
@@ -188,7 +188,7 @@ private:
   int _Max_NFile;
   String _Filename;
 
-  String _Serial_Commands_Text = "──────  Receiver_SDMMC  ──────\n\
+  String _Serial_Commands_Text = "------  Receiver_SDMMC  ------\n\
 dir [FILENAME]  // Display a list of all files starting with Filename \n \
 dump FILENAME   // Print the contents of a file \n \
 dumpALL         // Print the contents of all files \n \

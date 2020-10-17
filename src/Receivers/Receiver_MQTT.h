@@ -92,8 +92,8 @@ public:
   void Constructor_Finish() {
     MQTT_Topics_Append(MQTT_Topic);
 
-    Version_Name = "V" + String(Receiver_MQTT_h) + "  ──────  Receiver_MQTT.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_MQTT_h) + "  ------  Receiver_MQTT.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     Help_Text = "Topic = " + MQTT_Topic;
 
     if (!this->Device_Active) return;

@@ -70,8 +70,8 @@ public:
   // _Sensor_RFLink ********************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_RFLink_h) + "  ──────  Sensor_RFLink.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_RFLink_h) + "  ------  Sensor_RFLink.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
 
     My_StringSplitter *Splitter = new My_StringSplitter(MQTT_Topic, '/');
     String First_Part = Splitter->getItemAtIndex(0);
@@ -333,7 +333,7 @@ public:
       else if (strncasecmp(InputBuffer_Serial + 3, "DEBUG=", 6) == 0) {
         byte kar = InputBuffer_Serial[9];
         Learning_Mode = kar - 0x30;
-        Line_2_File = "\r\n──────  Change Learning Mode to: " + String(Learning_Mode) + "  ──────";
+        Line_2_File = "\r\n------  Change Learning Mode to: " + String(Learning_Mode) + "  ------";
         RFLink_File.Log_Line(Line_2_File);
 
         // *********************************************

@@ -34,8 +34,8 @@ public:
   // ***********************************************************************
   // ***********************************************************************
   void Constructor_Finish() {
-    Version_Name = "V" + String(Sensor_DHT22_h) + "  ──────  Sensor_DHT22.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_DHT22_h) + "  ------  Sensor_DHT22.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
     this->_JSON_Short_Header = "DHT22_T\tDHT22_RH\t";
     this->_JSON_Long_Header = this->_JSON_Short_Header;
   }

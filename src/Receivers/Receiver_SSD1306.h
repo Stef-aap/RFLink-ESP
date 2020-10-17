@@ -36,8 +36,8 @@ public:
   _Receiver_SSD1306() {
     this->Character_Display = true;
     this->Name = "SSD1306 OLED Display 128*64 // kar=10/4";
-    Version_Name = "V" + String(Receiver_SSD1306_h) + "  ──────  Receiver_SSD1306.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_SSD1306_h) + "  ------  Receiver_SSD1306.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // **********************************************************************************************

@@ -38,7 +38,7 @@ public:
     SPIFFS.begin();
   #endif
 
-    Serial.println("────── Read_Settings from file = " + _My_Settings_Filename);
+    Serial.println("------ Read_Settings from file = " + _My_Settings_Filename);
     fs::File file = SPIFFS.open(_My_Settings_Filename, "r");
 
     if (file) {

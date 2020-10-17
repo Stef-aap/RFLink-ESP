@@ -21,8 +21,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Sensor_Noise_100() {
-    Version_Name = "V" + String(Sensor_Noise_100_h) + "  ──────  Sensor_Noise_100.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Sensor_Noise_100_h) + "  ------  Sensor_Noise_100.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************

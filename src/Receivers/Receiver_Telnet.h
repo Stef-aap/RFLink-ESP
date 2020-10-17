@@ -28,8 +28,8 @@ public:
   // Creator,
   // ***********************************************************************
   _Receiver_Telnet() {
-    Version_Name = "V" + String(Receiver_Telnet_h) + "  ──────  Receiver_Telnet.h";
-    Serial.println("\n──────  CREATE  ──────  " + Version_Name);
+    Version_Name = "V" + String(Receiver_Telnet_h) + "  ------  Receiver_Telnet.h";
+    Serial.println("\n------  CREATE  ------  " + Version_Name);
   }
 
   // ***********************************************************************
