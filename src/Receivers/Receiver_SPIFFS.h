@@ -69,11 +69,12 @@ public:
 
     Version_Name = "V" + String(Receiver_SPIFFS_h) + "  ------  Receiver_SPIFFS.h";
     Serial.println("\n------  CREATE  ------  " + Version_Name);
-    Help_Text = "    FTP support: Username = esp8266 / Password = esp8266";
+
+    Help_Text = "FTP support: Username = esp8266 / Password = esp8266\n";
     Help_Text += _Serial_Commands_Text;
     Help_Text += "\n------  Filename = " + _Filename;
-    Help_Text += "    File_Seconds = " + String(_Max_File_Seconds);
-    Help_Text += "    Max_N_Files = " + String(_Max_NFile) + "\n";
+    Help_Text += "   File_Seconds = " + String(_Max_File_Seconds);
+    Help_Text += "   Max_N_Files = " + String(_Max_NFile) + "\n";
 
     MQTT_Callback_Topic = MQTT_Topic;
     High_Priority_Loop = 5;
@@ -179,7 +180,7 @@ public:
       File_System.Delete(Filename);
     } else if (LowerCase == "delall yes") {
       File_System.Delete_All();
-    } else if (LowerCase.startsWith("create ")) {
+    } else if (LowerCase.startsWith("create")) {
       Filename = Serial_Command.substring(7);
       File_System.Append_File(Filename, "This is the first line\n");
     }
@@ -205,15 +206,15 @@ private:
   int _Max_NFile;
   String _Filename;
 
-  String _Serial_Commands_Text = "------  Receiver_SPIFFS  ------\r\n\
-dir [FILENAME]  // Display a list of all files starting with Filename \r\n \
-copy FILENAME   // Copy file to USB port \r\n \
-move FILENAME   // Copy file to USB port and delete file \r\n \
-dump FILENAME   // Print the contents of a file \r\n \
-dumpALL         // Print the contents of all files \r\n \
-create FILENAME // Create file if not already exist, append line text \r\n \
-del FILENAME    // Delete file \r\n \
-delALL YES      // Delete ALL files ";
+  String _Serial_Commands_Text = "------  Receiver_SPIFFS Commands  ------\r\n\
+dir [FILENAME]   // Display a list of all files starting with Filename \r\n\
+copy FILENAME    // Copy file to USB port \r\n\
+move FILENAME    // Copy file to USB port and delete file \r\n\
+dump FILENAME    // Print the contents of a file \r\n\
+dumpALL          // Print the contents of all files \r\n\
+create FILENAME  // Create file if not already exist, append line text \r\n\
+del FILENAME     // Delete file \r\n\
+delALL YES       // Delete ALL files";
 };
 
 #endif

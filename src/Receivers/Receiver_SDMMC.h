@@ -188,7 +188,7 @@ private:
   int _Max_NFile;
   String _Filename;
 
-  String _Serial_Commands_Text = "------  Receiver_SDMMC  ------\n\
+  String _Serial_Commands_Text = "------  Receiver_SDMMC Commands  ------\n\
 dir [FILENAME]  // Display a list of all files starting with Filename \n \
 dump FILENAME   // Print the contents of a file \n \
 dumpALL         // Print the contents of all files \n \

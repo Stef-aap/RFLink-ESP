@@ -150,6 +150,8 @@ HardwareSerial Serial_Device(0); // UART_NUM_0 ) ;
 
 #ifdef INCLUDE_RECEIVER_TELNET
   #include "Receivers/Receiver_Telnet.h"
+#else
+  #define Serial Serial_Device
 #endif
 // ****************************************************************************
 
@@ -1032,11 +1034,12 @@ public:
     }
     int Debug_Counter = 0;
     for (auto Receiver : _Receiver_List) {
-      Receiver->setup();
-      Debug_Counter += 1;
       Serial.print(F("\n------   SETUP  ------  "));
       Serial.println(Receiver->Version_Name);
       Receiver->Print_Help();
+
+      Receiver->setup();
+      Debug_Counter += 1;
 
 #ifdef INCLUDE_RECEIVER_MQTT
       if (Receiver->MQTT_Callback_Topic.length() > 0) {
@@ -1058,8 +1061,8 @@ public:
     Serial.println(F("============  ESP 32 parameters  ============"));
     Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
     Serial.println("SDK Version          = " + String(ESP.getSdkVersion()));
-    //Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
-    //Serial.println("Free Sketch Space    = " + String(ESP.getFreeSketchSpace()));
+    // Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
+    // Serial.println("Free Sketch Space    = " + String(ESP.getFreeSketchSpace()));
     Serial.println("Flash Chip Size      = " + String(ESP.getFlashChipSize()));
     Serial.println("Flash Chip Frequency = " + String(ESP.getFlashChipSpeed()));
     Serial.print(F("IP Address           = "));
@@ -1068,8 +1071,8 @@ public:
 #else
     Serial.println(F("============  ESP 8266 parameters  ============"));
     Serial.println("CPU Frequency        = " + String(ESP.getCpuFreqMHz()) + " MHz");
-    //Serial.println ("Heap Fragmentation   = " + String(ESP.getHeapFragmentation()) + " %");
-    //Serial.println ("Max Allocatable RAM  = " + String(ESP.getMaxFreeBlockSize()));
+    // Serial.println("Heap Fragmentation   = " + String(ESP.getHeapFragmentation()) + " %");
+    // Serial.println("Max Allocatable RAM  = " + String(ESP.getMaxFreeBlockSize()));
     Serial.println("Core Version         = " + String(ESP.getCoreVersion()));
     Serial.println("SDK Version          = " + String(ESP.getSdkVersion()));
     Serial.println("Sketch Size          = " + String(ESP.getSketchSize()));
@@ -1330,7 +1333,8 @@ unsigned long _Loop_Last_Time = 0;
 void Settings_Setup() {
   Settings_By_WebInterface = true;
 
-  Serial.begin(115200);
+  int Baudrate = Settings.Get_Set_Default_Int("RS232 Baudrate", 115200);
+  Serial_Setup(Baudrate);
   Settings.Setup();
 
   // ************************************************************
@@ -1341,9 +1345,6 @@ void Settings_Setup() {
   Restart_Email(__SECRET_SMTP_MailTo, "RFLink Restarted", "Body");
   #endif
 #endif
-
-  int Baudrate = Settings.Get_Set_Default_Int("RS232 Baudrate", 115200);
-  Serial_Setup(Baudrate);
 
 #ifdef ESP32
   My_Prefs.begin("My_Prefs", false); // not readonly

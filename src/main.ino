@@ -66,8 +66,8 @@
 //#define INCLUDE_SENSOR_OKE4
 //#define INCLUDE_SENSOR_RTC
 #define INCLUDE_RECEIVER_OTA
-#define INCLUDE_RECEIVER_TELNET
-#define INCLUDE_RECEIVER_WEBSERVER
+//#define INCLUDE_RECEIVER_TELNET
+//#define INCLUDE_RECEIVER_WEBSERVER
 //#define INCLUDE_RECEIVER_LUFTDATEN
 
 // ****************************************************************************
@@ -91,23 +91,15 @@
 void setup() { Settings_Setup(); }
 void loop() { Settings_Loop(); }
 #else
-  // ****************************************************************************
-  // ****************************************************************************
 
-  // ***********************************************************************************
-  // Hardware PINs
-  // ***********************************************************************************
-  #ifdef ESP32
-    #define TRANSMIT_PIN 14 // 5    // Data to the 433Mhz transmitter on this pin
-    #define RECEIVE_PIN 12  // 19    // On this input, the 433Mhz-RF signal is received. LOW when no signal.
-    #define WATCHDOG_PIN 23 // Pin that toggles to feed an external watchdog
-  // reset pin = EN  // 10k to 3V3, 1uF to GND, LOW=reset
-  #else
-    #define TRANSMIT_PIN 5  // Data to the 433Mhz transmitter on this pin
-    #define RECEIVE_PIN 12  // On this input, the 433Mhz-RF signal is received. LOW when no signal.
-    #define WATCHDOG_PIN 23 // Pin that toggles to feed an external watchdog
-  //#define RESET_PIN       9    // 10k to 3V3, 1uF to GND, LOW=reset
-  #endif
+// ***********************************************************************************
+// Hardware PINs
+// ***********************************************************************************
+
+#define TRANSMIT_PIN 14  // Data to the 433Mhz transmitter on this pin
+#define RECEIVE_PIN  12  // On this input, the 433Mhz-RF signal is received. LOW when no signal.
+#define WATCHDOG_PIN 23  // Pin that toggles to feed an external watchdog
+//#define RESET_PIN  9   // 10k to 3V3, 1uF to GND, LOW=reset
 
 // ***********************************************************************************
 // ***********************************************************************************
@@ -126,10 +118,6 @@ void setup() {
   // *******************************************************
   _Sensor_Wifi *wifiSensor = new _Sensor_Wifi();
 
-  /*
-  wifiSensor.AddAccessPoint(__SECRET_Wifi_Name, __SECRET_Wifi_PWD);
-  */
-
   Sensors.Add(wifiSensor);
   Sensors.Add(new _Sensor_Watchdog(WATCHDOG_PIN)); // An external watchdog might be connected
   Sensors.Add(new _Sensor_RFLink(RECEIVE_PIN, TRANSMIT_PIN));
@@ -138,8 +126,7 @@ void setup() {
   Receivers.Add(new _Receiver_MQTT(MQTT_Topic, __SECRET_Broker_User, __SECRET_Broker_Pass));
   Receivers.Add(new _Receiver_Serial());
   Receivers.Add(new _Receiver_SPIFFS("/RFLink.csv", 24 * 60 * 60, 4));
-  Receivers.Add(new _Receiver_Telnet());
-  Receivers.Add(new _Receiver_Webserver());
+  //Receivers.Add(new _Receiver_Telnet());
   Receivers.Add(new _Receiver_OTA());
   Receivers.Add(new _Receiver_Email());
 

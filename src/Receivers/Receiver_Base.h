@@ -24,10 +24,6 @@ public:
   bool Device_Active = true;
 
   // **********************************************************************************************
-  // **********************************************************************************************
-  _Receiver_BaseClass() {}
-
-  // **********************************************************************************************
   // By defining the method virtual,
   // The method in the derived class (if available) will take over the functionality
   // If no method with the same name is in the derived class, this virtual method will be effective

@@ -41,7 +41,7 @@ class _Sensor_BaseClass {
 public:
   uint16_t Device_ID = -1;
   String Version_Name = "Sensor, Version and Name = UNKNOWN";
-  String Help_Text = ""; //"No help information available for this module" ;
+  String Help_Text = ""; // "No help information available for this module";
   String Device_Firmware = "unknown";
   int Sample_Time_ms = 1000; // The time between consecutive samples
   String _JSON_Sample = "";  // APPEARSELY NOT TO BE PRIVATE

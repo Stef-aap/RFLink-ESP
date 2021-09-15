@@ -204,7 +204,7 @@ public:
 private:
   // ***********************************************************************
 
-  String _Serial_Commands_Text = "------  Sensor_RTC  ------\n\
+  String _Serial_Commands_Text = "------  Sensor_RTC Commands  ------\n\
 RTC +[N]  // TODO Advances the time [N] seconds\n\
 RTC -[N]  // TODO Set the time back to [N] seconds";
 
